@@ -21,7 +21,7 @@
  *
  */
 import React, { useMemo } from 'react';
-import { Calendar as CalendarIcon, ChevronDown, Clock, Award } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronDown, Clock } from 'lucide-react';
 import { calculateAge } from '../utils/calculateAge';
 import { formatDate } from '../../utils/formatUtils';
 const AgingWellPanel = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {

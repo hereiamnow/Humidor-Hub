@@ -1,4 +1,4 @@
-import { firebaseConfigExport } from '../firebase';
+
 
 /**
  * A helper function to trigger a file download in the browser.
@@ -38,12 +38,6 @@ export const generateAiImage = async (itemName, itemCategory, itemType) => {
         // Default prompt for cigars or other items
         prompt = `A professional, high-quality, photorealistic image of a ${itemName}, suitable for a product catalog. The background should be clean and simple, focusing on the product.`;
     }
-
-    // The payload is the data structure required by the Gemini API endpoint.
-    const payload = {
-        instances: [{ prompt: prompt }],
-        parameters: { "sampleCount": 1 }
-    };
 
     // Note: Image generation requires a proper Google Cloud service account token
     // For now, we'll disable this feature and return a placeholder

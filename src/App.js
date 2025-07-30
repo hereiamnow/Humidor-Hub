@@ -23,14 +23,10 @@
  */
 
 // React Core
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Third-party Libraries
-//import Papa from 'papaparse';
-//import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-//import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
-
-import {Calendar as CalendarIcon, LoaderCircle, PieChart as PieChartIcon, Settings as SettingsIcon} from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 
 // Firebase
 import { initializeApp } from "firebase/app";
@@ -40,89 +36,20 @@ import { firebaseConfigExport } from './firebase';
 import FirebaseAuthUI from './FirebaseAuthUI';
 
 // Constants
-//import { APP_HUMIDOR_FIELDS, APP_CIGAR_FIELDS } from './constants/fieldDefinitions';
-//import { strengthOptions, allFlavorNotes, commonCigarDimensions, cigarShapes, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from './constants/cigarOptions';
 import { fontOptions } from './constants/fontOptions';
-//import { roxysTips } from './constants/roxysTips';
 import { themes } from './constants/themes';
-
-// Components - Cigar
-//import GridCigarCard from './components/Cigar/GridCigarCard';
-//import ListCigarCard from './components/Cigar/ListCigarCard';
-
-// Components - Drawers
-// import {
-//     BrowseByCountry,
-//     BrowseByStrength,
-//     BrowseByWrapper,
-//     InteractiveWorldMap
-// } from './components/Drawers';
 
 // Components - Journal
 import AddEditJournalEntry from './components/Journal/AddEditJournalEntry';
 import CigarJournalScreen from './components/Journal/CigarJournalScreen';
-//import JournalEntryCard from './components/Journal/JournalEntryCard';
-
-// Components - Menus
-//import CigarActionMenu from './components/Menus/CigarActionMenu';
-//import HumidorActionMenu from './components/Menus/HumidorActionMenu';
-
-// Components - Modals - Actions
-//import DeleteCigarsModal from './components/Modals/Actions/DeleteCigarsModal';
-//import DeleteHumidorModal from './components/Modals/Actions/DeleteHumidorModal';
-//import MoveCigarsModal from './components/Modals/Actions/MoveCigarsModal';
-
-// Components - Modals - Composite
-//import SmartImageModal from './components/Modals/Composite/SmartImageModal';
-
-// Components - Modals - Content
-//import GeminiModal from './components/Modals/Content/GeminiModal';
-//import ThemeModal from './components/Modals/Content/ThemeModal';
-
-// Components - Modals - Data
-//import ExportModal from './components/Modals/Data/ExportModal';
-//import ImportCsvModal from './components/Modals/Data/ImportCsvModal';
-
-// Components - Modals - Forms
-//import FlavorNotesModal from './components/Modals/Forms/FlavorNotesModal';
-//import ImageUploadModal from './components/Modals/Forms/ImageUploadModal';
-//import ManualReadingModal from './components/Modals/Forms/ManualReadingModal';
 
 // Components - Navigation
 import BottomNav from './components/Navigation/BottomNav';
-
-// Components - Panels
-// import {
-//     AgingWellPanel,
-//     InventoryAnalysisPanel,
-//     MyCollectionStatsCards,
-//     BrowseByCountry,
-//     BrowseByStrength,
-//     BrowseByWrapper,
-//     InteractiveWorldMap
-// } from './components/Panels';
 
 // Components - Settings
 import AboutScreen from './components/Settings/AboutScreen';
 import NotificationsScreen from './components/Settings/NotificationsScreen';
 import ProfileScreen from './components/Settings/ProfileScreen';
-
-// Components - UI
-//import AutoCompleteInputField from './components/UI/AutoCompleteInputField';
-//import ChartCard from './components/UI/ChartCard';
-//import CollapsiblePanel from './components/UI/CollapsiblePanel';
-//import DraggableImage from './components/UI/DraggableImage';
-//import FilterSortModal from './components/UI/FilterSortModal';
-//import Gauge from './components/UI/Gauge';
-//import ImagePreview from './components/UI/ImagePreview';
-//import InputField from './components/UI/InputField';
-//import QuantityControl from './components/UI/QuantityControl';
-//import StatCard from './components/UI/StatCard';
-//import TextAreaField from './components/UI/TextAreaField';
-
-// Components - Utils
-//import { calculateAge } from './components/utils/calculateAge';
-//import { getRatingColor } from './components/utils/getRatingColor';
 
 // Screens
 import AddCigar from './screens/AddCigar';
@@ -140,15 +67,6 @@ import HumidorsScreen from './screens/HumidorsScreen';
 import IntegrationsScreen from './screens/IntegrationsScreen';
 import MyHumidor from './screens/MyHumidor';
 import SettingsScreen from './screens/SettingsScreen';
-
-// Services
-//import { callGeminiAPI } from './services/geminiService';
-//import { fetchGoveeDevices } from './services/goveeService';
-
-// Utils
-//import { getFlavorTagColor } from './utils/colorUtils';
-//import { downloadFile, generateAiImage } from './utils/fileUtils';
-//import { parseHumidorSize, formatDate } from './utils/formatUtils';
 
 // Initialize Firebase Authentication token
 const initialAuthToken = typeof window !== "undefined" && window.initialAuthToken ? window.initialAuthToken : null;

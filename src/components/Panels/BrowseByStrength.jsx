@@ -21,7 +21,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Cigarette, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const BrowseByStrength = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
     const strengthCategories = useMemo(() => [

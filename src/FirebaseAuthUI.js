@@ -37,7 +37,7 @@ export default function CustomAuth({ onSignIn }) {
     // Form state management
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isRegister, setIsRegister] = useState(false); // Toggle between sign-in and registration modes
+    const [isRegister] = useState(false); // Toggle between sign-in and registration modes
     const [error, setError] = useState(''); // Error message display
     const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
 

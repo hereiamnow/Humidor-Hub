@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { MapPin, ChevronDown, Minus, Plus, RotateCcw, X } from 'lucide-react';
+import { ChevronDown, Minus, Plus, RotateCcw, X } from 'lucide-react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 
 /** 
@@ -262,7 +262,6 @@ const InteractiveWorldMap = ({ cigars, navigate, theme, isCollapsed, onToggle })
                                                         const cigarCount = countryCounts[countryName] || 0;
                                                         if (cigarCount > 0 || isCigarCountry) {
                                                             // Calculate tooltip position relative to map container
-                                                            const rect = evt.target.getBoundingClientRect();
                                                             const containerRect = evt.target.closest('.w-full').getBoundingClientRect();
                                                             setTooltip({
                                                                 show: true,

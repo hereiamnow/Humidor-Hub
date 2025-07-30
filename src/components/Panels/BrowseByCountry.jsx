@@ -24,7 +24,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { MapPin, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const BrowseByCountry = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
     const countryCategories = useMemo(() => [

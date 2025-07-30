@@ -21,7 +21,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Leaf, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const BrowseByWrapper = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
     // Calculate unique wrapper types and their counts

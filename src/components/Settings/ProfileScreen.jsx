@@ -21,7 +21,7 @@
  * @param {Object} props.auth - Firebase auth instance
  */
 
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import AchievementsPanel from '../Profile/AchievementsPanel';
 import SubscriptionPanel from '../Profile/SubscriptionPanel';

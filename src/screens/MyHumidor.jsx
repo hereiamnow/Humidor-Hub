@@ -50,16 +50,13 @@ import { auth } from '../firebase';
 
 // Icon imports from Lucide React
 import {
-    Wind, ChevronLeft, Edit, Plus, Search, Filter, LayoutGrid, List,
-    Thermometer, Droplets, Box, DollarSign, Star, Move, Trash2,
+    Wind, ChevronLeft, Plus, Search, Filter, LayoutGrid, List,
+    Thermometer, Droplets, Move, Trash2,
     CheckSquare, ArrowUp, ArrowDown, X
 } from 'lucide-react';
 
 // Firebase imports
-import { doc, updateDoc, writeBatch, deleteDoc } from 'firebase/firestore';
-
-// Utility imports
-import { parseHumidorSize, formatDate } from '../utils/formatUtils';
+import { doc, updateDoc, writeBatch } from 'firebase/firestore';
 
 // Service imports
 import { callGeminiAPI } from '../services/geminiService';
@@ -128,7 +125,7 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
     // === ROXY'S CORNER AUTO-FILL LOGIC ===
 
     // Firebase auth state
-    const [user, authLoading, authError] = useAuthState(auth);
+    const [user, authLoading] = useAuthState(auth);
 
     // Auto-fill banner state
     const [showAutofillBanner, setShowAutofillBanner] = useState(true);
@@ -140,10 +137,10 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
     const [keyCheckLoading, setKeyCheckLoading] = useState(true);
 
     // Fields that can be auto-filled by AI (excludes physical measurements)
-    const FIELDS_TO_AUTOFILL = [
+    const FIELDS_TO_AUTOFILL = useMemo(() => [
         "shortDescription", "description", "wrapper", "binder",
         "filler", "rating", "flavorNotes", "price"
-    ];
+    ], []);
 
     console.log('MyHumidor: State initialized, auto-fill fields:', FIELDS_TO_AUTOFILL);
     console.log('MyHumidor: Auth state - user:', user?.uid, 'loading:', authLoading);

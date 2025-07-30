@@ -50,20 +50,23 @@ const JournalEntryCard = ({ entry, onEdit, onDelete, theme }) => {
     );
 
     return (
-        <div className={`${theme.card} p-4 rounded-xl shadow-lg relative`}>
-            <div className="flex justify-between items-start">
-                <div>
-                    <p className="text-xs text-gray-400 flex items-center gap-2"><CalendarIcon className="w-4 h-4" /> {formatDate(entry.dateSmoked)}</p>
+        <div className={`${theme.card} p-4 rounded-md shadow-md relative`}>
+
+            <div id="entry-header" className="flex justify-between items-start">
+                <div id="entry-info">
+                    <p className="text-xs text-gray-400 flex items-center gap-2">
+                        <CalendarIcon className="w-4 h-4" /> {formatDate(entry.dateSmoked)}</p>
                     <h4 className="font-bold text-lg text-white mt-1">{entry.cigarName}</h4>
                     <p className="text-sm text-gray-300">{entry.cigarBrand}</p>
                 </div>
-                <div className="flex flex-col items-end">
+
+                <div id="rating" className="flex flex-col items-end">
                     <RatingStars rating={entry.experienceRating} />
                     <p className="text-xs text-gray-400 mt-1">{entry.experienceRating}/5 Stars</p>
                 </div>
             </div>
 
-            <div className="mt-4 border-t border-gray-700 pt-4 space-y-3">
+            <div id="entry-details" className="mt-4 border-t border-gray-700 pt-4 space-y-3">
                 <div className="flex items-center gap-3 text-sm">
                     <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0" />
                     <span className="text-gray-300">{entry.location || 'No location specified'}</span>
@@ -74,26 +77,26 @@ const JournalEntryCard = ({ entry, onEdit, onDelete, theme }) => {
                 </div>
             </div>
 
-            <div className="mt-4 border-t border-gray-700 pt-4">
+            <div id="performance" className="mt-4 border-t border-gray-700 pt-4">
                 <h5 className="text-sm font-semibold text-amber-300 mb-3">Performance</h5>
-                <div className="grid grid-cols-3 gap-2 text-center">
-                    <div>
-                        <p className="text-xs text-gray-400">Draw</p>
+                <div className="grid grid-cols-3 gap-2 text-left">
+                    <div >
+                        <p className="text-xs text-gray-400 text-center">Draw</p>
                         <RatingStars rating={entry.drawRating || 0} />
                     </div>
-                    <div>
-                        <p className="text-xs text-gray-400">Burn</p>
+                    <div >
+                        <p className="text-xs text-gray-400 text-center">Burn</p>
                         <RatingStars rating={entry.burnRating || 0} />
                     </div>
-                    <div>
-                        <p className="text-xs text-gray-400">Ash</p>
+                    <div >
+                        <p className="text-xs text-gray-400 text-center">Ash</p>
                         <RatingStars rating={entry.ashRating || 0} />
                     </div>
                 </div>
             </div>
 
 
-            <div className="mt-4 border-t border-gray-700 pt-4 space-y-3">
+            <div id="tasting-notes" className="mt-4 border-t border-gray-700 pt-4 space-y-3">
                 <h5 className="text-sm font-semibold text-amber-300">Tasting Notes</h5>
                 <div className="text-sm text-gray-400 space-y-2 pl-2 border-l-2 border-gray-700">
                     <p><strong>1/3:</strong> {entry.firstThirdNotes || 'N/A'}</p>

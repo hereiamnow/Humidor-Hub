@@ -21,9 +21,9 @@
  * @param {Object} props.theme - Theme object for styling
  *
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { doc, addDoc, updateDoc, collection, deleteDoc } from 'firebase/firestore';
-import { ChevronLeft, Star, MapPin, GlassWater, Calendar as CalendarIcon, Save, Trash2, Compass as BrowseIcon, HelpCircle } from 'lucide-react';
+import { ChevronLeft, Star, MapPin, GlassWater, Calendar as CalendarIcon, Save, Trash2, HelpCircle } from 'lucide-react';
 import InputField from '../UI/InputField';
 import TextAreaField from '../UI/TextAreaField';
 import FlavorWheel from './FlavorWheel';

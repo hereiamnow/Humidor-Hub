@@ -55,7 +55,7 @@ import { hasValidGeminiKey } from '../utils/geminiKeyUtils';
 
 const EditCigar = ({ navigate, db, appId, userId, cigar, theme }) => {
     // Firebase auth state
-    const [user, authLoading, authError] = useAuthState(auth);
+    const [user, authLoading] = useAuthState(auth);
 
     const [formData, setFormData] = useState({
         ...cigar,

@@ -54,7 +54,7 @@ export default function GeminiKeySection() {
     const [loading, setLoading] = useState(true); // Loading state for Firebase operations
 
     // Firebase auth hook
-    const [user, authLoading, authError] = useAuthState(auth);
+    const [user, authLoading] = useAuthState(auth);
 
     console.log('GeminiKeySection: Component rendered, user:', user?.uid, 'authLoading:', authLoading);
 
