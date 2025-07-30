@@ -1,0 +1,62 @@
+{
+  "name": "humidor-hub",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@capacitor-firebase/authentication": "^7.2.0",
+    "@capacitor-firebase/firestore": "^7.2.0",
+    "@capacitor/android": "^7.4.2",
+    "@capacitor/core": "^7.4.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "d3-geo": "^3.1.1",
+    "firebase": "^11.10.0",
+    "lucide-react": "^0.525.0",
+    "papaparse": "^5.5.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-firebase-hooks": "^5.1.1",
+    "react-scripts": "^5.0.1",
+    "react-simple-maps": "^3.0.0",
+    "recharts": "^3.0.2",
+    "web-vitals": "^5.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.2",
+    "@tailwindcss/postcss": "^4.1.11",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run dev\" \"npm run emulators\"",
+    "dev": "react-scripts start",
+    "build": "cross-env REACT_APP_VERSION=$npm_package_version react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && firebase deploy",
+    "emulators": "firebase emulators:start"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
