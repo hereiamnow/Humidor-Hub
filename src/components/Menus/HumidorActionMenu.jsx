@@ -68,7 +68,7 @@ const HumidorActionMenu = ({
             </button>
             {isOpen && (
                 <div id="pnlHumidorActionMenu" className="absolute top-full right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-30 overflow-hidden">
-                    {/* <div className="border-t border-gray-700 my-1"></div> */}
+                   
                     <MenuItem icon={PencilRuler} text="Edit Humidor" onClick={onEdit} className="text-gray-200" />
                     <MenuItem icon={ClipboardPenLine} text="Take Reading" onClick={onTakeReading} className="text-gray-200" />
                     <div className="border-t border-gray-700 my-1"></div>
@@ -77,6 +77,7 @@ const HumidorActionMenu = ({
                     <MenuItem icon={FileUp} text="Export Cigars to CSV" onClick={onExport} className="text-gray-200" />
                     <div className="border-t border-gray-700 my-1"></div>
                     <MenuItem id="menuItemSelectMode" icon={MousePointerClick} text="Select Mode" onClick={handleToggleSelectMode} className="text-gray-200" />
+                    <div className="border-t border-gray-700 my-1"></div>
                     <MenuItem id="menuItemDeleteHumidor" icon={Trash} text="Delete Humidor" onClick={onDelete} className="text-red-400 hover:bg-red-900/50" />
                 </div>
             )}

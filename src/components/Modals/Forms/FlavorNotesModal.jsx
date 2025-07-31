@@ -17,8 +17,8 @@ const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes:
     const [selectedNotes, setSelectedNotes] = useState(cigar?.flavorNotes || []);
 
     const toggleNote = (note) => {
-        setSelectedNotes(prev => 
-            prev.includes(note) 
+        setSelectedNotes(prev =>
+            prev.includes(note)
                 ? prev.filter(n => n !== note)
                 : [...prev, note]
         );
@@ -26,9 +26,35 @@ const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes:
 
     const saveNotes = async () => {
         try {
-            const cigarRef = doc(db, `${appId}_${userId}_cigars`, cigar.id);
+            // Check if we're in "form mode" (Add/Edit screens) or "edit mode" (existing cigar)
+            const isFormMode = !cigar?.id;
+
+            if (isFormMode) {
+                // Form mode: Just update the parent component's form data
+                if (updateParentNotes && typeof updateParentNotes === 'function') {
+                    updateParentNotes(selectedNotes);
+                }
+                onClose();
+                return;
+            }
+
+            // Edit mode: Update existing cigar in Firestore
+            // Validate required parameters for Firestore update
+            if (!appId) {
+                throw new Error('appId is undefined');
+            }
+            if (!userId) {
+                throw new Error('userId is undefined');
+            }
+
+            const cigarRef = doc(db, 'artifacts', appId, 'users', userId, 'cigars', cigar.id);
             await updateDoc(cigarRef, { flavorNotes: selectedNotes });
-            updateParentNotes(selectedNotes);
+
+            // Call parent update function if provided
+            if (updateParentNotes && typeof updateParentNotes === 'function') {
+                updateParentNotes(selectedNotes);
+            }
+
             onClose();
         } catch (error) {
             console.error("Error updating flavor notes:", error);
@@ -44,18 +70,17 @@ const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes:
                         <X className="w-6 h-6" />
                     </button>
                 </div>
-                
+
                 <div className="flex-1 overflow-y-auto mb-4">
                     <div className="grid grid-cols-2 gap-2">
                         {allFlavorNotes.map(note => (
                             <button
                                 key={note}
                                 onClick={() => toggleNote(note)}
-                                className={`p-2 rounded-lg text-sm font-medium transition-all ${
-                                    selectedNotes.includes(note)
-                                        ? 'bg-amber-500 text-white'
-                                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                }`}
+                                className={`p-2 rounded-lg text-sm font-medium transition-all ${selectedNotes.includes(note)
+                                    ? 'bg-amber-500 text-white'
+                                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                    }`}
                             >
                                 <div className="flex items-center justify-between">
                                     <span>{note}</span>
@@ -67,15 +92,15 @@ const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes:
                         ))}
                     </div>
                 </div>
-                
+
                 <div className="flex gap-3">
-                    <button 
+                    <button
                         onClick={onClose}
                         className="flex-1 bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors"
                     >
                         Cancel
                     </button>
-                    <button 
+                    <button
                         onClick={saveNotes}
                         className="flex-1 bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors"
                     >

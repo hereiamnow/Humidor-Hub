@@ -476,7 +476,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                     </div>
                     <div className="flex flex-wrap gap-2">
                         {formData.flavorNotes.length > 0 ? (
-                            formData.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-3 py-1 rounded-full ${getFlavorTagColor(note)}`}>{note}</span>))
+                            formData.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-1 py-1 rounded-xs ${getFlavorTagColor(note)}`}>{note}</span>))
                         ) : (
                             <p className="text-sm text-gray-500">No notes selected. Click the edit icon to add some!</p>
                         )}
