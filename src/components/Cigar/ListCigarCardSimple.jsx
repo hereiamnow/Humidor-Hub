@@ -20,7 +20,7 @@
  *
  */
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, Award } from 'lucide-react';
 import { getRatingColor } from '../utils/getRatingColor';
 import RatingBadge from '../UI/RatingBadge';
 
@@ -36,12 +36,20 @@ const ListCigarCardSimple = ({ cigar, navigate, isSelectMode, isSelected, onSele
 
                     <div id="cigar-header" className="flex flex-row justify-between items-start gap-2">
                         <div className="flex flex-col flex-grow min-w-0">
-                            <p className="text-gray-400 text-xs font-semibold uppercase">{cigar.brand}</p>
+                            <div className="flex items-center gap-1">
+                                {/* Add Award icon here if its isPuiro */}
+                                {cigar.isPuro && (
+                                    <span title="Puro">
+                                        <Award className="w-4 h-4 text-amber-400 inline-block" />
+                                    </span>
+                                )}
+                                <p className="text-gray-400 text-xs font-semibold uppercase">{cigar.brand}</p>
+                            </div>
                             <h3 className="text-white font-bold text-base truncate">{cigar.name}</h3>
                         </div>
                         {cigar.rating > 0 && (
                             <div className="flex items-center">
-                                <RatingBadge rating={cigar.rating} />
+                                <RatingBadge rating={cigar.rating} size="sm" />
                             </div>
                         )}
                     </div>
@@ -53,17 +61,20 @@ const ListCigarCardSimple = ({ cigar, navigate, isSelectMode, isSelected, onSele
 
                             <div id="cigar-shape" className="flex-1 min-w-0 flex flex-col">
                                 <span className="text-gray-400">shape</span>
-                                <span className="font-semibold text-gray-200">{cigar.shape}</span>
+                                <span title={cigar.shape}
+                                    className="font-semibold text-gray-200">{cigar.shape}</span>
                             </div>
 
                             <div id="cigar-wrapper" className="flex-1 min-w-0 flex flex-col">
                                 <span className="text-gray-400">wrapper</span>
-                                <span className="font-semibold text-gray-200">{cigar.wrapper}</span>
+                                <span title={cigar.wrapper}
+                                    className="font-semibold text-gray-200">{cigar.wrapper}</span>
                             </div>
 
                             <div id="cigar-origin" className="flex-1 min-w-0 flex flex-col">
                                 <span className="text-gray-400">origin</span>
-                                <span className="font-semibold text-gray-200">{cigar.country}</span>
+                                <span title={cigar.country}
+                                    className="font-semibold text-gray-200">{cigar.country}</span>
                             </div>
 
                         </div>

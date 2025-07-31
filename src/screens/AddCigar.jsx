@@ -468,17 +468,27 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 
             <div id="pnlSmartImageModal" className="relative">
-                <SmartImageModal
-                    itemName={formData.name}
-                    theme={theme}
-                    currentImage={formData.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'Cigar+Image'}`}
-                    currentPosition={formData.imagePosition || { x: 50, y: 50 }}
-                    onImageAccept={(img, pos) => setFormData(prev => ({
-                        ...prev,
-                        image: img,
-                        imagePosition: pos
-                    }))}
-                />
+
+
+
+                <div className="flex justify-center items-center pt-6 pb-2">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-700 shadow-lg bg-gray-800">
+                        <SmartImageModal
+                            itemName={formData.name}
+                            theme={theme}
+                            currentImage={formData.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'Cigar+Image'}`}
+                            currentPosition={formData.imagePosition || { x: 50, y: 50 }}
+                            onImageAccept={(img, pos) => setFormData(prev => ({
+                                ...prev,
+                                image: img,
+                                imagePosition: pos
+                            }))}
+                        />
+                    </div>
+                </div>
+
+
+
                 {/* <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div> */}
                 <div className="absolute top-4 left-4">
                     <button onClick={() => navigate('MyHumidor', { humidorId })} className="p-2 -ml-2 mr-2 bg-black/50 rounded-full">
@@ -486,7 +496,7 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
                     </button>
                 </div>
                 <div className="absolute bottom-0 p-4">
-                    <h1 className={`text-3xl font-bold ${theme.text}`}>Add New Cigar</h1>
+                    <h2 className={`text-3xl font-bold ${theme.text}`}>Add Cigar</h2>
                 </div>
             </div>
 

@@ -198,20 +198,6 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
         console.log('Screen loaded. isPuro:', isPuro);
     }, [isPuro]);
 
-    // Badge component for puro cigars (displays "PURO" if applicable)
-    // const IsPuroBadge = () => {
-    //     if (!isPuro) return null;
-    //     return (
-    //         <div
-    //             className={`flex flex-col items-center justify-center w-16 h-16 rounded-full border-2 aspect-square ${theme.roxyBg} bg-gray-900/50 backdrop-blur-sm mr-2`}
-    //             style={{ aspectRatio: '1 / 1' }}
-    //             title="Wrapper, binder, and filler are all from the same country"
-    //         >
-    //             <Award className="w-6 h-6 text-amber-400 mb-1" />
-    //             <span className="text-xs font-bold text-white">PURO</span>
-    //         </div>
-    //     );
-    // };
 
     // Main render
     return (
@@ -224,10 +210,17 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
             {/* Cigar image and header */}
             <div className="relative">
-                <img
-                    src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${cigar.brand.replace(/\s/g, '+')}`}
-                    alt={cigar.name}
-                    className="w-full h-64 object-cover" />
+
+
+                <div className="flex justify-center items-center pt-6 pb-2">
+                    <img
+                        src={cigar.image || `https://placehold.co/400x400/5a3825/ffffff?font=playfair-display&text=${cigar.brand.replace(/\s/g, '+')}`}
+                        alt={cigar.name}
+                        className="w-40 h-40 object-cover rounded-full border-4 border-amber-700 shadow-lg"
+                    />
+                </div>
+                
+
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
 
                 {/* Page Header Action Buttons */}

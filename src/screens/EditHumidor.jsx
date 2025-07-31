@@ -70,20 +70,24 @@ const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeD
     return (
         <div className="p-4 pb-24">
             <div className="relative">
-                {/* Image */}
-                <SmartImageModal
-                    itemName={formData.name}
-                    itemCategory="humidor"
-                    itemType={formData.type}
-                    theme={theme}
-                    currentImage={formData.image || `https://placehold.co/600x400/EEE/31343C?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'My Humidor'}`}
-                    currentPosition={formData.imagePosition || { x: 50, y: 50 }}
-                    onImageAccept={(img, pos) => setFormData(prev => ({
-                        ...prev,
-                        image: img,
-                        imagePosition: pos
-                    }))}
-                />
+                {/* Circular image container */}
+                <div className="flex justify-center items-center pt-6 pb-2">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-700 shadow-lg bg-gray-800">
+                        <SmartImageModal
+                            itemName={formData.name}
+                            itemCategory="humidor"
+                            itemType={formData.type}
+                            theme={theme}
+                            currentImage={formData.image || `https://placehold.co/600x400/EEE/31343C?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'My Humidor'}`}
+                            currentPosition={formData.imagePosition || { x: 50, y: 50 }}
+                            onImageAccept={(img, pos) => setFormData(prev => ({
+                                ...prev,
+                                image: img,
+                                imagePosition: pos
+                            }))}
+                        />
+                    </div>
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
                 <div className="absolute top-4 left-4 z-10">
                     <button onClick={() => navigate('HumidorsScreen')} className="p-2 -ml-2 mr-2 bg-black/50 rounded-full">

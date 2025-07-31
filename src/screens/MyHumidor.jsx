@@ -101,7 +101,13 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
     // Search and UI state
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-    const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+    // List View is default, but check localStorage on mount
+    const [viewMode, setViewMode] = useState(() => {
+        if (typeof window !== "undefined") {
+            return localStorage.getItem("humidorViewMode") || "list";
+        }
+        return "list";
+    });
 
     // Selection and bulk operations state
     const [isSelectMode, setIsSelectMode] = useState(false);
@@ -183,6 +189,13 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
 
         checkGeminiKey();
     }, [user, authLoading]);
+
+    // Save viewMode to localStorage whenever it changes
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("humidorViewMode", viewMode);
+        }
+    }, [viewMode]);
 
     // === MEMOIZED CALCULATIONS ===
 
@@ -515,8 +528,26 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
 
             <div className="relative">
 
-                <img src={humidor.image || `https://placehold.co/600x400/3a2d27/ffffff?font=playfair-display&text=${humidor.name.replace(/\s/g, '+')}`} alt={humidor.name} className="w-full h-64 object-cover" />
+                <div className="flex justify-center items-center pt-6 pb-2">
+                    <img
+                        id="imgHumidorHeader"
+                        src={humidor.image || `https://placehold.co/600x400/3a2d27/ffffff?font=playfair-display&text=${humidor.name.replace(/\s/g, '+')}`}
+                        alt={humidor.name}
+                        className="w-40 h-40 object-cover rounded-full border-4 border-amber-700 shadow-lg"
+                    />
+                </div>
+
+
+
+
+
+
+
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+
+
+
+
                 <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
                     <button onClick={() => navigate('HumidorsScreen')} className="p-2 bg-black/50 rounded-full">
                         <ChevronLeft className="w-7 h-7 text-white" />
@@ -528,6 +559,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         onExport={() => setIsExportModalOpen(true)}
                         onDelete={() => setIsDeleteHumidorModalOpen(true)}
                         onImport={() => navigate('DataSync')} // Navigate to DataSync for import options
+                        onToggleSelectMode={handleToggleSelectMode} // <-- Add this line
                     />
 
                 </div>

@@ -18,13 +18,23 @@
  * @param {Function} props.onExport - Function to handle export action
  * @param {Function} props.onDelete - Function to handle delete action
  * @param {Function} props.onImport - Function to handle import action
+ * @param {Function} props.onSelectMode - Function to handle select mode action
+ * @param {Function} props.handleToggleSelectMode - Function to handle select mode toggle
  *
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MoreVertical, PencilRuler, ClipboardPenLine, FileDown, FileUp, Trash, Plus } from 'lucide-react';
+import { MoreVertical, PencilRuler, ClipboardPenLine, FileDown, FileUp, Trash, Plus, MousePointerClick } from 'lucide-react';
 
-const HumidorActionMenu = ({ onAddCigar, onEdit, onTakeReading, onExport, onDelete, onImport }) => {
+const HumidorActionMenu = ({
+    onAddCigar,
+    onEdit,
+    onTakeReading,
+    onExport,
+    onDelete,
+    onImport,
+    handleToggleSelectMode
+}) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -66,7 +76,8 @@ const HumidorActionMenu = ({ onAddCigar, onEdit, onTakeReading, onExport, onDele
                     <MenuItem icon={FileDown} text="Import Cigars from CSV" onClick={onImport} className="text-gray-200" />
                     <MenuItem icon={FileUp} text="Export Cigars to CSV" onClick={onExport} className="text-gray-200" />
                     <div className="border-t border-gray-700 my-1"></div>
-                    <MenuItem icon={Trash} text="Delete Humidor" onClick={onDelete} className="text-red-400 hover:bg-red-900/50" />
+                    <MenuItem id="menuItemSelectMode" icon={MousePointerClick} text="Select Mode" onClick={handleToggleSelectMode} className="text-gray-200" />
+                    <MenuItem id="menuItemDeleteHumidor" icon={Trash} text="Delete Humidor" onClick={onDelete} className="text-red-400 hover:bg-red-900/50" />
                 </div>
             )}
         </div>
