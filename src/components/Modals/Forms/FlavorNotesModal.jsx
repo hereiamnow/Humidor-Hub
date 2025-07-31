@@ -10,7 +10,7 @@
  */
 import React, { useState } from 'react';
 import { updateDoc, doc } from 'firebase/firestore';
-import { X, Check } from 'lucide-react';
+import { X, Check, Trash2 } from 'lucide-react';
 import { allFlavorNotes } from '../../../constants/cigarOptions';
 
 const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes: updateParentNotes }) => {
@@ -22,6 +22,10 @@ const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes:
                 ? prev.filter(n => n !== note)
                 : [...prev, note]
         );
+    };
+
+    const clearAllNotes = () => {
+        setSelectedNotes([]);
     };
 
     const saveNotes = async () => {
@@ -70,6 +74,19 @@ const FlavorNotesModal = ({ cigar, db, appId, userId, onClose, setSelectedNotes:
                         <X className="w-6 h-6" />
                     </button>
                 </div>
+
+                {/* Clear All button - only show when there are selected notes */}
+                {selectedNotes.length > 0 && (
+                    <div className="mb-4">
+                        <button
+                            onClick={clearAllNotes}
+                            className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                            Clear All ({selectedNotes.length})
+                        </button>
+                    </div>
+                )}
 
                 <div className="flex-1 overflow-y-auto mb-4">
                     <div className="grid grid-cols-2 gap-2">
