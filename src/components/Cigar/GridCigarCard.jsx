@@ -24,9 +24,24 @@ import { Check, Award } from 'lucide-react';
 import { getRatingColor } from '../utils/getRatingColor';
 import { calculateAge } from '../utils/calculateAge';
 
-const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) => {
+// Import IsPuroBadge component
+import IsPuroBadge from '../UI/IsPuroBadge';
+// Import RatingBadge component
+import RatingBadge from '../UI/RatingBadge';
+
+const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect, theme }) => {
     const ratingColor = getRatingColor(cigar.rating);
     const clickHandler = isSelectMode ? () => onSelect(cigar.id) : () => navigate('CigarDetail', { cigarId: cigar.id });
+
+    // Compute isPuro for this card (should match logic from CigarDetail)
+    const isPuro = typeof cigar.isPuro === 'boolean'
+        ? cigar.isPuro
+        : (
+            cigar.wrapper && cigar.binder && cigar.filler && cigar.country &&
+            cigar.wrapper.trim().toLowerCase() === cigar.country.trim().toLowerCase() &&
+            cigar.binder.trim().toLowerCase() === cigar.country.trim().toLowerCase() &&
+            cigar.filler.trim().toLowerCase() === cigar.country.trim().toLowerCase()
+        );
 
     return (
         <div className="relative" onClick={clickHandler}>
@@ -40,20 +55,28 @@ const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
                     <div className="absolute top-2 left-2 bg-black/60 rounded-lg px-2 py-1 max-w-[70%]">
                         <p className="text-gray-200 text-xs font-semibold uppercase truncate flex items-center gap-1">
                             {cigar.brand}
-                            {cigar.isPuro && <Award className="w-3 h-3 text-amber-400 flex-shrink-0" title="Puro" />}
-                            {cigar.country && (
-                                <span className={cigar.isPuro ? 'text-amber-300' : ''}>
+                            {/* {cigar.country && (
+                                <span className={isPuro ? 'text-amber-300' : ''}>
                                     - {cigar.country}
                                 </span>
-                            )}
+                            )} */}
                         </p>
                         <h3 className="text-white font-bold text-sm truncate">{cigar.name}</h3>
                     </div>
-                    {cigar.rating > 0 && (
-                        <div className={`absolute bottom-2 right-2 flex items-center justify-center rounded-full border-2 ${ratingColor} bg-black/70`} style={{ width: 44, height: 44, minWidth: 44, minHeight: 44 }}>
-                            <span className="text-sm font-bold text-white">{cigar.rating}</span>
-                        </div>
-                    )}
+
+                    {/* Position IsPuroBadge and RatingBadge on the same row at the bottom right */}
+                    <div id="pnlIsPuroRating" className="absolute bottom-2 right-2 flex flex-row items-end gap-1 z-10">
+                        <IsPuroBadge
+                            isPuro={isPuro}
+                            theme={theme}
+                            size="md"
+                        />
+                        <RatingBadge
+                            rating={cigar.rating}
+                            theme={theme}
+                            size="md"
+                        />
+                    </div>
                 </div>
                 <div className="p-3 space-y-3">
                     {/* Details */}
