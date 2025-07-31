@@ -21,9 +21,10 @@
  *
  */
 import React, { useMemo, useState } from 'react';
-import { BookText, Search, X, Trash2 } from 'lucide-react';
+import { BookText, Search, X, Trash2, LayoutGrid, List, Plus } from 'lucide-react';
 import { doc, deleteDoc } from 'firebase/firestore';
 import JournalEntryCard from './JournalEntryCard';
+import GridJournalEntryCard from './GridJournalEntryCard';
 import PageHeader from '../UI/PageHeader';
 
 
@@ -31,6 +32,7 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
     const [entryToDelete, setEntryToDelete] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [viewMode, setViewMode] = useState('grid');
 
     const sortedEntries = useMemo(() => {
         return [...journalEntries].sort((a, b) => new Date(b.dateSmoked) - new Date(a.dateSmoked));
@@ -63,12 +65,20 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
         }
     };
 
+    const handleViewModeChange = (mode) => {
+        setViewMode(mode);
+    };
+
+    const handleAddJournalEntry = () => {
+        navigate('AddEditJournalEntry');
+    };
+
     return (
         <div id="pnlContentWrapper" className="p-4 pb-24">
             <PageHeader
                 icon={BookText}
                 title="Cigar Journal"
-                subtitle="Add text here"
+                subtitle="Track your smoking experiences and tasting notes"
                 theme={theme}
             />
             <div className="relative mb-6">
@@ -87,28 +97,98 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 )}
             </div>
 
-            <div className="space-y-4">
-                {filteredEntries.length > 0 ? (
-                    filteredEntries.map(entry => (
-                        <JournalEntryCard
-                            key={entry.id}
-                            entry={entry}
-                            onEdit={handleEdit}
-                            onDelete={() => {
-                                setEntryToDelete(entry);
-                                setIsDeleteModalOpen(true);
-                            }}
-                            theme={theme}
-                        />
-                    ))
-                ) : (
-                    <div className="text-center py-10 bg-gray-800/50 rounded-xl">
-                        <BookText className="w-12 h-12 mx-auto text-gray-500 mb-4" />
-                        <h3 className="font-bold text-white">Your Journal is Empty</h3>
-                        <p className="text-gray-400 mt-2">Smoke a cigar and log your experience to start your journal.</p>
+            {/* View Controls Toolbar */}
+            <div className="flex justify-between items-center mb-6 px-2">
+                {/* View Toggle Buttons */}
+                <div className="flex gap-2">
+                    <div className="relative group">
+                        <button
+                            onClick={() => handleViewModeChange('grid')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
+                                    ? 'bg-amber-500 text-white border-amber-400'
+                                    : `${theme.primary} hover:bg-gray-700`
+                                }`}
+                        >
+                            <LayoutGrid className="w-5 h-5" />
+                        </button>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            Grid View
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        </div>
                     </div>
-                )}
+
+                    <div className="relative group">
+                        <button
+                            onClick={() => handleViewModeChange('list')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
+                                    ? 'bg-amber-500 text-white border-amber-400'
+                                    : `${theme.primary} hover:bg-gray-700`
+                                }`}
+                        >
+                            <List className="w-5 h-5" />
+                        </button>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            List View
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Add Journal Entry Button */}
+                <div className="relative group">
+                    <button
+                        onClick={handleAddJournalEntry}
+                        className="p-3 bg-amber-500 border border-amber-400 rounded-full text-white hover:bg-amber-600 transition-colors"
+                        aria-label="Add Journal Entry"
+                    >
+                        <Plus className="w-5 h-5" />
+                    </button>
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                        Add Entry
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                    </div>
+                </div>
             </div>
+
+            {/* Journal Entries Container - Conditional rendering based on view mode */}
+            {filteredEntries.length > 0 ? (
+                <div className={viewMode === 'grid'
+                    ? "grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4"
+                    : "space-y-4"
+                }>
+                    {filteredEntries.map(entry => (
+                        viewMode === 'grid' ? (
+                            <GridJournalEntryCard
+                                key={entry.id}
+                                entry={entry}
+                                onEdit={handleEdit}
+                                onDelete={() => {
+                                    setEntryToDelete(entry);
+                                    setIsDeleteModalOpen(true);
+                                }}
+                                theme={theme}
+                            />
+                        ) : (
+                            <JournalEntryCard
+                                key={entry.id}
+                                entry={entry}
+                                onEdit={handleEdit}
+                                onDelete={() => {
+                                    setEntryToDelete(entry);
+                                    setIsDeleteModalOpen(true);
+                                }}
+                                theme={theme}
+                            />
+                        )
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-10 bg-gray-800/50 rounded-xl">
+                    <BookText className="w-12 h-12 mx-auto text-gray-500 mb-4" />
+                    <h3 className="font-bold text-white">Your Journal is Empty</h3>
+                    <p className="text-gray-400 mt-2">Smoke a cigar and log your experience to start your journal.</p>
+                </div>
+            )}
 
             {/* Delete Confirmation Modal */}
             {isDeleteModalOpen && (

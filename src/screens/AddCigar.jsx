@@ -81,7 +81,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ChevronLeft, LoaderCircle, Sparkles, Tag, Edit, Award } from 'lucide-react';
-import { strengthOptions, commonCigarDimensions, cigarShapes, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../constants/cigarOptions';
+import { strengthOptions, commonCigarDimensions, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../constants/cigarOptions';
 import InputField from '../components/UI/InputField';
 import TextAreaField from '../components/UI/TextAreaField';
 import AutoCompleteInputField from '../components/UI/AutoCompleteInputField';
@@ -93,13 +93,98 @@ import { getFlavorTagColor } from '../utils/colorUtils';
 import { callGeminiAPI } from '../services/geminiService';
 import StarRating from '../components/UI/StarRating';
 
+// Comprehensive tobacco country mapping for puro detection
+const TOBACCO_COUNTRY_MAPPINGS = {
+    // Adjectives to countries
+    'nicaraguan': 'nicaragua',
+    'dominican': 'dominican republic',
+    'cuban': 'cuba',
+    'honduran': 'honduras',
+    'ecuadorian': 'ecuador',
+    'mexican': 'mexico',
+    'brazilian': 'brazil',
+    'cameroon': 'cameroon',
+    'connecticut': 'usa',
+    'pennsylvania': 'usa',
+    'kentucky': 'usa',
+    'peruvian': 'peru',
+    'colombian': 'colombia',
+    'costa rican': 'costa rica',
+    'san andres': 'mexico',
+    'san andrés': 'mexico',
+    'habano': 'ecuador',    // Most Habano wrappers are Ecuadorian
+    'corojo': 'honduras',   // Traditional Corojo origin
+    'criollo': 'nicaragua', // Common Criollo origin
+    'maduro': null,         // Maduro is a process, not origin-specific
+    'natural': null,        // Natural is a process, not origin-specific
+    'claro': null,          // Claro is a color, not origin-specific
+    'oscuro': null,         // Oscuro is a color, not origin-specific
+
+    // Direct country names
+    'nicaragua': 'nicaragua',
+    'dominican republic': 'dominican republic',
+    'cuba': 'cuba',
+    'honduras': 'honduras',
+    'ecuador': 'ecuador',
+    'mexico': 'mexico',
+    'brazil': 'brazil',
+    'usa': 'usa',
+    'peru': 'peru',
+    'colombia': 'colombia',
+    'costa rica': 'costa rica'
+};
+
+// Function to extract country from tobacco description
+const extractCountryFromTobacco = (tobacco) => {
+    console.log('extractCountryFromTobacco called with:', tobacco);
+    if (!tobacco || typeof tobacco !== 'string') {
+        console.log('extractCountryFromTobacco: Invalid tobacco input, returning null');
+        return null;
+    }
+
+    const normalized = tobacco.toLowerCase().trim();
+    console.log('extractCountryFromTobacco: Normalized tobacco:', normalized);
+
+    // Check for direct matches first
+    for (const [key, country] of Object.entries(TOBACCO_COUNTRY_MAPPINGS)) {
+        if (country && normalized.includes(key)) {
+            console.log(`extractCountryFromTobacco: Found match - key: ${key}, country: ${country}`);
+            return country;
+        }
+    }
+
+    console.log('extractCountryFromTobacco: No match found, returning null');
+    return null;
+};
+
+// Function to detect if cigar is a puro
+const detectPuro = (wrapper, binder, filler) => {
+    console.log('detectPuro called with:', { wrapper, binder, filler });
+    const wrapperCountry = extractCountryFromTobacco(wrapper);
+    const binderCountry = extractCountryFromTobacco(binder);
+    const fillerCountry = extractCountryFromTobacco(filler);
+
+    console.log('detectPuro: Extracted countries:', { wrapperCountry, binderCountry, fillerCountry });
+
+    // All three must have identifiable countries and be the same
+    if (wrapperCountry && binderCountry && fillerCountry) {
+        if (wrapperCountry === binderCountry && binderCountry === fillerCountry) {
+            console.log('detectPuro: PURO DETECTED!', wrapperCountry);
+            return { isPuro: true, country: wrapperCountry };
+        }
+    }
+
+    console.log('detectPuro: Not a puro - mixed origins or missing data');
+    return { isPuro: false, country: null };
+};
+
 const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
     console.log('AddCigar component initialized with props:', { appId, userId, humidorId, theme: theme?.name || 'unknown' });
 
     // Initialize formData with new fields length_inches, ring_gauge, and isPuro
     const [formData, setFormData] = useState({ brand: '', name: '', shape: '', size: '', wrapper: '', binder: '', filler: '', country: '', strength: '', price: '', rating: '', quantity: 1, image: '', shortDescription: '', description: '', flavorNotes: [], dateAdded: new Date().toISOString().split('T')[0], length_inches: '', ring_gauge: '', isPuro: false });
     console.log('Initial formData state:', formData);
-    const [strengthSuggestions, setStrengthSuggestions] = useState([]);
+    const [setStrengthSuggestions] = useState([]);
     const [isAutofilling, setIsAutofilling] = useState(false);
     const [modalState, setModalState] = useState({ isOpen: false, content: '', isLoading: false });
     const [isFlavorModalOpen, setIsFlavorModalOpen] = useState(false);
@@ -113,91 +198,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
     const [isSizeFlashing, setIsSizeFlashing] = useState(false);
     const [puroDetected, setPuroDetected] = useState(null);
     const [showPuroNotification, setShowPuroNotification] = useState(false);
-
-    // Comprehensive tobacco country mapping for puro detection
-    const TOBACCO_COUNTRY_MAPPINGS = {
-        // Adjectives to countries
-        'nicaraguan': 'nicaragua',
-        'dominican': 'dominican republic',
-        'cuban': 'cuba',
-        'honduran': 'honduras',
-        'ecuadorian': 'ecuador',
-        'mexican': 'mexico',
-        'brazilian': 'brazil',
-        'cameroon': 'cameroon',
-        'connecticut': 'usa',
-        'pennsylvania': 'usa',
-        'kentucky': 'usa',
-        'peruvian': 'peru',
-        'colombian': 'colombia',
-        'costa rican': 'costa rica',
-        'san andres': 'mexico',
-        'san andrés': 'mexico',
-        'habano': 'ecuador',    // Most Habano wrappers are Ecuadorian
-        'corojo': 'honduras',   // Traditional Corojo origin
-        'criollo': 'nicaragua', // Common Criollo origin
-        'maduro': null,         // Maduro is a process, not origin-specific
-        'natural': null,        // Natural is a process, not origin-specific
-        'claro': null,          // Claro is a color, not origin-specific
-        'oscuro': null,         // Oscuro is a color, not origin-specific
-
-        // Direct country names
-        'nicaragua': 'nicaragua',
-        'dominican republic': 'dominican republic',
-        'cuba': 'cuba',
-        'honduras': 'honduras',
-        'ecuador': 'ecuador',
-        'mexico': 'mexico',
-        'brazil': 'brazil',
-        'usa': 'usa',
-        'peru': 'peru',
-        'colombia': 'colombia',
-        'costa rica': 'costa rica'
-    };
-
-    // Function to extract country from tobacco description
-    const extractCountryFromTobacco = (tobacco) => {
-        console.log('extractCountryFromTobacco called with:', tobacco);
-        if (!tobacco || typeof tobacco !== 'string') {
-            console.log('extractCountryFromTobacco: Invalid tobacco input, returning null');
-            return null;
-        }
-
-        const normalized = tobacco.toLowerCase().trim();
-        console.log('extractCountryFromTobacco: Normalized tobacco:', normalized);
-
-        // Check for direct matches first
-        for (const [key, country] of Object.entries(TOBACCO_COUNTRY_MAPPINGS)) {
-            if (country && normalized.includes(key)) {
-                console.log(`extractCountryFromTobacco: Found match - key: ${key}, country: ${country}`);
-                return country;
-            }
-        }
-
-        console.log('extractCountryFromTobacco: No match found, returning null');
-        return null;
-    };
-
-    // Function to detect if cigar is a puro
-    const detectPuro = (wrapper, binder, filler) => {
-        console.log('detectPuro called with:', { wrapper, binder, filler });
-        const wrapperCountry = extractCountryFromTobacco(wrapper);
-        const binderCountry = extractCountryFromTobacco(binder);
-        const fillerCountry = extractCountryFromTobacco(filler);
-
-        console.log('detectPuro: Extracted countries:', { wrapperCountry, binderCountry, fillerCountry });
-
-        // All three must have identifiable countries and be the same
-        if (wrapperCountry && binderCountry && fillerCountry) {
-            if (wrapperCountry === binderCountry && binderCountry === fillerCountry) {
-                console.log('detectPuro: PURO DETECTED!', wrapperCountry);
-                return { isPuro: true, country: wrapperCountry };
-            }
-        }
-
-        console.log('detectPuro: Not a puro - mixed origins or missing data');
-        return { isPuro: false, country: null };
-    };
 
     // Effect to detect puro status when tobacco fields change
     useEffect(() => {
@@ -225,7 +225,8 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
         } else {
             console.log('useEffect: No change in puro status');
         }
-    }, [formData.wrapper, formData.binder, formData.filler]);
+    }, [formData.wrapper, formData.binder, formData.filler, formData.isPuro]);
+    // ^^^ Added formData.isPuro to dependency array
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -507,12 +508,12 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
 
                 {/* Overview / Short Description */}
                 <InputField name="shortDescription" label="Overview" placeholder="Brief overview of the cigar..." value={formData.shortDescription} onChange={handleInputChange} theme={theme} />
-                
+
                 {/* Description */}
                 <TextAreaField name="description" label="Description" placeholder="Notes on this cigar..." value={formData.description} onChange={handleInputChange} theme={theme} />
-                
-                
-                
+
+
+
                 <div id="pnlShapeAndSize" className="grid grid-cols-2 gap-3">
                     <AutoCompleteInputField
                         name="shape"
@@ -607,7 +608,7 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
                 </div>
 
                 {/* Puro Detection Section */}
-                {(formData.wrapper || formData.binder || formData.filler) && (
+                {(formData.wrapper && formData.binder && formData.filler) && (
                     <div className={`p-3 rounded-lg border ${formData.isPuro
                         ? 'bg-green-900/20 border-green-800'
                         : `${theme.roxyBg} ${theme.roxyBorder}`

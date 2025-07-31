@@ -28,8 +28,7 @@ import {
     Plus,
     ShieldPlus,
     Sparkles,
-    Wind,
-    XCircle
+    Wind
 } from 'lucide-react';
 
 // Local constants

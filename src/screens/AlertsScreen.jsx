@@ -16,11 +16,31 @@
 // and organized layout with collapsible alert settings.
 
 import React, { useState } from 'react';
-import { ChevronLeft, Wind, Plus } from 'lucide-react';
-
+import { Wind, Plus, Bell } from 'lucide-react';
+import PageHeader from '../components/UI/PageHeader'; 
 const AlertsScreen = ({ navigate, humidors, theme }) => {
+    // Debug: Log component props on render
+    console.log('AlertsScreen: Component rendered with props:', {
+        hasNavigate: typeof navigate === 'function',
+        humidorsCount: humidors?.length || 0,
+        theme: theme?.name || 'undefined',
+        themeObject: theme
+    });
+
+    // Provide fallback theme if undefined
+    const safeTheme = theme || {
+        primary: 'text-amber-400',
+        text: 'text-white',
+        subtleText: 'text-gray-400',
+        roxyBg: 'bg-amber-900/20',
+        roxyBorder: 'border-amber-600/50',
+        name: 'fallback'
+    };
+
+    console.log('AlertsScreen: Using theme:', safeTheme);
+
     const [alertSettings, setAlertSettings] = useState(
-        humidors.map(h => ({ humidorId: h.id, name: h.name, humidityAlert: false, minHumidity: 68, maxHumidity: 72, tempAlert: false, minTemp: 65, maxTemp: 70 }))
+        (humidors || []).map(h => ({ humidorId: h.id, name: h.name, humidityAlert: false, minHumidity: 68, maxHumidity: 72, tempAlert: false, minTemp: 65, maxTemp: 70 }))
     );
 
     const handleToggle = (humidorId, type) => {
@@ -32,11 +52,17 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
     };
 
     return (
-        <div className="p-4 pb-24">
-            <div className="flex items-center mb-6">
-                <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2"><ChevronLeft className="w-7 h-7 text-white" /></button>
-                <h1 className="text-3xl font-bold text-white">Alerts</h1>
-            </div>
+        <div id="pnlContentWrapper" className="p-4 pb-24">
+
+            <PageHeader
+                icon={Bell}
+                title="Alerts"
+                subtitle="Configure temperature and humidity notifications"
+                theme={safeTheme}
+            />
+
+
+
             <div className="space-y-6">
                 {humidors && humidors.length > 0 ? (
                     alertSettings.map(setting => (
@@ -69,7 +95,7 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
                         </div>
                     ))
                 ) : (
-                    <div className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-xl p-6 text-center`}>
+                    <div className={`${safeTheme.roxyBg} border ${safeTheme.roxyBorder} rounded-xl p-6 text-center`}>
                         <h3 className="font-bold text-amber-300 text-lg flex items-center justify-center mb-3">
                             <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>

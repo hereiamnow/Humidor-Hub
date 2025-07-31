@@ -18,6 +18,7 @@ import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import {
+    Award,
     ChevronLeft,
     Cigarette,
     Check,
@@ -105,7 +106,8 @@ const CigarDetail = ({ cigar, navigate, db, appId, userId, journalEntries, theme
             const newQuantity = cigar.quantity - 1;
             const cigarRef = doc(db, 'artifacts', appId, 'users', userId, 'cigars', cigar.id);
             await updateDoc(cigarRef, { quantity: newQuantity });
-            // Navigate to log the experience
+            setShowSmokeConfirmation(true);
+            setTimeout(() => setShowSmokeConfirmation(false), 1500); // Hide after 1.5 seconds
             // navigate('AddEditJournalEntry', { cigarId: cigar.id });
         }
     };
@@ -172,6 +174,42 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
         <div><p className="text-xs text-gray-400">{label}</p><p className="font-bold text-white text-sm">{value || 'N/A'}</p></div>
     );
 
+    // Helper to determine if cigar is a puro
+    const isPuro = useMemo(() => {
+        // Prefer explicit field if present
+        if (typeof cigar.isPuro === 'boolean') return cigar.isPuro;
+        // Fallback to computed logic
+        if (!cigar.wrapper || !cigar.binder || !cigar.filler || !cigar.country) {
+            return false;
+        }
+        const origin = cigar.country.trim().toLowerCase();
+        return (
+            cigar.wrapper.trim().toLowerCase() === origin &&
+            cigar.binder.trim().toLowerCase() === origin &&
+            cigar.filler.trim().toLowerCase() === origin
+        );
+    }, [cigar.isPuro, cigar.wrapper, cigar.binder, cigar.filler, cigar.country]);
+
+    // Log isPuro value when the screen loads or cigar changes
+    useEffect(() => {
+        console.log('Screen loaded. isPuro:', isPuro);
+    }, [isPuro]);
+
+    // Add isPuro badge component
+    const IsPuroBadge = () => {
+        if (!isPuro) return null;
+        return (
+            <div
+                className={`flex flex-col items-center justify-center w-16 h-16 rounded-full border-2 aspect-square ${theme.roxyBg} bg-gray-900/50 backdrop-blur-sm mr-2`}
+                style={{ aspectRatio: '1 / 1' }}
+                title="Wrapper, binder, and filler are all from the same country"
+            >
+                <Award className="w-6 h-6 text-amber-400 mb-1" />
+                <span className="text-xs font-bold text-white">PURO</span>
+            </div>
+        );
+    };
+
     return (
         <div className="pb-24">
             {modalState.isOpen && <GeminiModal title={modalState.type === 'pairings' ? "Pairing Suggestions" : modalState.type === 'notes' ? "Tasting Note Idea" : modalState.type === 'aging' ? "Aging Potential" : "Similar Smokes"} content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
@@ -180,7 +218,10 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
             {isExportModalOpen && <ExportModal data={[cigar]} dataType="cigar" onClose={() => setIsExportModalOpen(false)} />}
 
             <div className="relative">
-                <img src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${cigar.brand.replace(/\s/g, '+')}`} alt={cigar.name} className="w-full h-64 object-cover" />
+                <img
+                    src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${cigar.brand.replace(/\s/g, '+')}`}
+                    alt={cigar.name}
+                    className="w-full h-64 object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
 
                 {/* Page Header Action Buttons */}
@@ -195,12 +236,20 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                 </div>
 
                 {/* Title and Rating Badge */}
-                <div className="absolute bottom-0 p-4 w-full flex justify-between items-end">
-                    <div>
-                        <p className="text-gray-300 text-sm font-semibold uppercase">{cigar.brand}</p>
-                        <h1 className="text-3xl font-bold text-white">{cigar.name}</h1>
+                <div id="titleRatingBadge" className="absolute bottom-0 p-4 w-full flex justify-between items-end">
+                    <div className="flex items-center gap-2">
+                        <div>
+                            <p className="text-gray-300 text-sm font-semibold uppercase">{cigar.brand}</p>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-3xl font-bold text-white">{cigar.name}</h1>
+                            </div>
+                        </div>
                     </div>
-                    <RatingBadge rating={cigar.rating} />
+                    {/* Add isPuro badge to the left of RatingBadge */}
+                    <div className="flex items-center">
+                        <IsPuroBadge />
+                        <RatingBadge rating={cigar.rating} />
+                    </div>
                 </div>
             </div>
 
@@ -226,16 +275,36 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                         <h3 className="font-bold text-amber-300 text-lg">Profile</h3>
                     </div>
 
+                    {/* Origin + Puro Badge */}
+                    <div id="isPuroBadge">
+                        <p className="text-xs text-gray-400">Origin (isPuro)</p>
+                        <div className="flex items-center gap-2">
+                            <span className="font-bold text-white text-sm">{cigar.country || 'N/A'}</span>
+                            {console.log('Puro Debug - rendering badge? isPuro:', isPuro)}
+                            {isPuro && (
+                                <span
+                                    className="inline-flex items-center px-2 py-0.5 rounded-full bg-green-700 text-xs font-semibold text-white ml-1"
+                                    title="Wrapper, binder, and filler are all from the same country">
+                                    PURO
+                                </span>
+                            )}
+                        </div>
+                    </div>
+
+
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                         {/* Short Description */}
-                        <div className="col-span-2">                            <p className="text-xs text-gray-400">Short Description</p>
+                        <div className="col-span-2">
+                            <p className="text-xs text-gray-400">Short Description</p>
                             <p className="font-light text-white text-sm break-words">{cigar.shortDescription || 'No short description provided.'}</p>
                         </div>
 
                         <DetailItem label="Shape" value={cigar.shape} />
                         {/* Updated Size display to combine length_inches and ring_gauge */}
                         <DetailItem label="Size" value={cigar.length_inches && cigar.ring_gauge ? `${cigar.length_inches} x ${cigar.ring_gauge}` : cigar.size} />
-                        <DetailItem label="Origin" value={cigar.country} />
+
+
+
                         <DetailItem label="Strength" value={cigar.strength} />
                         <DetailItem label="Wrapper" value={cigar.wrapper} />
                         <DetailItem label="Binder" value={cigar.binder} />

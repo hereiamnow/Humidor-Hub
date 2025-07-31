@@ -364,7 +364,7 @@ export default function App() {
                     found: !!cigar,
                     availableIds: cigars.map(c => c.id).slice(0, 5)
                 });
-                return cigar ? <CigarDetail cigar={cigar} navigate={navigate} db={db} appId={appId} userId={userId} journalEntries={journalEntries} /> : <div>Cigar not found</div>;
+                return cigar ? <CigarDetail cigar={cigar} navigate={navigate} db={db} appId={appId} userId={userId} journalEntries={journalEntries} theme={theme} /> : <div>Cigar not found</div>;
             case 'AddCigar':
                 return <AddCigar navigate={navigate} db={db} appId={appId} userId={userId} humidorId={params.humidorId} theme={theme} />;
             case 'EditCigar':
@@ -448,6 +448,11 @@ export default function App() {
     });
 
     // The main return statement for the App component.
+
+    // min - h - screen:
+    // This is a Tailwind CSS utility class.
+    // It sets the minimum height of the element to the height of the viewport(the visible part of the browser window).
+    // This ensures your app always fills the screen vertically, even if there isn’t much content.
     return (
         <div
             className={`min-h-screen ${theme.bg} ${theme.text}`}
@@ -455,6 +460,15 @@ export default function App() {
                 fontFamily: selectedFont.body,
             }}
         >
+            
+            {/* 
+            max-w-md:
+            Sets the maximum width of the content to a medium size (by default, 28rem or 448px in Tailwind).
+            This keeps your content from stretching too wide on large screens, improving readability.
+
+            mx-auto:
+            Applies automatic left and right margins, centering the content horizontally. 
+            */}
             <div className="max-w-md mx-auto">
                 {renderScreen()}
             </div>

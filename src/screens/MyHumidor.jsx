@@ -92,6 +92,10 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
         appId
     });
 
+    console.log('MyHumidor: Full humidor object:', humidor);
+    console.log('MyHumidor: All cigars:', cigars);
+    console.log('MyHumidor: All humidors:', humidors);
+
     // === STATE MANAGEMENT ===
 
     // Search and UI state
@@ -310,10 +314,13 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
 
     const handleSearchChange = (e) => {
         const query = e.target.value;
+        console.log('MyHumidor: Search query changed to:', query);
         setSearchQuery(query);
         if (query.length > 1) {
             const allSuggestions = cigars.filter(c => c.humidorId === humidor.id).map(c => c.brand).concat(cigars.filter(c => c.humidorId === humidor.id).map(c => c.name)).filter(name => name.toLowerCase().includes(query.toLowerCase()));
-            setSuggestions([...new Set(allSuggestions)].slice(0, 5));
+            const uniqueSuggestions = [...new Set(allSuggestions)].slice(0, 5);
+            console.log('MyHumidor: Generated suggestions:', uniqueSuggestions);
+            setSuggestions(uniqueSuggestions);
         } else {
             setSuggestions([]);
         }
@@ -330,12 +337,18 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
     };
 
     const handleToggleSelectMode = () => {
+        console.log('MyHumidor: Toggling select mode from', isSelectMode, 'to', !isSelectMode);
         setIsSelectMode(!isSelectMode);
         setSelectedCigarIds([]);
     };
 
     const handleSelectCigar = (cigarId) => {
-        setSelectedCigarIds(prev => prev.includes(cigarId) ? prev.filter(id => id !== cigarId) : [...prev, cigarId]);
+        console.log('MyHumidor: Selecting/deselecting cigar:', cigarId);
+        setSelectedCigarIds(prev => {
+            const newSelection = prev.includes(cigarId) ? prev.filter(id => id !== cigarId) : [...prev, cigarId];
+            console.log('MyHumidor: Updated selected cigars:', newSelection);
+            return newSelection;
+        });
     };
 
     // Function to handle the Move Cigars action

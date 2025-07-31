@@ -30,18 +30,47 @@ import ThemeModal from '../components/Modals/Content/ThemeModal';
 import PageHeader from '../components/UI/PageHeader';
 
 const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, setDashboardPanelVisibility, selectedFont, setSelectedFont }) => {
+    // Debug: Log component props on render
+    console.log('SettingsScreen: Component rendered with props:', {
+        theme: theme?.name || 'undefined',
+        dashboardPanelVisibility,
+        selectedFont,
+        hasNavigate: typeof navigate === 'function',
+        hasSetTheme: typeof setTheme === 'function'
+    });
+
+    console.log('SettingsScreen: Full theme object:', theme);
+    console.log('SettingsScreen: Dashboard panel visibility settings:', dashboardPanelVisibility);
+
     const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
     const appVersion = process.env.REACT_APP_VERSION || '1.1.0-dev';
 
-    const SettingItem = ({ icon: Icon, title, subtitle, onClick }) => (
-        <button onClick={onClick} className="w-full flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors text-left">
-            <div className="p-2 bg-gray-700 rounded-full"><Icon className={`w-6 h-6 ${theme.primary}`} /></div>
-            <div>
-                <p className={`font-bold ${theme.text}`}>{title}</p>
-                <p className={`text-xs ${theme.subtleText}`}>{subtitle}</p>
-            </div>
-        </button>
-    );
+    console.log('SettingsScreen: App version:', appVersion);
+    console.log('SettingsScreen: Theme modal state initialized:', isThemeModalOpen);
+
+    const SettingItem = ({ icon: Icon, title, subtitle, onClick }) => {
+        console.log('SettingsScreen: SettingItem rendered:', { title, subtitle, hasOnClick: typeof onClick === 'function' });
+
+        const handleClick = () => {
+            console.log('SettingsScreen: Setting item clicked:', title);
+            if (onClick) {
+                console.log('SettingsScreen: Executing onClick for:', title);
+                onClick();
+            } else {
+                console.warn('SettingsScreen: No onClick handler for:', title);
+            }
+        };
+
+        return (
+            <button onClick={handleClick} className="w-full flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors text-left">
+                <div className="p-2 bg-gray-700 rounded-full"><Icon className={`w-6 h-6 ${theme.primary}`} /></div>
+                <div>
+                    <p className={`font-bold ${theme.text}`}>{title}</p>
+                    <p className={`text-xs ${theme.subtleText}`}>{subtitle}</p>
+                </div>
+            </button>
+        );
+    };
 
     return (
         <div id="pnlContentWrapper" className="p-4 pb-24">
@@ -60,7 +89,10 @@ const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, s
                 <SettingItem icon={LayoutGrid} title="Dashboard Components" subtitle="Customize what appears on your dashboard" onClick={() => navigate('DashboardSettings')} />
                 {/* <SettingItem icon={Bell} title="Notifications" subtitle="Set up alerts for humidity and temp" onClick={() => navigate('Notifications')} /> */}
                 {/* <SettingItem icon={Zap} title="Integrations" subtitle="Connect to Govee and other services" onClick={() => navigate('Integrations')} /> */}
-                <SettingItem icon={Palette} title="Theme" subtitle={`Current: ${theme.name}`} onClick={() => setIsThemeModalOpen(true)} />
+                <SettingItem icon={Palette} title="Theme" subtitle={`Current: ${theme.name}`} onClick={() => {
+                    console.log('SettingsScreen: Opening theme modal, current theme:', theme.name);
+                    setIsThemeModalOpen(true);
+                }} />
                 <SettingItem icon={Info} title="Fonts" subtitle="Choose your preferred font combination" onClick={() => navigate('Fonts')} disabled={true} />
                 <SettingItem icon={BarChart2} title="Deeper Statistics & Insights" subtitle="Explore advanced stats about your collection" onClick={() => navigate('DeeperStatistics')} />
                 <SettingItem icon={Info} title="About Humidor Hub" subtitle={`Version ${appVersion}`} onClick={() => navigate('About')} />
