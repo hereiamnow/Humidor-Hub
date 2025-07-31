@@ -559,7 +559,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         onExport={() => setIsExportModalOpen(true)}
                         onDelete={() => setIsDeleteHumidorModalOpen(true)}
                         onImport={() => navigate('DataSync')} // Navigate to DataSync for import options
-                        onToggleSelectMode={handleToggleSelectMode} // <-- Add this line
+                        handleToggleSelectMode={handleToggleSelectMode} // Fixed prop name to match component
                     />
 
                 </div>
