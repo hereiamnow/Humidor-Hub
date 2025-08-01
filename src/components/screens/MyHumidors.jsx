@@ -685,9 +685,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                         <div className="flex-grow flex flex-col justify-center">
                                             <div>
                                                 <label className="text-xs text-gray-400">Capacity</label>
-                                                <div className="relative w-full bg-gray-700 rounded-full h-6 mt-1">
-                                                    <div style={{ width: `${percentageFull}%` }} className={`h-full rounded-full ${capacityColor} transition-all duration-500`}></div>
-                                                    <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">{percentageFull}% Full</span>
+                                                <div className="relative w-full bg-gray-700 rounded-md h-6 mt-1">
+                                                    <div style={{ width: `${percentageFull}%` }} className={`h-full rounded-md ${capacityColor} transition-all duration-500`}></div>
+                                                    <span className="absolute inset-0 flex items-center justify-center text-sm text-white">{percentageFull}% Full</span>
                                                 </div>
                                             </div>
                                             <div className="flex justify-between mt-2">

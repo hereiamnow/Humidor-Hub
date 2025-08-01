@@ -50,7 +50,7 @@ import { auth } from '../../../firebase';
 
 // Icon imports from Lucide React
 import {
-    Wind, ChevronLeft, Plus, Search, Filter, LayoutGrid, List,
+    Wind, ChevronLeft, ChevronDown, Plus, Search, Filter, LayoutGrid, List,
     Thermometer, Droplets, Move, Trash2,
     CheckSquare, ArrowUp, ArrowDown, X
 } from 'lucide-react';
@@ -139,6 +139,7 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
 
     // Auto-fill banner state
     const [showAutofillBanner, setShowAutofillBanner] = useState(true);
+    const [isRoxyPanelCollapsed, setIsRoxyPanelCollapsed] = useState(false);
     const [isAutofilling, setIsAutofilling] = useState(false);
     const [autofillStatus, setAutofillStatus] = useState(""); // User feedback message
 
@@ -700,37 +701,48 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div id="pnlRoxysCorner"
-                        className={`relative ${theme.roxyBg} border ${theme.roxyBorder} rounded-md p-4 mb-4 flex flex-col shadow-lg overflow-hidden`}
+                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden mb-4 shadow-lg`}
                         style={{ boxShadow: '0 2px 12px 0 rgba(255, 193, 7, 0.10)' }}
                     >
-                        {/* Close button in top right */}
                         <button
-                            id="btnClose"
-                            onClick={() => setShowAutofillBanner(false)}
-                            className="absolute top-2 right-2 text-yellow-300 hover:text-white text-2xl font-bold z-10"
-                            aria-label="Close"
+                            onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
+                            className="w-full p-4 flex justify-between items-center"
                         >
-                            &times;
-                        </button>
-                        <div className="flex items-center gap-3 mb-2">
-
                             <h3 className="font-bold text-amber-200 text-lg flex items-center">
                                 <Wind className="w-5 h-5 mr-2" />
-                                Roxy's Corner</h3>
-                        </div>
-                        <span className="text-amber-100 text-sm mb-3">
-                            Some imported cigars are missing many details. Let Roxy auto-fill them for you!
-                        </span>
-                        <button
-                            id="btnAutofillMissingDetails"
-                            onClick={handleAutofillMissingDetails}
-                            disabled={isAutofilling}
-                            className="bg-amber-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors w-full sm:w-auto"
-                        >
-                            {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
+                                Roxy's Corner
+                            </h3>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowAutofillBanner(false);
+                                    }}
+                                    className="text-yellow-300 hover:text-white text-xl font-bold"
+                                    aria-label="Close"
+                                >
+                                    &times;
+                                </button>
+                                <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
+                            </div>
                         </button>
-                        {autofillStatus && (
-                            <div className="mt-2 text-amber-200 text-xs">{autofillStatus}</div>
+                        {!isRoxyPanelCollapsed && (
+                            <div className="px-4 pb-4">
+                                <span className="text-amber-100 text-sm mb-3 block">
+                                    Some imported cigars are missing many details. Let Roxy auto-fill them for you!
+                                </span>
+                                <button
+                                    id="btnAutofillMissingDetails"
+                                    onClick={handleAutofillMissingDetails}
+                                    disabled={isAutofilling}
+                                    className="bg-amber-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors w-full sm:w-auto"
+                                >
+                                    {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
+                                </button>
+                                {autofillStatus && (
+                                    <div className="mt-2 text-amber-200 text-xs">{autofillStatus}</div>
+                                )}
+                            </div>
                         )}
                     </div>
                 )}
@@ -738,31 +750,43 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div id="pnlRoxysCornerNoKey"
-                        className={`relative ${theme.roxyBg} border ${theme.roxyBorder} rounded-md p-4 mb-4 flex flex-col shadow-lg overflow-hidden`}
+                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden mb-4 shadow-lg`}
                         style={{ boxShadow: '0 2px 12px 0 rgba(255, 193, 7, 0.10)' }}
                     >
-                        {/* Close button in top right */}
                         <button
-                            onClick={() => setShowAutofillBanner(false)}
-                            className="absolute top-2 right-2 text-yellow-300 hover:text-white text-2xl font-bold z-10"
-                            aria-label="Close"
+                            onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
+                            className="w-full p-4 flex justify-between items-center"
                         >
-                            &times;
-                        </button>
-                        <div className="flex items-center gap-3 mb-2">
                             <h3 className="font-bold text-amber-200 text-lg flex items-center">
                                 <Wind className="w-5 h-5 mr-2" />
                                 Roxy's Corner
                             </h3>
-                        </div>
-                        <span className="text-amber-100 text-sm mb-3">
-                            Some cigars are missing details, but you need a Gemini API key to use auto-fill!
-                        </span>
-                        <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
-                            <p className="text-purple-200 text-sm text-center">
-                                💡 Add your Gemini API key in Settings to enable AI-powered auto-fill for missing cigar details!
-                            </p>
-                        </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowAutofillBanner(false);
+                                    }}
+                                    className="text-yellow-300 hover:text-white text-xl font-bold"
+                                    aria-label="Close"
+                                >
+                                    &times;
+                                </button>
+                                <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
+                            </div>
+                        </button>
+                        {!isRoxyPanelCollapsed && (
+                            <div className="px-4 pb-4">
+                                <span className="text-amber-100 text-sm mb-3 block">
+                                    Some cigars are missing details, but you need a Gemini API key to use auto-fill!
+                                </span>
+                                <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
+                                    <p className="text-purple-200 text-sm text-center">
+                                        💡 Add your Gemini API key in Settings to enable AI-powered auto-fill for missing cigar details!
+                                    </p>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
