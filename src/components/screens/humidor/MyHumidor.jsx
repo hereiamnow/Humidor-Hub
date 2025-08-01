@@ -713,7 +713,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 Roxy's Corner
                             </h3>
                             <div className="flex items-center gap-2">
-                                <button
+                                {/* <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setShowAutofillBanner(false);
@@ -722,7 +722,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                     aria-label="Close"
                                 >
                                     &times;
-                                </button>
+                                </button> */}
                                 <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
                             </div>
                         </button>
@@ -735,7 +735,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                     id="btnAutofillMissingDetails"
                                     onClick={handleAutofillMissingDetails}
                                     disabled={isAutofilling}
-                                    className="bg-amber-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors w-full sm:w-auto"
+                                    className="bg-amber-500 text-white font-bold px-4 py-2 rounded-md hover:bg-amber-600 transition-colors w-full"
                                 >
                                     {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
                                 </button>
