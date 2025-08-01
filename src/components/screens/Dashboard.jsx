@@ -338,9 +338,9 @@ const Dashboard = ({
     };
 
     return (
-        <div 
-        id="pnlContentWrapper_Dashboard" 
-        className="p-4 pb-24">
+        <div
+            id="pnlContentWrapper_Dashboard"
+            className="p-4 pb-24">
 
             <PageHeader
                 icon={BarChart2}
@@ -398,7 +398,7 @@ const Dashboard = ({
             <div className="space-y-6">
 
                 {/* Browse by mode buttons */}
-                <div id="toolbar-browse-by-mode-buttons" className="flex justify-center gap-4">
+                <div id="toolbar-browse-by-mode-buttons" className="flex justify-end gap-3">
                     <button
                         id="btnBrowseByWrapper"
                         onClick={() => handleBrowseByClick('wrapper')}

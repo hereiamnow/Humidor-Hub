@@ -443,103 +443,52 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 )}
             </div>
 
-            {/* ===== MAIN TOOLBAR PANEL ===== */}
-            {/* Primary navigation toolbar containing browse buttons and view toggles */}
-            {/* Always visible, right-aligned, contains browse and view mode controls */}
-            <div id="pnlToolbar" className="flex items-center justify-end gap-3 mb-6">
-                {/* Browse by buttons group - triggers flyup panels for filtering */}
-                <div className="flex gap-2">
-                    {/* btnBrowseByWrapper */}
+            {/* ===== VIEW TOGGLE PANEL ===== */}
+            {/* Grid/List view toggle buttons - only visible when showing filtered results */}
+            {/* Allows users to switch between list and grid display modes */}
+            {(searchQuery !== '' || activeWrapperFilter || activeStrengthFilter || activeCountryFilter) && (
+                <div id="pnlViewToggle" className="flex items-center justify-end gap-2 mb-6">
                     <div className="relative group">
                         <button
-                            id="btnBrowseByWrapper"
-                            onClick={() => handleBrowseByClick('wrapper')}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                            id="btnGridView"
+                            onClick={() => {
+                                console.log('HumidorsScreen: Grid view button clicked');
+                                setViewMode('grid');
+                            }}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
+                                ? 'bg-amber-500 text-white border-amber-400'
+                                : `${theme.primary} hover:bg-gray-700`
+                                }`}
                         >
-                            <Leaf className="w-5 h-5" />
+                            <LayoutGrid className="w-5 h-5" />
                         </button>
                         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                            Browse by Wrapper
+                            Grid View
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
                         </div>
                     </div>
-                    {/* btnBrowseByStrength */}
+
                     <div className="relative group">
                         <button
-                            id="btnBrowseByStrength"
-                            onClick={() => handleBrowseByClick('strength')}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                            id="btnListView"
+                            onClick={() => {
+                                console.log('HumidorsScreen: List view button clicked');
+                                setViewMode('list');
+                            }}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
+                                ? 'bg-amber-500 text-white border-amber-400'
+                                : `${theme.primary} hover:bg-gray-700`
+                                }`}
                         >
-                            <ShieldPlus className="w-5 h-5" />
+                            <List className="w-5 h-5" />
                         </button>
                         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                            Browse by Strength
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                        </div>
-                    </div>
-                    {/* btnBrowseByCountry */}
-                    <div className="relative group">
-                        <button
-                            id="btnBrowseByCountry"
-                            onClick={() => handleBrowseByClick('country')}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                        >
-                            <MapPin className="w-5 h-5" />
-                        </button>
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                            Browse by Country
+                            List View
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
                         </div>
                     </div>
                 </div>
-
-                {/* ===== VIEW TOGGLE PANEL ===== */}
-                {/* Grid/List view toggle buttons - only visible when showing filtered results */}
-                {/* Allows users to switch between list and grid display modes */}
-                {(searchQuery !== '' || activeWrapperFilter || activeStrengthFilter || activeCountryFilter) && (
-                    <div id="pnlViewToggle" className="flex gap-2">
-                        <div className="relative group">
-                            <button
-                                id="btnGridView"
-                                onClick={() => {
-                                    console.log('HumidorsScreen: Grid view button clicked');
-                                    setViewMode('grid');
-                                }}
-                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
-                                    ? 'bg-amber-500 text-white border-amber-400'
-                                    : `${theme.primary} hover:bg-gray-700`
-                                    }`}
-                            >
-                                <LayoutGrid className="w-5 h-5" />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                Grid View
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                            </div>
-                        </div>
-
-                        <div className="relative group">
-                            <button
-                                id="btnListView"
-                                onClick={() => {
-                                    console.log('HumidorsScreen: List view button clicked');
-                                    setViewMode('list');
-                                }}
-                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
-                                    ? 'bg-amber-500 text-white border-amber-400'
-                                    : `${theme.primary} hover:bg-gray-700`
-                                    }`}
-                            >
-                                <List className="w-5 h-5" />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                List View
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
+            )}
 
             {/* ===== ACTIVE WRAPPER FILTER PANEL ===== */}
             {/* Displays current wrapper filter with clear button - only visible when wrapper filter is active */}
@@ -581,7 +530,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             )}
 
             {searchQuery === '' && !activeWrapperFilter && !activeStrengthFilter && !activeCountryFilter ? (
-                <>
+                <div id="pnlMainToolbar">
                     {/* Main humidor overview panel with stats and toolbar */}
                     <div id="pnlHumidorOverview" className="flex justify-between items-center mb-6 px-2">
 
@@ -615,8 +564,57 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             </div>
                         </div>
 
-                        {/* Toolbar buttons panel for adding humidors */}
-                        <div id="pnlToolbarButtons" className="flex justify-center gap-4">
+                        {/* ===== BROWSE BY TOOLBAR PANEL ===== */}
+                        {/* Browse buttons and view toggles integrated into humidor overview */}
+                        <div className="flex items-center gap-3">
+
+                            {/* Browse by buttons group - triggers flyup panels for filtering */}
+                            <div id="pnlBrowseByToolbar" className="flex gap-2">
+                                {/* btnBrowseByWrapper */}
+                                <div className="relative group">
+                                    <button
+                                        id="btnBrowseByWrapper"
+                                        onClick={() => handleBrowseByClick('wrapper')}
+                                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                    >
+                                        <Leaf className="w-5 h-5" />
+                                    </button>
+                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                        Browse by Wrapper
+                                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                    </div>
+                                </div>
+                                {/* btnBrowseByStrength */}
+                                <div className="relative group">
+                                    <button
+                                        id="btnBrowseByStrength"
+                                        onClick={() => handleBrowseByClick('strength')}
+                                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                    >
+                                        <ShieldPlus className="w-5 h-5" />
+                                    </button>
+                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                        Browse by Strength
+                                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                    </div>
+                                </div>
+                                {/* btnBrowseByCountry */}
+                                <div className="relative group">
+                                    <button
+                                        id="btnBrowseByCountry"
+                                        onClick={() => handleBrowseByClick('country')}
+                                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                    >
+                                        <MapPin className="w-5 h-5" />
+                                    </button>
+                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                        Browse by Country
+                                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Add Humidor button */}
                             <div className="relative group">
                                 <button
                                     id="btnAddHumidor"
@@ -632,12 +630,14 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
 
 
-                    {/* Humidor cards display panel */}
+                    {/* ===== HUMIDOR CARDS DISPLAY PANEL ===== */}
+                    {/* Grid of individual humidor cards with stats, capacity, and navigation */}
                     <div id="pnlHumidorCards" className="space-y-6">
                         {humidors.map(humidor => {
                             const cigarsInHumidor = cigars.filter(c => c.humidorId === humidor.id);
@@ -704,7 +704,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             );
                         })}
                     </div>
-                </>
+                </div>
             ) : (
                 // Filtered cigars display panel
                 <div id="pnlFilteredCigars">
