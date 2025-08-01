@@ -17,14 +17,14 @@ import React, { useState } from 'react';
 import { ChevronLeft, Cigarette, Box, Thermometer, UploadCloud, Download } from 'lucide-react';
 
 // Import UI components
-import CollapsiblePanel from '../components/UI/CollapsiblePanel';
+import CollapsiblePanel from '../UI/CollapsiblePanel';
 
 // Import modal components
-import ImportCsvModal from '../components/Modals/Data/ImportCsvModal';
-import ExportModal from '../components/Modals/Data/ExportModal';
+import ImportCsvModal from '../Modals/Data/ImportCsvModal';
+import ExportModal from '../Modals/Data/ExportModal';
 
 // Import utilities
-import { downloadFile } from '../utils/fileUtils';
+import { downloadFile } from '../../utils/fileUtils';
 
 const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -52,7 +52,9 @@ const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
     };
 
     return (
-        <div className="p-4 pb-24">
+        <div
+        id="pnlContentWrapper_DataSyncScreen" 
+        className="p-4 pb-24">
             {isImportModalOpen && <ImportCsvModal dataType={modalDataType} data={modalDataType === 'cigar' ? cigars : humidors} db={db} appId={appId} userId={userId} onClose={() => setIsImportModalOpen(false)} humidors={humidors} navigate={navigate} />}
             {isExportModalOpen && <ExportModal dataType={modalDataType} data={modalDataType === 'cigar' ? cigars : humidors} onClose={() => setIsExportModalOpen(false)} />}
 

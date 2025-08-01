@@ -39,7 +39,7 @@ import FirebaseAuthUI from './FirebaseAuthUI';
 import { fontOptions } from './constants/fontOptions';
 import { themes } from './constants/themes';
 
-// Components - Journal
+// Components - Journal0
 import AddEditJournalEntry from './components/Journal/AddEditJournalEntry';
 import CigarJournalScreen from './components/Journal/CigarJournalScreen';
 
@@ -52,21 +52,21 @@ import NotificationsScreen from './components/Settings/NotificationsScreen';
 import ProfileScreen from './components/Settings/ProfileScreen';
 
 // Screens
-import AddCigar from './screens/AddCigar';
-import AddHumidor from './screens/AddHumidor';
-import AlertsScreen from './screens/AlertsScreen';
-import CigarDetail from './screens/CigarDetail';
-import Dashboard from './screens/Dashboard';
-import DashboardSettingsScreen from './screens/DashboardSettingsScreen';
-import DataSyncScreen from './screens/DataSyncScreen';
-import DeeperStatisticsScreen from './screens/DeeperStatisticsScreen';
-import EditCigar from './screens/EditCigar';
-import EditHumidor from './screens/EditHumidor';
-import FontsScreen from './screens/FontsScreen';
-import HumidorsScreen from './screens/HumidorsScreen';
-import IntegrationsScreen from './screens/IntegrationsScreen';
-import MyHumidor from './screens/MyHumidor';
-import SettingsScreen from './screens/SettingsScreen';
+import AddCigar from './components/screens/AddCigar';
+import AddHumidor from './components/screens/AddHumidor';
+import AlertsScreen from './components/screens/AlertsScreen';
+import CigarDetail from './components/screens/CigarDetail';
+import Dashboard from './components/screens/Dashboard';
+import DashboardSettingsScreen from './components/screens/DashboardSettingsScreen';
+import DataSyncScreen from './components/screens/DataSyncScreen';
+import DeeperStatisticsScreen from './components/screens/DeeperStatisticsScreen';
+import EditCigar from './components/screens/EditCigar';
+import EditHumidor from './components/screens/EditHumidor';
+import FontsScreen from './components/screens/FontsScreen';
+import HumidorsScreen from './components/screens/HumidorsScreen';
+import IntegrationsScreen from './components/screens/IntegrationsScreen';
+import MyHumidor from './components/screens/MyHumidor';
+import SettingsScreen from './components/screens/SettingsScreen';
 
 // Initialize Firebase Authentication token
 const initialAuthToken = typeof window !== "undefined" && window.initialAuthToken ? window.initialAuthToken : null;

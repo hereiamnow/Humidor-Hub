@@ -14,7 +14,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 // Firebase imports
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 
 // Third-party library imports
 import {
@@ -32,16 +32,16 @@ import {
 } from 'lucide-react';
 
 // Local constants
-import { roxysTips } from '../constants/roxysTips';
+import { roxysTips } from '../../constants/roxysTips';
 
 // Services
-import { callGeminiAPI } from '../services/geminiService';
+import { callGeminiAPI } from '../../services/geminiService';
 
 // Utils
-import { hasValidGeminiKey } from '../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
 
 // Components - Modals
-import GeminiModal from '../components/Modals/Content/GeminiModal';
+import GeminiModal from '../Modals/Content/GeminiModal';
 
 // Components - Panels
 import {
@@ -53,9 +53,9 @@ import {
     BrowseByCountry,
     BrowseByPanel,
     InteractiveWorldMap
-} from '../components/Panels';
+} from '../Panels';
 
-import PageHeader from '../components/UI/PageHeader';
+import PageHeader from '../UI/PageHeader';
 
 const Dashboard = ({
     navigate,
@@ -338,7 +338,9 @@ const Dashboard = ({
     };
 
     return (
-        <div id="pnlContentWrapper" className="p-4 pb-24">
+        <div 
+        id="pnlContentWrapper_Dashboard" 
+        className="p-4 pb-24">
 
             <PageHeader
                 icon={BarChart2}

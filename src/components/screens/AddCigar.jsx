@@ -81,17 +81,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ChevronLeft, LoaderCircle, Sparkles, Tag, Edit, Award } from 'lucide-react';
-import { strengthOptions, commonCigarDimensions, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../constants/cigarOptions';
-import InputField from '../components/UI/InputField';
-import TextAreaField from '../components/UI/TextAreaField';
-import AutoCompleteInputField from '../components/UI/AutoCompleteInputField';
-import QuantityControl from '../components/UI/QuantityControl';
-import SmartImageModal from '../components/Modals/Composite/SmartImageModal';
-import GeminiModal from '../components/Modals/Content/GeminiModal';
-import FlavorNotesModal from '../components/Modals/Forms/FlavorNotesModal';
-import { getFlavorTagColor } from '../utils/colorUtils';
-import { callGeminiAPI } from '../services/geminiService';
-import StarRating from '../components/UI/StarRating';
+import { strengthOptions, commonCigarDimensions, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../../constants/cigarOptions';
+import InputField from '../UI/InputField';
+import TextAreaField from '../UI/TextAreaField';
+import AutoCompleteInputField from '../UI/AutoCompleteInputField';
+import QuantityControl from '../UI/QuantityControl';
+import SmartImageModal from '../Modals/Composite/SmartImageModal';
+import GeminiModal from '../Modals/Content/GeminiModal';
+import FlavorNotesModal from '../Modals/Forms/FlavorNotesModal';
+import { getFlavorTagColor } from '../../utils/colorUtils';
+import { callGeminiAPI } from '../../services/geminiService';
+import StarRating from '../UI/StarRating';
 
 // Comprehensive tobacco country mapping for puro detection
 const TOBACCO_COUNTRY_MAPPINGS = {
@@ -463,7 +463,9 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
     };
 
     return (
-        <div className="pb-24">
+        <div 
+        id="pnlContentWrapper_AddCigar" 
+        className="pb-24">
             {modalState.isOpen && <GeminiModal title="Auto-fill Status" content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 

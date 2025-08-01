@@ -12,7 +12,7 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
-import FontPicker from '../components/Settings/FontPicker';
+import FontPicker from '../Settings/FontPicker';
 
 const FontsScreen = ({ navigate, selectedFont, setSelectedFont, theme }) => {
     // Local state for the font preview. Initialized with the currently active app font.
@@ -25,7 +25,9 @@ const FontsScreen = ({ navigate, selectedFont, setSelectedFont, theme }) => {
     };
 
     return (
-        <div className="p-4 pb-24">
+        <div 
+        id="pnlContentWrapper_FontsScreen" 
+        className="p-4 pb-24">
             <div className="flex items-center mb-6">
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2">
                     <ChevronLeft className={`w-7 h-7 ${theme.text}`} />

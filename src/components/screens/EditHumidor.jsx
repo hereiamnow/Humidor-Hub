@@ -30,9 +30,9 @@
 import React, { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { ChevronLeft, MapPin } from 'lucide-react';
-import InputField from '../components/UI/InputField';
-import TextAreaField from '../components/UI/TextAreaField';
-import SmartImageModal from '../components/Modals/Composite/SmartImageModal';
+import InputField from '../UI/InputField';
+import TextAreaField from '../UI/TextAreaField';
+import SmartImageModal from '../Modals/Composite/SmartImageModal';
 
 const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeDevices, theme }) => {
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
@@ -68,7 +68,10 @@ const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeD
     };
 
     return (
-        <div className="p-4 pb-24">
+        <div 
+        id="pnlContentWrapper_EditHumidor" 
+        className="p-4 pb-24">
+            
             <div className="relative">
                 {/* Circular image container */}
                 <div className="flex justify-center items-center pt-6 pb-2">

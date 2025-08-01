@@ -13,11 +13,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
-import { ChevronLeft, LoaderCircle, Sparkles, Tag, Edit, } from 'lucide-react';
+import { ChevronLeft, LoaderCircle, Sparkles } from 'lucide-react';
 
 // Firebase imports
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 
 // Import constants
 import {
@@ -30,28 +30,29 @@ import {
     cigarBinderTypes,
     cigarFillerTypes,
     cigarCountryOfOrigin
-} from '../constants/cigarOptions';
+} from '../../constants/cigarOptions';
 
 // Import UI components
-import QuantityControl from '../components/UI/QuantityControl';
-import InputField from '../components/UI/InputField';
-import TextAreaField from '../components/UI/TextAreaField';
-import AutoCompleteInputField from '../components/UI/AutoCompleteInputField';
+import QuantityControl from '../UI/QuantityControl';
+import InputField from '../UI/InputField';
+import TextAreaField from '../UI/TextAreaField';
+import AutoCompleteInputField from '../UI/AutoCompleteInputField';
+import FlavorNotesPanel from '../UI/FlavorNotesPanel';
 
 // Import modal components
-import GeminiModal from '../components/Modals/Content/GeminiModal';
-import FlavorNotesModal from '../components/Modals/Forms/FlavorNotesModal';
-import SmartImageModal from '../components/Modals/Composite/SmartImageModal';
+import GeminiModal from '../Modals/Content/GeminiModal';
+import FlavorNotesModal from '../Modals/Forms/FlavorNotesModal';
+import SmartImageModal from '../Modals/Composite/SmartImageModal';
 
 // Import utilities
-import { getFlavorTagColor } from '../utils/colorUtils';
+import { getFlavorTagColor } from '../../utils/colorUtils';
 
 // Import services
-import { callGeminiAPI } from '../services/geminiService';
-import StarRating from '../components/UI/StarRating';
+import { callGeminiAPI } from '../../services/geminiService';
+import StarRating from '../UI/StarRating';
 
 // Utils
-import { hasValidGeminiKey } from '../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
 
 const EditCigar = ({ navigate, db, appId, userId, cigar, theme }) => {
     // Firebase auth state
@@ -276,7 +277,9 @@ Do not include any text or markdown formatting outside of the JSON object.`;
     };
 
     return (
-        <div className="pb-24">
+        <div 
+        id="pnlContentWrapper_EditCigar" 
+        className="pb-24">
             {modalState.isOpen && <GeminiModal title="Auto-fill Status" content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 
@@ -469,19 +472,11 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                 </div>
 
                 {/* Flavor Notes */}
-                <div id="pnlFlavorNotes" className="bg-gray-800/50 p-4 rounded-md">
-                    <div className="flex justify-between items-center mb-3">
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center"><Tag className="w-5 h-5 mr-3 text-amber-400" /> Flavor Notes</h3>
-                        <button type="button" onClick={() => setIsFlavorModalOpen(true)} className="text-gray-400 hover:text-amber-400 p-1"><Edit className="w-4 h-4" /></button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                        {formData.flavorNotes.length > 0 ? (
-                            formData.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-1 py-1 rounded-xs ${getFlavorTagColor(note)}`}>{note}</span>))
-                        ) : (
-                            <p className="text-sm text-gray-500">No notes selected. Click the edit icon to add some!</p>
-                        )}
-                    </div>
-                </div>
+                <FlavorNotesPanel
+                    flavorNotes={formData.flavorNotes}
+                    onEditClick={() => setIsFlavorModalOpen(true)}
+                    theme={theme}
+                />
                 {/* QuantityControl Component */}
                 <div id="pnlQuantity" className="flex flex-col items-center py-4">
                     <label className={`text-sm font-medium ${theme.subtleText} mb-2`}>Quantity</label>

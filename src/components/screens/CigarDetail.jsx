@@ -16,7 +16,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 import {
     Award,
     ChevronLeft,
@@ -31,35 +31,35 @@ import {
 } from 'lucide-react';
 
 // Import UI utility functions
-import { getRatingColor } from '../components/utils/getRatingColor';
-import { calculateAge } from '../components/utils/calculateAge';
-import { getFlavorTagColor } from '../utils/colorUtils';
-import { formatDate } from '../utils/formatUtils';
+import { getRatingColor } from '../utils/getRatingColor';
+import { calculateAge } from '../utils/calculateAge';
+import { getFlavorTagColor } from '../../utils/colorUtils';
+import { formatDate } from '../../utils/formatUtils';
 
 // Import modal components for dialogs
-import GeminiModal from '../components/Modals/Content/GeminiModal';
-import FlavorNotesModal from '../components/Modals/Forms/FlavorNotesModal';
-import DeleteCigarsModal from '../components/Modals/Actions/DeleteCigarsModal';
-import ExportModal from '../components/Modals/Data/ExportModal';
+import GeminiModal from '../Modals/Content/GeminiModal';
+import FlavorNotesModal from '../Modals/Forms/FlavorNotesModal';
+import DeleteCigarsModal from '../Modals/Actions/DeleteCigarsModal';
+import ExportModal from '../Modals/Data/ExportModal';
 
 // Import menu and journal components
-import CigarActionMenu from '../components/Menus/CigarActionMenu';
-import JournalEntryCard from '../components/Journal/JournalEntryCard';
+import CigarActionMenu from '../Menus/CigarActionMenu';
+import JournalEntryCard from '../Journal/JournalEntryCard';
 
 // Import Gemini API service
-import { callGeminiAPI } from '../services/geminiService';
+import { callGeminiAPI } from '../../services/geminiService';
 
 // Import StarRating UI component
-import StarRating from '../components/UI/StarRating';
+import StarRating from '../UI/StarRating';
 
 // Import Gemini key utility
-import { hasValidGeminiKey } from '../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
 
 // Import IsPuroBadge component
-import IsPuroBadge from '../components/UI/IsPuroBadge';
+import IsPuroBadge from '../UI/IsPuroBadge';
 
 // Import RatingBadge component
-import RatingBadge from '../components/UI/RatingBadge';
+import RatingBadge from '../UI/RatingBadge';
 
 // Main CigarDetail component
 const CigarDetail = ({ cigar, navigate, db, appId, userId, journalEntries, theme }) => {
@@ -201,7 +201,9 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
     // Main render
     return (
-        <div className="pb-24">
+        <div 
+        id="pnlContentWrapper_CigarDetail" 
+        className="pb-24">
             {/* Modals for Gemini, flavor notes, delete, and export */}
             {modalState.isOpen && <GeminiModal title={modalState.type === 'pairings' ? "Pairing Suggestions" : modalState.type === 'notes' ? "Tasting Note Idea" : modalState.type === 'aging' ? "Aging Potential" : "Similar Smokes"} content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
             {isFlavorModalOpen && <FlavorNotesModal cigar={cigar} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} />}

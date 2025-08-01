@@ -12,9 +12,9 @@
 
 import React, { useMemo } from 'react';
 import { ChevronLeft, DollarSign, Star, Box, MapPin, Calendar as CalendarIcon } from 'lucide-react';
-import { getFlavorTagColor } from '../utils/colorUtils';
-import { formatDate } from '../utils/formatUtils';
-import { calculateAge } from '../components/utils/calculateAge';
+import { getFlavorTagColor } from '../../utils/colorUtils';
+import { formatDate } from '../../utils/formatUtils';
+import { calculateAge } from '../utils/calculateAge';
 
 const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
     // 1. Collection Value
@@ -74,7 +74,9 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
     }, [cigars]);
 
     return (
-        <div className="p-4 pb-24">
+        <div 
+        id="pnlContentWrapper_DeeperStatisticsScreen" 
+        className="p-4 pb-24">
             <div className="flex items-center mb-6">
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2">
                     <ChevronLeft className={`w-7 h-7 ${theme.text}`} />

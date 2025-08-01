@@ -17,7 +17,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, LoaderCircle, Zap } from 'lucide-react';
 
 // Import services
-import { fetchGoveeDevices } from '../services/goveeService';
+import  {fetchGoveeDevices} from '../../services/goveeService'
 
 const IntegrationsScreen = ({ navigate, goveeApiKey, setGoveeApiKey, goveeDevices, setGoveeDevices, theme }) => {
     const [key, setKey] = useState(goveeApiKey || '');
@@ -61,7 +61,7 @@ const IntegrationsScreen = ({ navigate, goveeApiKey, setGoveeApiKey, goveeDevice
     };
 
     return (
-        <div className="p-4 pb-24">
+        <div id="pnlContainerWrapper" className={`${theme.bg} min-h-screen pb-24`}>
             <div className="flex items-center mb-6">
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2"><ChevronLeft className={`w-7 h-7 ${theme.text}`} /></button>
                 <h1 className={`text-3xl font-bold ${theme.text}`}>Integrations</h1>

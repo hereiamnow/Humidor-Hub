@@ -26,8 +26,8 @@ import {
 } from 'lucide-react';
 
 // Import modal components
-import ThemeModal from '../components/Modals/Content/ThemeModal';
-import PageHeader from '../components/UI/PageHeader';
+import ThemeModal from '../Modals/Content/ThemeModal';
+import PageHeader from '../UI/PageHeader';
 
 const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, setDashboardPanelVisibility, selectedFont, setSelectedFont }) => {
     // Debug: Log component props on render
@@ -73,7 +73,9 @@ const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, s
     };
 
     return (
-        <div id="pnlContentWrapper" className="p-4 pb-24">
+        <div id="pnlContainerWrapper" className={`${theme.bg} min-h-screen pb-24`}>
+
+
             {isThemeModalOpen && <ThemeModal currentTheme={theme} setTheme={setTheme} onClose={() => setIsThemeModalOpen(false)} />}
 
             <PageHeader

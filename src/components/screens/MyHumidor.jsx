@@ -46,7 +46,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 // Firebase imports
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 
 // Icon imports from Lucide React
 import {
@@ -59,28 +59,28 @@ import {
 import { doc, updateDoc, writeBatch } from 'firebase/firestore';
 
 // Service imports
-import { callGeminiAPI } from '../services/geminiService';
+import { callGeminiAPI } from '../../services/geminiService';
 
 // Utils
-import { hasValidGeminiKey } from '../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
 
 // Constants imports
-import { strengthOptions } from '../constants/cigarOptions';
+import { strengthOptions } from '../../constants/cigarOptions';
 
 // UI Component imports
-import FilterSortModal from '../components/UI/FilterSortModal';
-import GridCigarCard from '../components/Cigar/GridCigarCard';
-import ListCigarCard from '../components/Cigar/ListCigarCardSimple';
+import FilterSortModal from '../UI/FilterSortModal';
+import GridCigarCard from '../Cigar/GridCigarCard';
+import ListCigarCard from '../Cigar/ListCigarCardSimple';
 
 // Menu Component imports
-import HumidorActionMenu from '../components/Menus/HumidorActionMenu';
+import HumidorActionMenu from '../Menus/HumidorActionMenu';
 
 // Modal Component imports
-import ManualReadingModal from '../components/Modals/Forms/ManualReadingModal';
-import MoveCigarsModal from '../components/Modals/Actions/MoveCigarsModal';
-import DeleteHumidorModal from '../components/Modals/Actions/DeleteHumidorModal';
-import DeleteCigarsModal from '../components/Modals/Actions/DeleteCigarsModal';
-import ExportModal from '../components/Modals/Data/ExportModal';
+import ManualReadingModal from '../Modals/Forms/ManualReadingModal';
+import MoveCigarsModal from '../Modals/Actions/MoveCigarsModal';
+import DeleteHumidorModal from '../Modals/Actions/DeleteHumidorModal';
+import DeleteCigarsModal from '../Modals/Actions/DeleteCigarsModal';
+import ExportModal from '../Modals/Data/ExportModal';
 const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme }) => {
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {
@@ -519,7 +519,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
     };
 
     return (
-        <div className="bg-gray-900 min-h-screen pb-24">
+        <div id="pnlContainerWrapper" className={`${theme.bg} min-h-screen pb-24`}>
             {isManualReadingModalOpen && <ManualReadingModal humidor={humidor} onClose={() => setIsManualReadingModalOpen(false)} onSave={handleSaveManualReading} theme={theme} />}
             {isMoveModalOpen && <MoveCigarsModal onClose={() => setIsMoveModalOpen(false)} onMove={handleMoveCigars} destinationHumidors={humidors.filter(h => h.id !== humidor.id)} theme={theme} />}
             <DeleteHumidorModal isOpen={isDeleteHumidorModalOpen} onClose={() => setIsDeleteHumidorModalOpen(false)} onConfirm={handleConfirmDeleteHumidor} humidor={humidor} cigarsInHumidor={filteredAndSortedCigars} otherHumidors={humidors.filter(h => h.id !== humidor.id)} />
@@ -531,9 +531,9 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 <div className="flex justify-center items-center pt-6 pb-2">
                     <img
                         id="imgHumidorHeader"
-                        src={humidor.image || `https://placehold.co/600x400/3a2d27/ffffff?font=playfair-display&text=${humidor.name.replace(/\s/g, '+')}`}
+                        src={humidor.image || `https://placehold.co/600x400/transparent/grey&text=${humidor.name.replace(/\s/g, '+')}`}
                         alt={humidor.name}
-                        className="w-40 h-40 object-cover rounded-full border-4 border-amber-700 shadow-lg"
+                        className="w-40 h-40 object-cover rounded-md border-4 border-amber-700 shadow-md"
                     />
                 </div>
 

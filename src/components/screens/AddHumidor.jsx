@@ -22,9 +22,9 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ChevronLeft, Thermometer } from 'lucide-react';
-import InputField from '../components/UI/InputField';
-import TextAreaField from '../components/UI/TextAreaField';
-import SmartImageModal from '../components/Modals/Composite/SmartImageModal';
+import InputField from '../UI/InputField';
+import TextAreaField from '../UI/TextAreaField';
+import SmartImageModal from '../Modals/Composite/SmartImageModal';
 
 const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
@@ -70,7 +70,9 @@ const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
 
 
     return (
-        <div className="pb-24">
+        <div 
+        id="pnlContentWrapper_AddHumidor" 
+        className="pb-24">
             <div className="relative">
                 <SmartImageModal
                     itemName={formData.name}

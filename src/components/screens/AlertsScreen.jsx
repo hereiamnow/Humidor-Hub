@@ -17,7 +17,7 @@
 
 import React, { useState } from 'react';
 import { Wind, Plus, Bell } from 'lucide-react';
-import PageHeader from '../components/UI/PageHeader'; 
+import PageHeader from '../UI/PageHeader'; 
 const AlertsScreen = ({ navigate, humidors, theme }) => {
     // Debug: Log component props on render
     console.log('AlertsScreen: Component rendered with props:', {
@@ -52,7 +52,9 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
     };
 
     return (
-        <div id="pnlContentWrapper" className="p-4 pb-24">
+        <div 
+        id="pnlContentWrapper_AlertsScreen" 
+        className="p-4 pb-24">
 
             <PageHeader
                 icon={Bell}

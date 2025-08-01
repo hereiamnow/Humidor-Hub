@@ -13,9 +13,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Search, X, Plus, Thermometer, Droplets, ShieldPlus, MapPin, Leaf } from 'lucide-react';
-import ListCigarCard from '../components/Cigar/ListCigarCard';
-import { parseHumidorSize } from '../utils/formatUtils';
-import PageHeader from '../components/UI/PageHeader';
+import ListCigarCard from '../Cigar/ListCigarCard';
+import { parseHumidorSize } from '../../utils/formatUtils';
+import PageHeader from '../UI/PageHeader';
 
 const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, preFilterWrapper, preFilterStrength, preFilterCountry }) => { // July 5, 2025 - 2:00:00 AM CDT: Added preFilterCountry prop
     const [searchQuery, setSearchQuery] = useState('');
@@ -142,7 +142,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
     const totalQuantity = filteredCigars.reduce((sum, c) => sum + c.quantity, 0);
 
     return (
-        <div id="pnlContentWrapper" className="p-4 pb-24">
+        <div 
+        id="pnlContentWrapper_HumidorsScreen" 
+        className="p-4 pb-24">
 
             <PageHeader
                 icon={Box}
