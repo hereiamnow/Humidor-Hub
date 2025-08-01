@@ -1,14 +1,14 @@
 /**
  *
  * @file ListCigarCard.jsx
- * @path src/components/Cigar/ListCigarCard.jsx
+ * @path src/components/Cigar/ListCigarCardSimple.jsx
  * @project Humidor Hub
  * @author Shawn Miller (hereiamnow@gmail.com)
  * @date July 29, 2025
  *
- * List Cigar Card Component
+ * List Cigar Card Simple Component
  *
- * Displays a horizontal card for a single cigar in a list layout, showing image, brand, name, rating, flavors, and key details.
+ * Displays a simplified horizontal card for a single cigar in a list layout, showing brand, name, shape, origin, rating, and quantity.
  * Supports selection mode for batch actions and navigation to detail view. Visual cues for rating and selection state.
  *
  * @param {Object} props - Component props
@@ -20,8 +20,9 @@
  *
  */
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, Award } from 'lucide-react';
 import { getRatingColor } from '../utils/getRatingColor';
+import RatingBadge from '../UI/RatingBadge';
 
 const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) => {
     const ratingColor = getRatingColor(cigar.rating);
@@ -30,28 +31,55 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
     return (
         <div className="relative" onClick={clickHandler}>
             <div className={`bg-gray-800/50 rounded-md overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
-                <div className="relative flex-shrink-0">
-                    <img src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?text=${cigar.brand.replace(/\s/g, '+')}`} alt={`${cigar.brand} ${cigar.name}`} className="w-28 h-full object-cover" />
-                </div>
                 <div className="p-3 flex-grow flex flex-col justify-between">
-                    <div>
-                        <p className="text-gray-400 text-xs font-semibold uppercase">{cigar.brand}</p>
-                        <h3 className="text-white font-bold text-base truncate">{cigar.name}</h3>
+
+
+                    <div id="cigar-header" className="flex flex-row justify-between items-start gap-2">
+                        <div className="flex flex-col flex-grow min-w-0">
+                            <div className="flex items-center gap-1">
+                                {/* Add Award icon here if its isPuiro */}
+                                {cigar.isPuro && (
+                                    <span title="Puro">
+                                        <Award className="w-4 h-4 text-amber-400 inline-block" />
+                                    </span>
+                                )}
+                                <p className="text-gray-400 text-xs font-semibold uppercase">{cigar.brand}</p>
+                            </div>
+                            <h3 className="text-white font-bold text-base truncate">{cigar.name}</h3>
+                        </div>
+                        {cigar.rating > 0 && (
+                            <div className="flex items-center">
+                                <RatingBadge rating={cigar.rating} size="sm" />
+                            </div>
+                        )}
                     </div>
+
+
                     <div className="text-xs mt-2 space-y-1">
-                        <p className="text-gray-400">Shape: <span className="font-semibold text-gray-200">{cigar.shape}</span></p>
-                        <p className="text-gray-400">Size: <span className="font-semibold text-gray-200">{cigar.size}</span></p>
-                        <p className="text-gray-400">Origin: <span className="font-semibold text-gray-200">{cigar.country}</span></p>
-                        <p className="text-gray-400 truncate">Flavors: <span className="font-semibold text-gray-200">{cigar.flavorNotes.join(', ')}</span></p>
-                        {cigar.rating > 0 && <div className="flex items-center gap-2">
-                            <p className="text-gray-400">Rating:</p>
-                            <div className={`text-xs font-bold text-white px-2 py-0.5 rounded-full border ${ratingColor}`}>{cigar.rating}</div>
-                        </div>}
+
+                        <div id="cigar-details" className="flex w-full gap-x-4 gap-y-1">
+
+                            <div id="cigar-shape" className="flex-1 min-w-0 flex flex-col">
+                                <span className="text-gray-400">shape</span>
+                                <span title={cigar.shape}
+                                    className="font-semibold text-gray-200">{cigar.shape}</span>
+                            </div>
+
+                            <div id="cigar-wrapper" className="flex-1 min-w-0 flex flex-col">
+                                <span className="text-gray-400">wrapper</span>
+                                <span title={cigar.wrapper}
+                                    className="font-semibold text-gray-200">{cigar.wrapper}</span>
+                            </div>
+
+                            <div id="cigar-origin" className="flex-1 min-w-0 flex flex-col">
+                                <span className="text-gray-400">origin</span>
+                                <span title={cigar.country}
+                                    className="font-semibold text-gray-200">{cigar.country}</span>
+                            </div>
+
+                        </div>
                     </div>
-                    <div className="flex justify-between items-end mt-2">
-                        <p className="text-gray-400 text-xs">Strength: <span className="font-semibold text-gray-200">{cigar.strength}</span></p>
-                        <span className="text-lg font-bold bg-gray-700 text-white px-3 py-1 rounded-full">{cigar.quantity}</span>
-                    </div>
+
                 </div>
             </div>
             {isSelectMode && (

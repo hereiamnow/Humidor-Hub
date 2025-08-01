@@ -49,7 +49,7 @@ const BrowseByPanel = ({
 
     return (
         <div
-            id="pnlBrowseByPanel"
+            id="pnlBrowseByDrawer"
             className={`fixed bottom-20 left-0 right-0 ${theme.drawerBg} backdrop-blur-sm p-4 z-40 border-t ${theme.drawerBorderColor}`}
         >
             <div className="max-w-md mx-auto">
@@ -69,7 +69,7 @@ const BrowseByPanel = ({
                 </div>
 
                 {/* Panel Content - Scrollable List */}
-                <div id="pnlBrowseByContent" className="mb-4 max-h-64 overflow-y-auto space-y-2">
+                <div id="pnlBrowseByDrawerContent" className="mb-4 max-h-64 overflow-y-auto space-y-2">
                     {data.length === 0 ? (
                         <div className="text-center py-4">
                             <p className="text-gray-400">No items found</p>

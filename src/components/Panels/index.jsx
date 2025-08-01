@@ -18,5 +18,5 @@ export { default as AgingWellPanel } from './AgingWellPanel';
 export { default as BrowseByWrapper } from './BrowseByWrapper';
 export { default as BrowseByStrength } from './BrowseByStrength';
 export { default as BrowseByCountry } from './BrowseByCountry';
-export { default as BrowseByPanel } from './BrowseByPanel';
+export { default as BrowseByPanel } from './BrowseByDrawer';
 export { default as InteractiveWorldMap } from './InteractiveWorldMap';

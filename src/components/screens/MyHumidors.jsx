@@ -12,19 +12,34 @@
 // browsing with real-time search suggestions and filter management.
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Box, Search, X, Plus, Thermometer, Droplets, ShieldPlus, MapPin, Leaf } from 'lucide-react';
+import { Box, Droplets, Filter, LayoutGrid, Leaf, List, MapPin, Plus, Search, ShieldPlus, Thermometer, X } from 'lucide-react';
+
 import ListCigarCard from '../Cigar/ListCigarCard';
-import { parseHumidorSize } from '../../utils/formatUtils';
+import GridCigarCard from '../Cigar/GridCigarCard';
 import PageHeader from '../UI/PageHeader';
+import { BrowseByPanel } from '../Panels';
+
+import { parseHumidorSize } from '../../utils/formatUtils';
 
 const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, preFilterWrapper, preFilterStrength, preFilterCountry }) => { // July 5, 2025 - 2:00:00 AM CDT: Added preFilterCountry prop
     console.log('HumidorsScreen: Component initialized', { cigars: cigars?.length, humidors: humidors?.length, theme });
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
-    const [activeWrapperFilter, setActiveWrapperFilter] = useState(preFilterWrapper || '');
-    const [activeStrengthFilter, setActiveStrengthFilter] = useState(preFilterStrength || '');
-    const [activeCountryFilter, setActiveCountryFilter] = useState(preFilterCountry || '');
+    // ===== STATE MANAGEMENT =====
+    // Search functionality state
+    const [searchQuery, setSearchQuery] = useState(''); // Current search query text
+    const [suggestions, setSuggestions] = useState([]); // Auto-complete suggestions array
+
+    // Active filter state - tracks which filters are currently applied
+    const [activeWrapperFilter, setActiveWrapperFilter] = useState(preFilterWrapper || ''); // Active wrapper filter (e.g., "Connecticut", "Maduro")
+    const [activeStrengthFilter, setActiveStrengthFilter] = useState(preFilterStrength || ''); // Active strength filter (e.g., "Mild", "Full")
+    const [activeCountryFilter, setActiveCountryFilter] = useState(preFilterCountry || ''); // Active country filter (e.g., "Nicaragua", "Dominican Republic")
+
+    // Browse panel state - controls the flyup drawer for browsing options
+    const [isBrowseByModeOpen, setIsBrowseByModeOpen] = useState(false); // Controls visibility of browse flyup panel
+    const [browseMode, setBrowseMode] = useState('wrapper'); // Current browse mode: 'wrapper', 'strength', or 'country'
+
+    // View mode state - controls how filtered results are displayed
+    const [viewMode, setViewMode] = useState('list'); // Display mode: 'list' or 'grid' for filtered results
 
 
 
@@ -216,6 +231,174 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
     const totalUniqueCigars = filteredCigars.length;
     const totalQuantity = filteredCigars.reduce((sum, c) => sum + c.quantity, 0);
 
+    // --- Data for Browse By Panel ---
+    // Memoized wrapper data for browse by wrapper functionality
+    const wrapperData = useMemo(() => {
+        if (browseMode !== 'wrapper') return [];
+        const counts = cigars.reduce((acc, cigar) => {
+            const wrapper = cigar.wrapper || 'Unknown';
+            acc[wrapper] = (acc[wrapper] || 0) + cigar.quantity;
+            return acc;
+        }, {});
+        const result = Object.entries(counts)
+            .map(([wrapper, quantity]) => ({
+                key: wrapper,
+                label: wrapper,
+                quantity,
+                wrapper // Keep original property for navigation
+            }))
+            .sort((a, b) => a.wrapper.localeCompare(b.wrapper));
+
+        console.log('HumidorsScreen: Wrapper data calculated:', result);
+        return result;
+    }, [cigars, browseMode]);
+
+    // Memoized strength data for browse by strength functionality
+    const strengthData = useMemo(() => {
+        if (browseMode !== 'strength') return [];
+        const strengthCategories = [
+            { label: 'Mild Cigars', filterValue: 'Mild' },
+            { label: 'Mild to Medium Cigars', filterValue: 'Mild-Medium' },
+            { label: 'Medium Cigars', filterValue: 'Medium' },
+            { label: 'Medium to Full Cigars', filterValue: 'Medium-Full' },
+            { label: 'Full Bodied Cigars', filterValue: 'Full' }
+        ];
+        const counts = strengthCategories.map(category => {
+            const quantity = cigars
+                .filter(cigar => cigar.strength === category.filterValue)
+                .reduce((sum, cigar) => sum + cigar.quantity, 0);
+            return {
+                key: category.filterValue,
+                label: category.label,
+                quantity,
+                filterValue: category.filterValue
+            };
+        });
+        const result = counts.filter(item => item.quantity > 0);
+
+        console.log('HumidorsScreen: Strength data calculated:', result);
+        return result;
+    }, [cigars, browseMode]);
+
+    // Memoized country data for browse by country functionality
+    const countryData = useMemo(() => {
+        if (browseMode !== 'country') return [];
+        const countryCategories = [
+            { label: 'Dominican Cigars', filterValue: 'Dominican Republic' },
+            { label: 'Nicaraguan Cigars', filterValue: 'Nicaragua' },
+            { label: 'Honduran Cigars', filterValue: 'Honduras' },
+            { label: 'American Cigars', filterValue: 'USA' },
+            { label: 'Cuban Cigars', filterValue: 'Cuba' },
+            { label: 'Mexican Cigars', filterValue: 'Mexico' },
+            { label: 'Other Countries', filterValue: 'Other' }
+        ];
+        const counts = cigars.reduce((acc, cigar) => {
+            const country = cigar.country || 'Unknown';
+            const matchedCategory = countryCategories.find(cat => cat.filterValue.toLowerCase() === country.toLowerCase());
+            const key = matchedCategory ? matchedCategory.label : 'Other Countries';
+            acc[key] = (acc[key] || 0) + cigar.quantity;
+            return acc;
+        }, {});
+        const result = countryCategories
+            .map(category => ({
+                key: category.filterValue,
+                label: category.label,
+                quantity: counts[category.label] || 0,
+                filterValue: category.filterValue
+            }))
+            .filter(item => item.quantity > 0)
+            .sort((a, b) => a.label.localeCompare(b.label));
+
+        console.log('HumidorsScreen: Country data calculated:', result);
+        return result;
+    }, [cigars, browseMode]);
+    // --- End of Data for Browse By Panel ---
+
+    // Handle browse by mode button clicks with animation timing
+    const handleBrowseByClick = (mode) => {
+        console.log('HumidorsScreen: Browse by mode clicked:', mode, 'Current mode:', browseMode, 'Panel open:', isBrowseByModeOpen);
+
+        if (isBrowseByModeOpen && browseMode === mode) {
+            // Same mode clicked - close panel
+            console.log('HumidorsScreen: Closing browse panel (same mode)');
+            setIsBrowseByModeOpen(false);
+        } else if (isBrowseByModeOpen) {
+            // Different mode clicked - animate out then in
+            console.log('HumidorsScreen: Switching browse mode with animation');
+            setIsBrowseByModeOpen(false);
+            // Use a timeout to allow the panel to animate out before animating back in
+            setTimeout(() => {
+                setBrowseMode(mode);
+                setIsBrowseByModeOpen(true);
+            }, 150); // Adjust timing based on your animation duration
+        } else {
+            // Panel closed - open with new mode
+            console.log('HumidorsScreen: Opening browse panel with mode:', mode);
+            setBrowseMode(mode);
+            setIsBrowseByModeOpen(true);
+        }
+    };
+
+    // Handle browse panel item selection and apply filters directly
+    const handleBrowsePanelItemClick = (item) => {
+        console.log('HumidorsScreen: Browse panel item clicked:', item, 'Mode:', browseMode);
+
+        // Close the browse panel first
+        setIsBrowseByModeOpen(false);
+
+        // Apply the appropriate filter based on browse mode
+        switch (browseMode) {
+            case 'wrapper':
+                console.log('HumidorsScreen: Setting wrapper filter:', item.wrapper);
+                setActiveWrapperFilter(item.wrapper);
+                setActiveStrengthFilter('');
+                setActiveCountryFilter('');
+                setSearchQuery('');
+                break;
+            case 'strength':
+                console.log('HumidorsScreen: Setting strength filter:', item.filterValue);
+                setActiveStrengthFilter(item.filterValue);
+                setActiveWrapperFilter('');
+                setActiveCountryFilter('');
+                setSearchQuery('');
+                break;
+            case 'country':
+                console.log('HumidorsScreen: Setting country filter:', item.filterValue);
+                setActiveCountryFilter(item.filterValue);
+                setActiveWrapperFilter('');
+                setActiveStrengthFilter('');
+                setSearchQuery('');
+                break;
+            default:
+                console.warn('HumidorsScreen: Unknown browse mode:', browseMode);
+        }
+    };
+
+    // Configuration for browse by mode buttons and panels
+    const browseByConfig = {
+        wrapper: { title: 'Browse by Wrapper', icon: Leaf },
+        strength: { title: 'Browse by Profile', icon: ShieldPlus },
+        country: { title: 'Browse by Country', icon: MapPin },
+        default: { title: 'Browse by', icon: Filter }
+    };
+
+    const currentBrowseConfig = browseByConfig[browseMode] || browseByConfig.default;
+    const BrowseIcon = currentBrowseConfig.icon;
+
+    // Get current data based on browse mode for the BrowseByPanel
+    const getCurrentBrowseData = () => {
+        switch (browseMode) {
+            case 'wrapper':
+                return wrapperData;
+            case 'strength':
+                return strengthData;
+            case 'country':
+                return countryData;
+            default:
+                return [];
+        }
+    };
+
     console.log('HumidorsScreen: Rendering with filters', {
         searchQuery,
         activeWrapperFilter,
@@ -237,8 +420,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 theme={theme}
             />
 
-
-            {/* Search input panel with suggestions dropdown */}
+            {/* ===== SEARCH INPUT PANEL ===== */}
+            {/* Interactive search bar with real-time suggestions dropdown */}
+            {/* Features: Auto-complete, clear button, suggestion selection */}
             <div id="pnlSearchInput" className="relative mb-4">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input type="text" placeholder="Search all cigars..." value={searchQuery} onChange={handleSearchChange}
@@ -259,7 +443,107 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 )}
             </div>
 
-            {/* Active wrapper filter display panel */}
+            {/* ===== MAIN TOOLBAR PANEL ===== */}
+            {/* Primary navigation toolbar containing browse buttons and view toggles */}
+            {/* Always visible, right-aligned, contains browse and view mode controls */}
+            <div id="pnlToolbar" className="flex items-center justify-end gap-3 mb-6">
+                {/* Browse by buttons group - triggers flyup panels for filtering */}
+                <div className="flex gap-2">
+                    {/* btnBrowseByWrapper */}
+                    <div className="relative group">
+                        <button
+                            id="btnBrowseByWrapper"
+                            onClick={() => handleBrowseByClick('wrapper')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                        >
+                            <Leaf className="w-5 h-5" />
+                        </button>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            Browse by Wrapper
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        </div>
+                    </div>
+                    {/* btnBrowseByStrength */}
+                    <div className="relative group">
+                        <button
+                            id="btnBrowseByStrength"
+                            onClick={() => handleBrowseByClick('strength')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                        >
+                            <ShieldPlus className="w-5 h-5" />
+                        </button>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            Browse by Strength
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        </div>
+                    </div>
+                    {/* btnBrowseByCountry */}
+                    <div className="relative group">
+                        <button
+                            id="btnBrowseByCountry"
+                            onClick={() => handleBrowseByClick('country')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                        >
+                            <MapPin className="w-5 h-5" />
+                        </button>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            Browse by Country
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ===== VIEW TOGGLE PANEL ===== */}
+                {/* Grid/List view toggle buttons - only visible when showing filtered results */}
+                {/* Allows users to switch between list and grid display modes */}
+                {(searchQuery !== '' || activeWrapperFilter || activeStrengthFilter || activeCountryFilter) && (
+                    <div id="pnlViewToggle" className="flex gap-2">
+                        <div className="relative group">
+                            <button
+                                id="btnGridView"
+                                onClick={() => {
+                                    console.log('HumidorsScreen: Grid view button clicked');
+                                    setViewMode('grid');
+                                }}
+                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
+                                    ? 'bg-amber-500 text-white border-amber-400'
+                                    : `${theme.primary} hover:bg-gray-700`
+                                    }`}
+                            >
+                                <LayoutGrid className="w-5 h-5" />
+                            </button>
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                Grid View
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                            </div>
+                        </div>
+
+                        <div className="relative group">
+                            <button
+                                id="btnListView"
+                                onClick={() => {
+                                    console.log('HumidorsScreen: List view button clicked');
+                                    setViewMode('list');
+                                }}
+                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
+                                    ? 'bg-amber-500 text-white border-amber-400'
+                                    : `${theme.primary} hover:bg-gray-700`
+                                    }`}
+                            >
+                                <List className="w-5 h-5" />
+                            </button>
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                List View
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* ===== ACTIVE WRAPPER FILTER PANEL ===== */}
+            {/* Displays current wrapper filter with clear button - only visible when wrapper filter is active */}
+            {/* Shows filter name and result count, allows user to clear the filter */}
             {activeWrapperFilter && (
                 <div id="pnlWrapperFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
                     <div>
@@ -270,7 +554,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 </div>
             )}
 
-            {/* Active strength filter display panel */}
+            {/* ===== ACTIVE STRENGTH FILTER PANEL ===== */}
+            {/* Displays current strength filter with clear button - only visible when strength filter is active */}
+            {/* Shows filter name and result count, handles special "Flavored" category */}
             {activeStrengthFilter && (
                 <div id="pnlStrengthFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
                     <div>
@@ -281,7 +567,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 </div>
             )}
 
-            {/* Active country filter display panel */}
+            {/* ===== ACTIVE COUNTRY FILTER PANEL ===== */}
+            {/* Displays current country filter with clear button - only visible when country filter is active */}
+            {/* Shows filter name and result count, handles special "Other Countries" category */}
             {activeCountryFilter && (
                 <div id="pnlCountryFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
                     <div>
@@ -327,47 +615,8 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             </div>
                         </div>
 
-                        {/* Toolbar buttons panel for browsing and adding humidors */}
+                        {/* Toolbar buttons panel for adding humidors */}
                         <div id="pnlToolbarButtons" className="flex justify-center gap-4">
-                            <div className="relative group">
-                                <button
-                                    id="btnBrowseByWrapper"
-                                    className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                                >
-                                    <Leaf className="w-5 h-5" />
-                                </button>
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                    Browse by Wrapper
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                                </div>
-                            </div>
-
-                            <div className="relative group">
-                                <button
-                                    id="btnBrowseByStrength"
-                                    className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                                >
-                                    <ShieldPlus className="w-5 h-5" />
-                                </button>
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                    Browse by Strength
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                                </div>
-                            </div>
-
-                            <div className="relative group">
-                                <button
-                                    id="btnBrowseByCountry"
-                                    className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                                >
-                                    <MapPin className="w-5 h-5" />
-                                </button>
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                    Browse by Country
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                                </div>
-                            </div>
-
                             <div className="relative group">
                                 <button
                                     id="btnAddHumidor"
@@ -383,7 +632,6 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>
@@ -459,13 +707,29 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 </>
             ) : (
                 // Filtered cigars display panel
-                <div id="pnlFilteredCigars" className="flex flex-col gap-4">
-                    {filteredCigars.map(cigar => {
-                        console.log('HumidorsScreen: Rendering filtered cigar', { cigarId: cigar.id, name: cigar.name });
-                        return (
-                            <ListCigarCard key={cigar.id} cigar={cigar} navigate={navigate} />
-                        );
-                    })}
+                <div id="pnlFilteredCigars">
+                    {viewMode === 'list' ? (
+                        // List view
+                        <div className="flex flex-col gap-4">
+                            {filteredCigars.map(cigar => {
+                                console.log('HumidorsScreen: Rendering filtered cigar (list view)', { cigarId: cigar.id, name: cigar.name });
+                                return (
+                                    <ListCigarCard key={cigar.id} cigar={cigar} navigate={navigate} />
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        // Grid view
+                        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-4">
+                            {filteredCigars.map(cigar => {
+                                console.log('HumidorsScreen: Rendering filtered cigar (grid view)', { cigarId: cigar.id, name: cigar.name });
+                                return (
+                                    <GridCigarCard key={cigar.id} cigar={cigar} navigate={navigate} />
+                                );
+                            })}
+                        </div>
+                    )}
+
                     {filteredCigars.length === 0 && (
                         // No results panel
                         <div id="pnlNoResults" className="text-center py-10">
@@ -474,6 +738,19 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     )}
                 </div>
             )}
+
+            {/* Browse By Panel Component */}
+            <BrowseByPanel
+                isOpen={isBrowseByModeOpen}
+                onClose={() => setIsBrowseByModeOpen(false)}
+                title={currentBrowseConfig.title}
+                icon={BrowseIcon}
+                data={getCurrentBrowseData()}
+                onItemClick={handleBrowsePanelItemClick}
+                theme={theme}
+                itemLabelKey="label"
+                itemQuantityKey="quantity"
+            />
         </div>
     );
 };

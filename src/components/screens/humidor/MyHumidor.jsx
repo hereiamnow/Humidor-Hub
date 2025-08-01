@@ -70,7 +70,7 @@ import { strengthOptions } from '../../../constants/cigarOptions';
 // UI Component imports
 import FilterSortModal from '../../UI/FilterSortModal';
 import GridCigarCard from '../../Cigar/GridCigarCard';
-import ListCigarCard from '../../Cigar/ListCigarCardSimple';
+import ListCigarCard from '../../Cigar/ListCigarCard.jsx';
 
 // Menu Component imports
 import HumidorActionMenu from '../../Menus/HumidorActionMenu';
