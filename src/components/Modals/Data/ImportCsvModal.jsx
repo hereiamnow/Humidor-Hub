@@ -252,7 +252,7 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                 );
             case 'complete':
                 return (
-                    <div className="bg-amber-900/20 border border-amber-800 rounded-xl p-6 text-center">
+                    <div className="bg-amber-900/20 border border-amber-800 rounded-md p-6 text-center">
                         <h3 className="font-bold text-amber-300 text-xl flex items-center justify-center mb-3">
                             <Wind className="w-5 h-5 mr-2" /> Import Complete!
                         </h3>

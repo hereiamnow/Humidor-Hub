@@ -17,7 +17,7 @@ import { ChevronLeft, LoaderCircle, Sparkles } from 'lucide-react';
 
 // Firebase imports
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 
 // Import constants
 import {
@@ -30,29 +30,30 @@ import {
     cigarBinderTypes,
     cigarFillerTypes,
     cigarCountryOfOrigin
-} from '../../constants/cigarOptions';
+} from '../../../constants/cigarOptions';
 
 // Import UI components
-import QuantityControl from '../UI/QuantityControl';
-import InputField from '../UI/InputField';
-import TextAreaField from '../UI/TextAreaField';
-import AutoCompleteInputField from '../UI/AutoCompleteInputField';
-import FlavorNotesPanel from '../UI/FlavorNotesPanel';
+import QuantityControl from '../../UI/QuantityControl';
+import InputField from '../../UI/InputField';
+import TextAreaField from '../../UI/TextAreaField';
+import AutoCompleteInputField from '../../UI/AutoCompleteInputField';
+import FlavorNotesPanel from '../../UI/FlavorNotesPanel';
 
 // Import modal components
-import GeminiModal from '../Modals/Content/GeminiModal';
-import FlavorNotesModal from '../Modals/Forms/FlavorNotesModal';
-import SmartImageModal from '../Modals/Composite/SmartImageModal';
+import GeminiModal from '../../Modals/Content/GeminiModal';
+import FlavorNotesModal from '../../Modals/Forms/FlavorNotesModal';
+import SmartImageModal from '../../Modals/Composite/SmartImageModal';
 
 // Import utilities
-import { getFlavorTagColor } from '../../utils/colorUtils';
+import { getFlavorTagColor } from '../../../utils/colorUtils';
 
 // Import services
-import { callGeminiAPI } from '../../services/geminiService';
-import StarRating from '../UI/StarRating';
+import { callGeminiAPI } from '../../../services/geminiService';
+import StarRating from '../../UI/StarRating';
+
 
 // Utils
-import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../../utils/geminiKeyUtils';
 
 const EditCigar = ({ navigate, db, appId, userId, cigar, theme }) => {
     // Firebase auth state

@@ -49,7 +49,7 @@ const ThemeModal = ({ currentTheme, setTheme, onClose }) => {
                 {/* Panel Header */}
                 <div id="pnlModalHeader" className="flex justify-between items-center mb-8">
                     <div className="flex items-center">
-                        <div id="pnlPalette" className={`${currentTheme.primaryBg} p-2 rounded-xl mr-3 shadow-lg`}>
+                        <div id="pnlPalette" className={`${currentTheme.primaryBg} p-2 rounded-md mr-3 shadow-lg`}>
                             <Palette className={`w-6 h-6 ${currentTheme.text}`} />
                         </div>
                         <div>
@@ -156,7 +156,7 @@ const ThemeModal = ({ currentTheme, setTheme, onClose }) => {
                 <div className="flex justify-center">
                     <button
                         onClick={onClose}
-                        className="bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-3 px-8 rounded-xl hover:from-gray-500 hover:to-gray-600 transition-all duration-200 shadow-lg"
+                        className="bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-3 px-8 rounded-md hover:from-gray-500 hover:to-gray-600 transition-all duration-200 shadow-lg"
                     >
                         Cancel
                     </button>

@@ -101,7 +101,7 @@ const AddEditJournalEntry = ({ navigate, db, appId, userId, cigar, existingEntry
                 <h1 className="text-2xl font-bold text-white">{isEditing ? 'Edit Journal Entry' : 'Log New Experience'}</h1>
             </div>
 
-            <div className="bg-gray-800/50 p-4 rounded-xl mb-4">
+            <div className="bg-gray-800/50 p-4 rounded-md mb-4">
                 <p className="text-sm text-gray-400">{cigar.brand}</p>
                 <h2 className="text-xl font-bold text-amber-300">{cigar.name}</h2>
             </div>
@@ -122,7 +122,7 @@ const AddEditJournalEntry = ({ navigate, db, appId, userId, cigar, existingEntry
                 <InputField icon={MapPin} name="location" label="Location" placeholder="e.g., Back Patio" value={formData.location} onChange={handleInputChange} theme={theme} />
                 <InputField icon={GlassWater} name="pairing" label="Drink Pairing" placeholder="e.g., Espresso, Bourbon" value={formData.pairing} onChange={handleInputChange} theme={theme} />
 
-                <div id="pnlPerformanceStarRatings" className="bg-gray-800/50 p-4 rounded-xl space-y-4">
+                <div id="pnlPerformanceStarRatings" className="bg-gray-800/50 p-4 rounded-md space-y-4">
                     <h3 className="text-lg font-semibold text-amber-300 text-center">Performance Ratings</h3>
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">

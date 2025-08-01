@@ -68,7 +68,7 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
             <div className="space-y-6">
                 {humidors && humidors.length > 0 ? (
                     alertSettings.map(setting => (
-                        <div key={setting.humidorId} className="bg-gray-800/50 p-4 rounded-xl">
+                        <div key={setting.humidorId} className="bg-gray-800/50 p-4 rounded-md">
                             <h3 className="font-bold text-xl text-amber-300 mb-4">{setting.name}</h3>
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
@@ -97,7 +97,7 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
                         </div>
                     ))
                 ) : (
-                    <div className={`${safeTheme.roxyBg} border ${safeTheme.roxyBorder} rounded-xl p-6 text-center`}>
+                    <div className={`${safeTheme.roxyBg} border ${safeTheme.roxyBorder} rounded-md p-6 text-center`}>
                         <h3 className="font-bold text-amber-300 text-lg flex items-center justify-center mb-3">
                             <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>

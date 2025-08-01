@@ -369,7 +369,7 @@ const Dashboard = ({
 
             {/* Roxy's Tips panel when no humidors are present */}
             {!hasHumidors && (
-                <div id="pnlRoxysCorner" className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-xl p-4 mb-6 text-center`}>
+                <div id="pnlRoxysCorner" className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-mb p-4 mb-6 text-center`}>
                     <h3 id="pnlTitle" className={`font-bold ${theme.primary} text-lg flex items-center justify-center mb-3`}>
                         <Wind id="pnlIcon" className={`w-5 h-5 mr-2 ${theme.icon}`} /> Roxy's Tips!
                     </h3>
@@ -423,7 +423,7 @@ const Dashboard = ({
                 </div>
 
                 {/* Roxy's Corner panel */}
-                <div className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-xl overflow-hidden`}>
+                <div className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden`}>
                     <button onClick={() => handlePanelToggle('roxy')} className="w-full p-4 flex justify-between items-center">
                         <h3 className="font-bold text-amber-300 text-lg flex items-center">
                             <Wind className="w-5 h-5 mr-2" /> Roxy's Corner

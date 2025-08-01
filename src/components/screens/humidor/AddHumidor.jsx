@@ -22,9 +22,9 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ChevronLeft, Thermometer } from 'lucide-react';
-import InputField from '../UI/InputField';
-import TextAreaField from '../UI/TextAreaField';
-import SmartImageModal from '../Modals/Composite/SmartImageModal';
+import InputField from '../../UI/InputField';
+import TextAreaField from '../../UI/TextAreaField';
+import SmartImageModal from '../../Modals/Composite/SmartImageModal';
 
 const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
@@ -114,7 +114,7 @@ const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
                     <InputField name="location" label="Location" placeholder="e.g., Office" value={formData.location} onChange={handleInputChange} theme={theme} />
                 </div>
 
-                <div className={`${theme.card} p-4 rounded-xl`}>
+                <div className={`${theme.card} p-4 rounded-md`}>
                     <div className="flex justify-between items-center">
                         <h3 className="font-bold text-lg text-amber-300 flex items-center"><Thermometer className="w-5 h-5 mr-2" /> Environment Tracking</h3>
                         <button onClick={() => setTrackEnvironment(!trackEnvironment)} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${trackEnvironment ? 'bg-amber-500' : 'bg-gray-600'}`}>

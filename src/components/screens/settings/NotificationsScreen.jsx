@@ -29,7 +29,7 @@ const NotificationsScreen = ({ navigate, humidors }) => {
                 <h1 className="text-3xl font-bold text-white">Notifications</h1>
             </div>
             <div className="space-y-6">
-                <div className="bg-gray-800/50 p-4 rounded-xl">
+                <div className="bg-gray-800/50 p-4 rounded-md">
                     <h3 className="font-bold text-xl text-amber-300 mb-2">Notification Preferences</h3>
                     <p className="text-gray-400 text-sm mb-4">
                         Choose how you want to be notified about important events in your humidor collection.
@@ -49,7 +49,7 @@ const NotificationsScreen = ({ navigate, humidors }) => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gray-800/50 p-4 rounded-xl">
+                <div className="bg-gray-800/50 p-4 rounded-md">
                     <h3 className="font-bold text-xl text-amber-300 mb-2">Recent Alerts</h3>
                     <p className="text-gray-400 text-sm mb-4">
                         Here you’ll see a history of recent humidity and temperature alerts for your humidors.

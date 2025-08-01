@@ -11,7 +11,7 @@
 // and proper theming integration for consistent styling across the application.
 
 import React from 'react';
-import { fontOptions } from '../../constants/fontOptions';
+import { fontOptions } from '../../../constants/fontOptions';
 
 const FontPicker = ({ selectedFont, setSelectedFont, theme }) => (
     <div id="font-picker" className="mb-4">

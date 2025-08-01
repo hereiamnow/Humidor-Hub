@@ -12,9 +12,9 @@
 
 import React, { useMemo } from 'react';
 import { ChevronLeft, DollarSign, Star, Box, MapPin, Calendar as CalendarIcon } from 'lucide-react';
-import { getFlavorTagColor } from '../../utils/colorUtils';
-import { formatDate } from '../../utils/formatUtils';
-import { calculateAge } from '../utils/calculateAge';
+import { getFlavorTagColor } from '../../../utils/colorUtils';
+import { formatDate } from '../../../utils/formatUtils';
+import { calculateAge } from '../../utils/calculateAge';
 
 const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
     // 1. Collection Value
@@ -85,7 +85,7 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
             </div>
             <div className="space-y-6">
                 {/* 1. Collection Value */}
-                <div className={`${theme.card} p-4 rounded-xl flex items-center gap-4`}>
+                <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
                     <DollarSign className="w-8 h-8 text-green-400" />
                     <div>
                         <p className="text-lg font-bold text-white">Collection Value</p>
@@ -93,7 +93,7 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
                     </div>
                 </div>
                 {/* 2. Average User Rating */}
-                <div className={`${theme.card} p-4 rounded-xl flex items-center gap-4`}>
+                <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
                     <Star className="w-8 h-8 text-yellow-400" />
                     <div>
                         <p className="text-lg font-bold text-white">Average My Rating</p>
@@ -103,7 +103,7 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
                 </div>
                 {/* 3. Favorite Brand/Country */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className={`${theme.card} p-4 rounded-xl flex items-center gap-4`}>
+                    <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
                         <Box className="w-8 h-8 text-amber-400" />
                         <div>
                             <p className="text-lg font-bold text-white">Favorite Brand</p>
@@ -111,7 +111,7 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
                             {favoriteBrand && <p className="text-xs text-gray-400">{favoriteBrand.count} cigars</p>}
                         </div>
                     </div>
-                    <div className={`${theme.card} p-4 rounded-xl flex items-center gap-4`}>
+                    <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
                         <MapPin className="w-8 h-8 text-blue-400" />
                         <div>
                             <p className="text-lg font-bold text-white">Favorite Country</p>
@@ -121,7 +121,7 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
                     </div>
                 </div>
                 {/* 4. Oldest Cigar */}
-                <div className={`${theme.card} p-4 rounded-xl flex items-center gap-4`}>
+                <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
                     <CalendarIcon className="w-8 h-8 text-purple-400" />
                     <div>
                         <p className="text-lg font-bold text-white">Oldest Cigar</p>
@@ -136,7 +136,7 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
                     </div>
                 </div>
                 {/* --- Tasting Preferences Panel --- */}
-                <div id="pnlTastingPreferences" className="bg-gray-800/50 p-4 rounded-xl">
+                <div id="pnlTastingPreferences" className="bg-gray-800/50 p-4 rounded-md">
                     <h3 className="font-bold text-amber-300 text-lg mb-3">Tasting Preferences</h3>
                     <div>
                         <h4 className="font-semibold text-white mb-2">Preferred Strength</h4>

@@ -47,25 +47,25 @@ import CigarJournalScreen from './components/Journal/CigarJournalScreen';
 import BottomNav from './components/Navigation/BottomNav';
 
 // Components - Settings
-import AboutScreen from './components/Settings/AboutScreen';
-import NotificationsScreen from './components/Settings/NotificationsScreen';
-import ProfileScreen from './components/Settings/ProfileScreen';
+import AboutScreen from './components/screens/settings/AboutScreen';
+import NotificationsScreen from './components/screens/settings/NotificationsScreen';
+import ProfileScreen from './components/screens/settings/ProfileScreen';
 
 // Screens
-import AddCigar from './components/screens/AddCigar';
-import AddHumidor from './components/screens/AddHumidor';
+import AddCigar from './components/screens/cigar/AddCigar';
+import AddHumidor from './components/screens/humidor/AddHumidor';
 import AlertsScreen from './components/screens/AlertsScreen';
-import CigarDetail from './components/screens/CigarDetail';
+import CigarDetail from './components/screens/cigar/CigarDetail';
 import Dashboard from './components/screens/Dashboard';
-import DashboardSettingsScreen from './components/screens/DashboardSettingsScreen';
-import DataSyncScreen from './components/screens/DataSyncScreen';
-import DeeperStatisticsScreen from './components/screens/DeeperStatisticsScreen';
-import EditCigar from './components/screens/EditCigar';
-import EditHumidor from './components/screens/EditHumidor';
-import FontsScreen from './components/screens/FontsScreen';
-import HumidorsScreen from './components/screens/HumidorsScreen';
-import IntegrationsScreen from './components/screens/IntegrationsScreen';
-import MyHumidor from './components/screens/MyHumidor';
+import DashboardSettingsScreen from './components/screens/settings/DashboardSettingsScreen';
+import DataSyncScreen from './components/screens/settings/DataSyncScreen';
+import DeeperStatisticsScreen from './components/screens/settings/DeeperStatisticsScreen';
+import EditCigar from './components/screens/cigar/EditCigar';
+import EditHumidor from './components/screens/humidor/EditHumidor';
+import FontsScreen from './components/screens/settings/FontsScreen';
+import HumidorsScreen from './components/screens/MyHumidors';
+import IntegrationsScreen from './components/screens/settings/IntegrationsScreen';
+import MyHumidor from './components/screens/humidor/MyHumidor';
 import SettingsScreen from './components/screens/SettingsScreen';
 
 // Initialize Firebase Authentication token

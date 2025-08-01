@@ -46,7 +46,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 // Firebase imports
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 
 // Icon imports from Lucide React
 import {
@@ -59,28 +59,28 @@ import {
 import { doc, updateDoc, writeBatch } from 'firebase/firestore';
 
 // Service imports
-import { callGeminiAPI } from '../../services/geminiService';
+import { callGeminiAPI } from '../../../services/geminiService.js';
 
 // Utils
-import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../../utils/geminiKeyUtils';
 
 // Constants imports
-import { strengthOptions } from '../../constants/cigarOptions';
+import { strengthOptions } from '../../../constants/cigarOptions';
 
 // UI Component imports
-import FilterSortModal from '../UI/FilterSortModal';
-import GridCigarCard from '../Cigar/GridCigarCard';
-import ListCigarCard from '../Cigar/ListCigarCardSimple';
+import FilterSortModal from '../../UI/FilterSortModal';
+import GridCigarCard from '../../Cigar/GridCigarCard';
+import ListCigarCard from '../../Cigar/ListCigarCardSimple';
 
 // Menu Component imports
-import HumidorActionMenu from '../Menus/HumidorActionMenu';
+import HumidorActionMenu from '../../Menus/HumidorActionMenu';
 
 // Modal Component imports
-import ManualReadingModal from '../Modals/Forms/ManualReadingModal';
-import MoveCigarsModal from '../Modals/Actions/MoveCigarsModal';
-import DeleteHumidorModal from '../Modals/Actions/DeleteHumidorModal';
-import DeleteCigarsModal from '../Modals/Actions/DeleteCigarsModal';
-import ExportModal from '../Modals/Data/ExportModal';
+import ManualReadingModal from '../../Modals/Forms/ManualReadingModal';
+import MoveCigarsModal from '../../Modals/Actions/MoveCigarsModal';
+import DeleteHumidorModal from '../../Modals/Actions/DeleteHumidorModal';
+import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal';
+import ExportModal from '../../Modals/Data/ExportModal';
 const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme }) => {
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {
@@ -533,21 +533,10 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         id="imgHumidorHeader"
                         src={humidor.image || `https://placehold.co/600x400/transparent/grey&text=${humidor.name.replace(/\s/g, '+')}`}
                         alt={humidor.name}
-                        className="w-40 h-40 object-cover rounded-md border-4 border-amber-700 shadow-md"
+                        className="w-40 h-40 object-cover rounded-full border-4 border-amber-700 shadow-md"
                     />
                 </div>
-
-
-
-
-
-
-
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-
-
-
-
                 <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
                     <button onClick={() => navigate('HumidorsScreen')} className="p-2 bg-black/50 rounded-full">
                         <ChevronLeft className="w-7 h-7 text-white" />
@@ -561,7 +550,6 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         onImport={() => navigate('DataSync')} // Navigate to DataSync for import options
                         handleToggleSelectMode={handleToggleSelectMode} // Fixed prop name to match component
                     />
-
                 </div>
                 <div className="absolute bottom-0 p-4">
                     <div className="flex items-center">
@@ -572,12 +560,20 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
             </div>
 
             <div className="p-4">
-                <div id="pnlHumidityTemperatureValue" className="flex justify-around items-center bg-gray-800/50 p-3 rounded-xl mb-6 text-center">
-                    <div className="flex flex-col items-center"><Droplets className="w-5 h-5 text-blue-400 mb-1" /><p className="text-sm text-gray-400">Humidity</p><p className="font-bold text-white text-base">{humidor.humidity}%</p></div>
+                <div id="pnlHumidityTemperatureValue" className="flex justify-around items-center bg-gray-800/50 p-3 rounded-md mb-6 text-center">
+                    <div className="flex flex-col items-center">
+                        <p className="text-sm text-gray-400">Humidity</p>
+                        <p className="font-bold text-white text-base">{humidor.humidity}%</p>
+                    </div>
                     <div className="h-10 w-px bg-gray-700"></div>
-                    <div className="flex flex-col items-center"><Thermometer className="w-5 h-5 text-red-400 mb-1" /><p className="text-sm text-gray-400">Temperature</p><p className="font-bold text-white text-base">{humidor.temp}°F</p></div>
+                    <div className="flex flex-col items-center">
+                        <p className="text-sm text-gray-400">Temperature</p>
+                        <p className="font-bold text-white text-base">{humidor.temp}°F</p></div>
                     <div className="h-10 w-px bg-gray-700"></div>
-                    <div className="flex flex-col items-center"><svg className="w-5 h-5 text-green-400 mb-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg><p className="text-sm text-gray-400">Est. Value</p><p className="font-bold text-white text-base">${humidorValue.toFixed(2)}</p></div>
+                    <div className="flex flex-col items-center">
+                        <p className="text-sm text-gray-400">Est. Value</p>
+                        <p className="font-bold text-white text-base">${humidorValue.toFixed(2)}</p>
+                    </div>
                 </div>
 
                 {/* Search Bar */}
@@ -597,10 +593,10 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     )}
                 </div>
 
-                <div id="pnlHumidorToolbar" className="flex justify-between items-center mb-6 px-2">
+                <div id="pnlHumidorToolbar" className="flex justify-between items-center mb-6 px-0">
 
                     <div id="pnlHumidorStatsNum" className="relative group">
-                        <div className="bg-gray-800/60 border border-gray-700/50 rounded-lg px-3 py-2 backdrop-blur-sm">
+                        <div className="bg-gray-800/60 border border-gray-700/50 rounded-md px-3 py-2 backdrop-blur-sm">
                             <div className="flex items-center justify-center gap-1">
                                 <span
                                     className="font-bold text-amber-400 text-lg hover:text-amber-300 transition-colors cursor-help"
@@ -629,7 +625,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         </div>
                     </div>
 
-                    <div id="toolbar-buttons" className="flex justify-center gap-4">
+                    <div id="toolbar-buttons" className="flex justify-center gap-2">
                         <div className="relative group">
                             <button
                                 id="btnFilter"
@@ -704,7 +700,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div id="pnlRoxysCorner"
-                        className={`relative ${theme.roxyBg} border ${theme.roxyBorder} rounded-xl p-4 mb-4 flex flex-col shadow-lg overflow-hidden`}
+                        className={`relative ${theme.roxyBg} border ${theme.roxyBorder} rounded-md p-4 mb-4 flex flex-col shadow-lg overflow-hidden`}
                         style={{ boxShadow: '0 2px 12px 0 rgba(255, 193, 7, 0.10)' }}
                     >
                         {/* Close button in top right */}
@@ -742,7 +738,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div id="pnlRoxysCornerNoKey"
-                        className={`relative ${theme.roxyBg} border ${theme.roxyBorder} rounded-xl p-4 mb-4 flex flex-col shadow-lg overflow-hidden`}
+                        className={`relative ${theme.roxyBg} border ${theme.roxyBorder} rounded-md p-4 mb-4 flex flex-col shadow-lg overflow-hidden`}
                         style={{ boxShadow: '0 2px 12px 0 rgba(255, 193, 7, 0.10)' }}
                     >
                         {/* Close button in top right */}
@@ -762,7 +758,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         <span className="text-amber-100 text-sm mb-3">
                             Some cigars are missing details, but you need a Gemini API key to use auto-fill!
                         </span>
-                        <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-lg">
+                        <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
                             <p className="text-purple-200 text-sm text-center">
                                 💡 Add your Gemini API key in Settings to enable AI-powered auto-fill for missing cigar details!
                             </p>
@@ -771,15 +767,15 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 )}
 
                 {isFilterActive && (
-                    <div className="flex justify-between items-center mb-4 bg-gray-800 p-3 rounded-lg">
+                    <div className="flex justify-between items-center mb-4 bg-gray-800 p-3 rounded-md">
                         <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-sm text-gray-300">Filtering by:</span>
-                            {filters.brand && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.brand}</span>}
-                            {filters.country && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.country}</span>}
-                            {filters.strength && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.strength}</span>}
+                            {filters.brand && <span className="text-xs font-semibold px-2 py-1 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.brand}</span>}
+                            {filters.country && <span className="text-xs font-semibold px-2 py-1 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.country}</span>}
+                            {filters.strength && <span className="text-xs font-semibold px-2 py-1 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.strength}</span>}
                             {filters.flavorNotes.map(note => <span key={note} className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50">{note}</span>)}
                         </div>
-                        <button onClick={handleClearFilters} className="p-1 rounded-full hover:bg-amber-800 transition-colors text-amber-400"><X className="w-4 h-4" /></button>
+                        <button onClick={handleClearFilters} className="p-1 rounded-md hover:bg-amber-800 transition-colors text-amber-400"><X className="w-4 h-4" /></button>
                     </div>
                 )}
 
@@ -816,7 +812,9 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     <div id="pnlFilterMode" className="fixed bottom-20 left-0 right-0 bg-gray-900/80 backdrop-blur-sm p-4 z-20 border-t border-gray-700">
                         <div className="max-w-md mx-auto">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold text-amber-400 flex items-center"><Filter className="w-5 h-5 mr-2" /> Filter & Sort</h3>
+                                <h3 className="text-xl font-bold text-amber-400 flex items-center">
+                                    {/* <Filter className="w-5 h-5 mr-2" />  */}
+                                    Filter & Sort</h3>
                                 <button onClick={() => setIsFilterPanelOpen(false)} className="text-amber-400 font-semibold">Done</button>
                             </div>
                             <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
@@ -828,9 +826,9 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                             <button
                                                 key={criteria}
                                                 onClick={() => handleSortChange(criteria)}
-                                                className={`px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-1 transition-colors ${sortBy === criteria ? 'bg-amber-500 text-white' : 'bg-gray-700 text-gray-300'}`}
+                                                className={`px-3 py-1.5 rounded-sm text-sm font-semibold flex items-center gap-1 transition-colors ${sortBy === criteria ? 'bg-amber-500 text-white' : 'bg-gray-700 text-gray-300'}`}
                                             >
-                                                {criteria === 'dateAdded' ? 'Date Added' : criteria.charAt(0).toUpperCase() + criteria.slice(1)}
+                                                {criteria === 'dateAdded' ? 'Date' : criteria.charAt(0).toUpperCase() + criteria.slice(1)}
                                                 {sortBy === criteria && (sortOrder === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
                                             </button>
                                         ))}
@@ -843,21 +841,21 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className={`${theme.subtleText} text-sm mb-1 block`}>Brand</label>
-                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-lg py-2 px-3 text-white">
+                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-sm py-2 px-3 text-white">
                                                 <option value="">All Brands</option>
                                                 {uniqueBrands.map(brand => <option key={brand} value={brand}>{brand}</option>)}
                                             </select>
                                         </div>
                                         <div>
                                             <label className={`${theme.subtleText} text-sm mb-1 block`}>Country</label>
-                                            <select value={filters.country} onChange={(e) => handleFilterChange('country', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-lg py-2 px-3 text-white">
+                                            <select value={filters.country} onChange={(e) => handleFilterChange('country', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-sm py-2 px-3 text-white">
                                                 <option value="">All Countries</option>
                                                 {uniqueCountries.map(country => <option key={country} value={country}>{country}</option>)}
                                             </select>
                                         </div>
                                         <div className="col-span-2">
                                             <label className={`${theme.subtleText} text-sm mb-1 block`}>Strength</label>
-                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-lg py-2 px-3 text-white">
+                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-sm py-2 px-3 text-white">
                                                 <option value="">All Strengths</option>
                                                 {strengthOptions.map(strength => <option key={strength} value={strength}>{strength}</option>)}
                                             </select>
@@ -867,7 +865,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                         <label className={`${theme.subtleText} text-sm mb-1 block`}>Flavor Notes</label>
                                         <div className="flex flex-wrap gap-2">
                                             {availableFlavorNotes.map(note => (
-                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`text-xs font-semibold px-2.5 py-1.5 rounded-full transition-all duration-200 ${filters.flavorNotes.includes(note) ? 'bg-amber-500 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}>
+                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`text-xs font-semibold px-1.5 py-1.5 rounded-sm transition-all duration-200 ${filters.flavorNotes.includes(note) ? 'bg-amber-500 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}>
                                                     {note}
                                                 </button>
                                             ))}
@@ -877,8 +875,8 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                             </div>
                             {/* Panel Actions */}
                             <div className="flex gap-3 pt-4 mt-4 border-t border-gray-700">
-                                <button onClick={handleClearFilters} className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors flex-grow">Clear Filters</button>
-                                <button onClick={() => setIsFilterPanelOpen(false)} className="bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors flex-grow">Done</button>
+                                <button onClick={handleClearFilters} className="bg-gray-600 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-500 transition-colors flex-grow">Clear Filters</button>
+                                <button onClick={() => setIsFilterPanelOpen(false)} className="bg-amber-500 text-white font-bold py-2 px-4 rounded-md hover:bg-amber-600 transition-colors flex-grow">Done</button>
                             </div>
                         </div>
                     </div>

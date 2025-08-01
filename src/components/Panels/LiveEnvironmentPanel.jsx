@@ -24,7 +24,7 @@ const LiveEnvironmentPanel = ({ humidors, theme }) => {
     const firstHumidor = humidors[0];
 
     return (
-        <div className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden">
+        <div className="bg-gray-800/50 border border-gray-700 rounded-md overflow-hidden">
             <button onClick={() => setIsCollapsed(!isCollapsed)} className="w-full p-4 flex justify-between items-center">
                 <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>
                     <Thermometer className={`w-5 h-5 mr-2 ${theme.primary}`} /> Live Environment

@@ -81,17 +81,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ChevronLeft, LoaderCircle, Sparkles, Tag, Edit, Award } from 'lucide-react';
-import { strengthOptions, commonCigarDimensions, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../../constants/cigarOptions';
-import InputField from '../UI/InputField';
-import TextAreaField from '../UI/TextAreaField';
-import AutoCompleteInputField from '../UI/AutoCompleteInputField';
-import QuantityControl from '../UI/QuantityControl';
-import SmartImageModal from '../Modals/Composite/SmartImageModal';
-import GeminiModal from '../Modals/Content/GeminiModal';
-import FlavorNotesModal from '../Modals/Forms/FlavorNotesModal';
-import { getFlavorTagColor } from '../../utils/colorUtils';
-import { callGeminiAPI } from '../../services/geminiService';
-import StarRating from '../UI/StarRating';
+import { strengthOptions, commonCigarDimensions, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../../../constants/cigarOptions';
+import InputField from '../../UI/InputField';
+import TextAreaField from '../../UI/TextAreaField';
+import AutoCompleteInputField from '../../UI/AutoCompleteInputField';
+import QuantityControl from '../../UI/QuantityControl';
+import SmartImageModal from '../../Modals/Composite/SmartImageModal';
+import GeminiModal from '../../Modals/Content/GeminiModal';
+import FlavorNotesModal from '../../Modals/Forms/FlavorNotesModal';
+import { getFlavorTagColor } from '../../../utils/colorUtils';
+import { callGeminiAPI } from '../../../services/geminiService';
+import StarRating from '../../UI/StarRating';
 
 // Comprehensive tobacco country mapping for puro detection
 const TOBACCO_COUNTRY_MAPPINGS = {

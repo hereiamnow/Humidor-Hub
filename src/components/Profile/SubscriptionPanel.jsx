@@ -3,7 +3,7 @@ import { Zap } from 'lucide-react';
 
 const SubscriptionPanel = ({ subscription }) => {
     return (
-        <div id="pnlSubscription" className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 p-4 rounded-xl border border-amber-400/50 shadow-lg">
+        <div id="pnlSubscription" className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 p-4 rounded-md border border-amber-400/50 shadow-lg">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-amber-200 text-lg flex items-center">
                     <Zap className="w-5 h-5 mr-2" /> Subscription

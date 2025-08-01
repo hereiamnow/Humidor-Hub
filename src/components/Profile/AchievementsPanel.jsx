@@ -38,7 +38,7 @@ const AchievementsPanel = ({ cigars, humidors, theme }) => {
     );
 
     return (
-        <div id="pnlAchievements" className="bg-gray-800/50 rounded-xl overflow-hidden">
+        <div id="pnlAchievements" className="bg-gray-800/50 rounded-md overflow-hidden">
             <button
                 onClick={() => setIsAchievementsCollapsed(!isAchievementsCollapsed)}
                 className="w-full p-4 flex justify-between items-center"

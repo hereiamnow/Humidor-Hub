@@ -16,7 +16,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 import {
     Award,
     ChevronLeft,
@@ -31,35 +31,35 @@ import {
 } from 'lucide-react';
 
 // Import UI utility functions
-import { getRatingColor } from '../utils/getRatingColor';
-import { calculateAge } from '../utils/calculateAge';
-import { getFlavorTagColor } from '../../utils/colorUtils';
+import { getRatingColor } from '../../utils/getRatingColor';
+import { calculateAge } from '../../utils/calculateAge';
+import { getFlavorTagColor } from '../../../utils/colorUtils';
 import { formatDate } from '../../utils/formatUtils';
 
 // Import modal components for dialogs
-import GeminiModal from '../Modals/Content/GeminiModal';
-import FlavorNotesModal from '../Modals/Forms/FlavorNotesModal';
-import DeleteCigarsModal from '../Modals/Actions/DeleteCigarsModal';
-import ExportModal from '../Modals/Data/ExportModal';
+import GeminiModal from '../../Modals/Content/GeminiModal';
+import FlavorNotesModal from '../../Modals/Forms/FlavorNotesModal';
+import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal';
+import ExportModal from '../../Modals/Data/ExportModal';
 
 // Import menu and journal components
-import CigarActionMenu from '../Menus/CigarActionMenu';
-import JournalEntryCard from '../Journal/JournalEntryCard';
+import CigarActionMenu from '../../Menus/CigarActionMenu';
+import JournalEntryCard from '../../Journal/JournalEntryCard';
 
 // Import Gemini API service
-import { callGeminiAPI } from '../../services/geminiService';
+import { callGeminiAPI } from '../../../services/geminiService';
 
 // Import StarRating UI component
-import StarRating from '../UI/StarRating';
+import StarRating from '../../UI/StarRating';
 
 // Import Gemini key utility
-import { hasValidGeminiKey } from '../../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../../utils/geminiKeyUtils';
 
 // Import IsPuroBadge component
-import IsPuroBadge from '../UI/IsPuroBadge';
+import IsPuroBadge from '../../UI/IsPuroBadge';
 
 // Import RatingBadge component
-import RatingBadge from '../UI/RatingBadge';
+import RatingBadge from '../../UI/RatingBadge';
 
 // Main CigarDetail component
 const CigarDetail = ({ cigar, navigate, db, appId, userId, journalEntries, theme }) => {
@@ -272,7 +272,7 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                 )}
 
                 {/* Cigar Profile Panel */}
-                <div className="bg-gray-800/50 p-4 rounded-xl space-y-4">
+                <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
 
                     {/* Profile header */}
                     <div className="flex justify-between items-center">
@@ -348,7 +348,7 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                 </div>
 
                 {/* Journal History Panel */}
-                <div className="bg-gray-800/50 p-4 rounded-xl space-y-4">
+                <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
                     <h3 className="font-bold text-amber-300 text-lg flex items-center"><BookText className="w-5 h-5 mr-2" /> Journal History</h3>
                     {journalEntriesForCigar.length > 0 ? (
                         <div className="space-y-4">
@@ -375,7 +375,7 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                 {/* Roxy's Corner Collapsible Panel - Only show when user has valid Gemini API key */}
                 {hasGeminiKey && !keyCheckLoading && (
                     <div id="pnlRoxysCorner"
-                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-xl overflow-hidden`}>
+                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden`}>
                         <button onClick={() => setIsRoxyOpen(!isRoxyOpen)} className="w-full p-4 flex justify-between items-center">
                             <h3 className="font-bold text-amber-300 text-lg flex items-center"><Wind className="w-5 h-5 mr-2" /> Roxy's Corner</h3>
                             <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${isRoxyOpen ? 'rotate-180' : ''}`} />

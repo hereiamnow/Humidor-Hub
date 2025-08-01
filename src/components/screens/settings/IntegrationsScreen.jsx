@@ -17,7 +17,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, LoaderCircle, Zap } from 'lucide-react';
 
 // Import services
-import  {fetchGoveeDevices} from '../../services/goveeService'
+import  {fetchGoveeDevices} from '../../../services/goveeService'
 
 const IntegrationsScreen = ({ navigate, goveeApiKey, setGoveeApiKey, goveeDevices, setGoveeDevices, theme }) => {
     const [key, setKey] = useState(goveeApiKey || '');
@@ -67,7 +67,7 @@ const IntegrationsScreen = ({ navigate, goveeApiKey, setGoveeApiKey, goveeDevice
                 <h1 className={`text-3xl font-bold ${theme.text}`}>Integrations</h1>
             </div>
             <div className="space-y-6">
-                <div className={`${theme.card} p-4 rounded-xl`}>
+                <div className={`${theme.card} p-4 rounded-md`}>
                     <h3 className="font-bold text-xl text-amber-300 mb-2">Govee</h3>
                     <p className={`${theme.subtleText} text-sm mb-4`}>Connect your Govee account to automatically sync temperature and humidity data.</p>
                     <div className="space-y-2">

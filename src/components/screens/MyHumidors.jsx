@@ -18,6 +18,8 @@ import { parseHumidorSize } from '../../utils/formatUtils';
 import PageHeader from '../UI/PageHeader';
 
 const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, preFilterWrapper, preFilterStrength, preFilterCountry }) => { // July 5, 2025 - 2:00:00 AM CDT: Added preFilterCountry prop
+    console.log('HumidorsScreen: Component initialized', { cigars: cigars?.length, humidors: humidors?.length, theme });
+
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [activeWrapperFilter, setActiveWrapperFilter] = useState(preFilterWrapper || '');
@@ -29,9 +31,17 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
     // New function to handle clearing filters.
     // It navigates to the Dashboard if a pre-filter was active.
     const handleClearFilter = () => {
+        console.log('HumidorsScreen: handleClearFilter called', {
+            preFilterWrapper,
+            preFilterStrength,
+            preFilterCountry
+        });
+
         if (preFilterWrapper || preFilterStrength || preFilterCountry) {
+            console.log('HumidorsScreen: Navigating to Dashboard due to pre-filter');
             navigate('Dashboard');
         } else {
+            console.log('HumidorsScreen: Clearing local filters');
             // Clear local filters if they were not set via props
             setActiveWrapperFilter('');
             setActiveStrengthFilter('');
@@ -41,78 +51,126 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
 
     // Effect to update activeWrapperFilter when preFilterWrapper prop changes
     useEffect(() => {
+        console.log('HumidorsScreen: preFilterWrapper effect triggered', { preFilterWrapper });
+
         if (preFilterWrapper) {
+            console.log('HumidorsScreen: Setting wrapper filter and clearing other filters');
             setActiveWrapperFilter(preFilterWrapper);
             setSearchQuery(''); // Clear general search if a wrapper filter is applied
             setActiveStrengthFilter(''); // Clear strength filter if wrapper filter is applied
             setActiveCountryFilter(''); // July 5, 2025 - 2:00:00 AM CDT: Clear country filter if wrapper filter is applied
         } else {
+            console.log('HumidorsScreen: Clearing wrapper filter');
             setActiveWrapperFilter(''); // Clear filter if preFilterWrapper is removed
         }
     }, [preFilterWrapper]);
 
     // Effect to update activeStrengthFilter when preFilterStrength prop changes
     useEffect(() => {
+        console.log('HumidorsScreen: preFilterStrength effect triggered', { preFilterStrength });
+
         if (preFilterStrength) {
+            console.log('HumidorsScreen: Setting strength filter and clearing other filters');
             setActiveStrengthFilter(preFilterStrength);
             setSearchQuery(''); // Clear general search if a strength filter is applied
             setActiveWrapperFilter(''); // Clear wrapper filter if strength filter is applied
             setActiveCountryFilter(''); // July 5, 2025 - 2:00:00 AM CDT: Clear country filter if strength filter is applied
         } else {
+            console.log('HumidorsScreen: Clearing strength filter');
             setActiveStrengthFilter(''); // Clear filter if preFilterStrength is removed
         }
     }, [preFilterStrength]);
 
     // Effect to update activeCountryFilter when preFilterCountry prop changes
     useEffect(() => {
+        console.log('HumidorsScreen: preFilterCountry effect triggered', { preFilterCountry });
+
         if (preFilterCountry) {
+            console.log('HumidorsScreen: Setting country filter and clearing other filters');
             setActiveCountryFilter(preFilterCountry);
             setSearchQuery(''); // Clear general search if a country filter is applied
             setActiveWrapperFilter(''); // Clear wrapper filter if country filter is applied
             setActiveStrengthFilter(''); // Clear strength filter if country filter is applied
         } else {
+            console.log('HumidorsScreen: Clearing country filter');
             setActiveCountryFilter(''); // Clear filter if preFilterCountry is removed
         }
     }, [preFilterCountry]);
 
     const handleSearchChange = (e) => {
         const query = e.target.value;
+        console.log('HumidorsScreen: handleSearchChange called', { query, previousQuery: searchQuery });
+
         setSearchQuery(query);
         if (query.length > 1) {
             const allSuggestions = cigars.map(c => c.brand).concat(cigars.map(c => c.name)).filter(name => name && name.toLowerCase().includes(query.toLowerCase()));
             const uniqueSuggestions = [...new Set(allSuggestions)];
-            setSuggestions(uniqueSuggestions.slice(0, 5));
+            const finalSuggestions = uniqueSuggestions.slice(0, 5);
+
+            console.log('HumidorsScreen: Generated suggestions', {
+                suggestionsCount: finalSuggestions.length,
+                suggestions: finalSuggestions
+            });
+
+            setSuggestions(finalSuggestions);
         } else {
+            console.log('HumidorsScreen: Clearing suggestions (query too short)');
             setSuggestions([]);
         }
     };
 
     const handleClearSearch = () => {
+        console.log('HumidorsScreen: handleClearSearch called');
         setSearchQuery('');
         setSuggestions([]);
     };
 
     const handleSuggestionClick = (suggestion) => {
+        console.log('HumidorsScreen: handleSuggestionClick called', { suggestion });
         setSearchQuery(suggestion);
         setSuggestions([]);
     };
 
     const filteredCigars = useMemo(() => {
+        console.log('HumidorsScreen: filteredCigars useMemo triggered', {
+            totalCigars: cigars.length,
+            searchQuery,
+            activeWrapperFilter,
+            activeStrengthFilter,
+            activeCountryFilter
+        });
+
         let currentCigars = cigars;
+        const initialCount = currentCigars.length;
+
         if (searchQuery) {
             currentCigars = currentCigars.filter(cigar =>
                 cigar.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 cigar.brand.toLowerCase().includes(searchQuery.toLowerCase())
             );
+            console.log('HumidorsScreen: After search filter', {
+                searchQuery,
+                beforeCount: initialCount,
+                afterCount: currentCigars.length
+            });
         }
+
         // Apply wrapper filter
         if (activeWrapperFilter) {
+            const beforeWrapperCount = currentCigars.length;
             currentCigars = currentCigars.filter(cigar =>
                 cigar.wrapper && cigar.wrapper.toLowerCase() === activeWrapperFilter.toLowerCase()
             );
+            console.log('HumidorsScreen: After wrapper filter', {
+                activeWrapperFilter,
+                beforeCount: beforeWrapperCount,
+                afterCount: currentCigars.length
+            });
         }
+
         // Apply strength filter
         if (activeStrengthFilter) {
+            const beforeStrengthCount = currentCigars.length;
             if (activeStrengthFilter === 'Flavored') {
                 currentCigars = currentCigars.filter(cigar => cigar.flavorNotes && cigar.flavorNotes.length > 0);
             } else {
@@ -120,9 +178,15 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     cigar.strength && cigar.strength.toLowerCase() === activeStrengthFilter.toLowerCase()
                 );
             }
+            console.log('HumidorsScreen: After strength filter', {
+                activeStrengthFilter,
+                beforeCount: beforeStrengthCount,
+                afterCount: currentCigars.length
+            });
         }
 
         if (activeCountryFilter) {
+            const beforeCountryCount = currentCigars.length;
             if (activeCountryFilter === 'Other') {
                 // Filter for cigars whose country is not explicitly listed in countryCategories
                 const explicitCountries = ['dominican republic', 'nicaragua', 'honduras', 'usa', 'cuba'];
@@ -134,17 +198,37 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     cigar.country && cigar.country.toLowerCase() === activeCountryFilter.toLowerCase()
                 );
             }
+            console.log('HumidorsScreen: After country filter', {
+                activeCountryFilter,
+                beforeCount: beforeCountryCount,
+                afterCount: currentCigars.length
+            });
         }
+
+        console.log('HumidorsScreen: Final filtered cigars', {
+            finalCount: currentCigars.length,
+            originalCount: cigars.length
+        });
+
         return currentCigars;
     }, [cigars, searchQuery, activeWrapperFilter, activeStrengthFilter, activeCountryFilter]);
 
     const totalUniqueCigars = filteredCigars.length;
     const totalQuantity = filteredCigars.reduce((sum, c) => sum + c.quantity, 0);
 
+    console.log('HumidorsScreen: Rendering with filters', {
+        searchQuery,
+        activeWrapperFilter,
+        activeStrengthFilter,
+        activeCountryFilter,
+        filteredCigarsCount: filteredCigars.length
+    });
+
     return (
-        <div 
-        id="pnlContentWrapper_HumidorsScreen" 
-        className="p-4 pb-24">
+        // Main content wrapper panel for the Humidors screen
+        <div
+            id="pnlContentWrapper_HumidorsScreen"
+            className="p-4 pb-24">
 
             <PageHeader
                 icon={Box}
@@ -153,7 +237,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 theme={theme}
             />
 
-            <div className="relative mb-4">
+
+            {/* Search input panel with suggestions dropdown */}
+            <div id="pnlSearchInput" className="relative mb-4">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input type="text" placeholder="Search all cigars..." value={searchQuery} onChange={handleSearchChange}
                     className="w-full bg-gray-800 border border-gray-700 rounded-md py-3 pl-12 pr-12 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500" />
@@ -173,8 +259,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 )}
             </div>
 
+            {/* Active wrapper filter display panel */}
             {activeWrapperFilter && (
-                <div className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
+                <div id="pnlWrapperFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
                     <div>
                         <span className="text-amber-200 text-sm">Filtering by: <span className="font-bold text-amber-100">{activeWrapperFilter} Wrapper</span></span>
                         <p className="text-xs text-amber-300">Found {filteredCigars.length} matching cigars.</p>
@@ -183,8 +270,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 </div>
             )}
 
+            {/* Active strength filter display panel */}
             {activeStrengthFilter && (
-                <div className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
+                <div id="pnlStrengthFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
                     <div>
                         <span className="text-amber-200 text-sm">Filtering by: <span className="font-bold text-amber-100">{activeStrengthFilter === 'Flavored' ? 'Flavored Cigars' : `${activeStrengthFilter} Strength`}</span></span>
                         <p className="text-xs text-amber-300">Found {filteredCigars.length} matching cigars.</p>
@@ -193,8 +281,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 </div>
             )}
 
+            {/* Active country filter display panel */}
             {activeCountryFilter && (
-                <div className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
+                <div id="pnlCountryFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
                     <div>
                         <span className="text-amber-200 text-sm">Filtering by: <span className="font-bold text-amber-100">{activeCountryFilter === 'Other' ? 'Other Countries' : `${activeCountryFilter}`}</span></span>
                         <p className="text-xs text-amber-300">Found {filteredCigars.length} matching cigars.</p>
@@ -205,7 +294,8 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
 
             {searchQuery === '' && !activeWrapperFilter && !activeStrengthFilter && !activeCountryFilter ? (
                 <>
-                    <div className="flex justify-between items-center mb-6 px-2">
+                    {/* Main humidor overview panel with stats and toolbar */}
+                    <div id="pnlHumidorOverview" className="flex justify-between items-center mb-6 px-2">
 
                         <div id="pnlHumidorStatsNum" className="relative group">
                             <div className="bg-gray-800/60 border border-gray-700/50 rounded-lg px-3 py-2 backdrop-blur-sm">
@@ -237,8 +327,8 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             </div>
                         </div>
 
-                        {/* toolbar-buttons */}
-                        <div id="toolbar-buttons" className="flex justify-center gap-4">
+                        {/* Toolbar buttons panel for browsing and adding humidors */}
+                        <div id="pnlToolbarButtons" className="flex justify-center gap-4">
                             <div className="relative group">
                                 <button
                                     id="btnBrowseByWrapper"
@@ -281,7 +371,10 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             <div className="relative group">
                                 <button
                                     id="btnAddHumidor"
-                                    onClick={() => navigate('AddHumidor')}
+                                    onClick={() => {
+                                        console.log('HumidorsScreen: Add Humidor button clicked');
+                                        navigate('AddHumidor');
+                                    }}
                                     className="p-3 bg-amber-500 border border-amber-400 rounded-full text-white hover:bg-amber-600 transition-colors">
                                     <Plus className="w-5 h-5" />
                                 </button>
@@ -296,7 +389,8 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     </div>
 
 
-                    <div className="space-y-6">
+                    {/* Humidor cards display panel */}
+                    <div id="pnlHumidorCards" className="space-y-6">
                         {humidors.map(humidor => {
                             const cigarsInHumidor = cigars.filter(c => c.humidorId === humidor.id);
                             const cigarCount = cigarsInHumidor.reduce((sum, c) => sum + c.quantity, 0);
@@ -305,8 +399,22 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             const percentageFull = humidorCapacity > 0 ? Math.min(Math.round((cigarCount / humidorCapacity) * 100), 100) : 0;
                             const capacityColor = percentageFull > 90 ? 'bg-red-500' : theme.primaryBg;
 
+                            console.log('HumidorsScreen: Rendering humidor card', {
+                                humidorId: humidor.id,
+                                name: humidor.name,
+                                cigarsInHumidor: cigarsInHumidor.length,
+                                cigarCount,
+                                humidorValue: humidorValue.toFixed(2),
+                                humidorCapacity,
+                                percentageFull
+                            });
+
                             return (
-                                <div key={humidor.id} className="bg-gray-800/50 rounded-xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-amber-500/20 transition-shadow duration-300" onClick={() => navigate('MyHumidor', { humidorId: humidor.id })}>
+                                // Individual humidor card panel
+                                <div key={humidor.id} id={`pnlHumidorCard_${humidor.id}`} className="bg-gray-800/50 rounded-md overflow-hidden group cursor-pointer shadow-lg hover:shadow-amber-500/20 transition-shadow duration-300" onClick={() => {
+                                    console.log('HumidorsScreen: Humidor card clicked', { humidorId: humidor.id, name: humidor.name });
+                                    navigate('MyHumidor', { humidorId: humidor.id });
+                                }}>
                                     <div className="relative">
                                         <img src={humidor.image} alt={humidor.name} className="w-full h-32 object-cover" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
@@ -350,12 +458,17 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     </div>
                 </>
             ) : (
-                <div className="flex flex-col gap-4">
-                    {filteredCigars.map(cigar => (
-                        <ListCigarCard key={cigar.id} cigar={cigar} navigate={navigate} />
-                    ))}
+                // Filtered cigars display panel
+                <div id="pnlFilteredCigars" className="flex flex-col gap-4">
+                    {filteredCigars.map(cigar => {
+                        console.log('HumidorsScreen: Rendering filtered cigar', { cigarId: cigar.id, name: cigar.name });
+                        return (
+                            <ListCigarCard key={cigar.id} cigar={cigar} navigate={navigate} />
+                        );
+                    })}
                     {filteredCigars.length === 0 && (
-                        <div className="text-center py-10">
+                        // No results panel
+                        <div id="pnlNoResults" className="text-center py-10">
                             <p className="text-gray-400">No cigars match your search.</p>
                         </div>
                     )}

@@ -151,7 +151,7 @@ const InteractiveWorldMap = ({ cigars, navigate, theme, isCollapsed, onToggle })
     };
 
     return (
-        <div id="pnlBrowseWorldMap" className={`${theme.card} border ${theme.borderColor} rounded-xl overflow-hidden`}>
+        <div id="pnlBrowseWorldMap" className={`${theme.card} border ${theme.borderColor} rounded-md overflow-hidden`}>
             {/* Collapsible header with toggle functionality */}
             <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
                 <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>

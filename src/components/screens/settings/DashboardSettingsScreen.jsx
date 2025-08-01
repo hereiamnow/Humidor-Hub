@@ -35,7 +35,7 @@ const DashboardSettingsScreen = ({ navigate, theme, dashboardPanelVisibility, se
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2"><ChevronLeft className={`w-7 h-7 ${theme.text}`} /></button>
                 <h1 className={`text-3xl font-bold ${theme.text}`}>Dashboard Components</h1>
             </div>
-            <div className="bg-gray-800/50 p-4 rounded-xl space-y-2">
+            <div className="bg-gray-800/50 p-4 rounded-md space-y-2">
                 <ToggleSwitch
                     label="Inventory Analysis"
                     isChecked={dashboardPanelVisibility.showInventoryAnalysis}

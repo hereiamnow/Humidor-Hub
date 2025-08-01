@@ -12,7 +12,7 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
-import FontPicker from '../Settings/FontPicker';
+import FontPicker from './FontPicker';
 
 const FontsScreen = ({ navigate, selectedFont, setSelectedFont, theme }) => {
     // Local state for the font preview. Initialized with the currently active app font.

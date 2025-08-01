@@ -196,7 +196,7 @@ export default function GeminiKeySection() {
     // Show loading state while auth is loading
     if (authLoading) {
         return (
-            <section className="p-6 bg-gray-800/50 rounded-xl shadow-lg max-w-md mx-auto">
+            <section className="p-6 bg-gray-800/50 rounded-md shadow-lg max-w-md mx-auto">
                 <div className="flex items-center justify-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-400"></div>
                     <span className="ml-3 text-gray-400">Loading...</span>
@@ -208,7 +208,7 @@ export default function GeminiKeySection() {
     // Show authentication required message if user is not signed in
     if (!user) {
         return (
-            <section className="p-6 bg-gray-800/50 rounded-xl shadow-lg max-w-md mx-auto">
+            <section className="p-6 bg-gray-800/50 rounded-md shadow-lg max-w-md mx-auto">
                 <h2 className="text-xl font-semibold text-white">
                     Gemini API Key
                 </h2>
@@ -225,7 +225,7 @@ export default function GeminiKeySection() {
     }
 
     return (
-        <section className="p-6 bg-gray-800/50 rounded-xl shadow-lg max-w-md mx-auto">
+        <section className="p-6 bg-gray-800/50 rounded-md shadow-lg max-w-md mx-auto">
             <h2 className="text-xl font-semibold text-white">
                 Gemini API Key
             </h2>

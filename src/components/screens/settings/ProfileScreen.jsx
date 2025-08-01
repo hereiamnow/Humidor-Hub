@@ -23,9 +23,9 @@
 
 import React from 'react';
 import { ChevronLeft, LogOut } from 'lucide-react';
-import AchievementsPanel from '../Profile/AchievementsPanel';
-import SubscriptionPanel from '../Profile/SubscriptionPanel';
-import GeminiKeySection from '../../services/GeminiKeySection';
+import AchievementsPanel from '../../Profile/AchievementsPanel';
+import SubscriptionPanel from '../../Profile/SubscriptionPanel';
+import GeminiKeySection from '../../../services/GeminiKeySection';
 
 const ProfileScreen = ({ navigate, cigars, humidors, theme, userId, auth }) => {
     console.log('ProfileScreen rendered with props:', {
@@ -91,7 +91,7 @@ const ProfileScreen = ({ navigate, cigars, humidors, theme, userId, auth }) => {
             </div>
             <div className="space-y-6">
                 {/* --- Profile Info Panel --- */}
-                <div id="pnlProfileInfo" className="flex flex-col items-center p-6 bg-gray-800/50 rounded-xl">
+                <div id="pnlProfileInfo" className="flex flex-col items-center p-6 bg-gray-800/50 rounded-md">
                     <img src={photoURL} alt="User Avatar" className="w-24 h-24 rounded-full border-4 border-amber-400" />
                     <h2 className="text-2xl font-bold text-white mt-4">{displayName}</h2>
                     <p className="text-gray-400">{email}</p>

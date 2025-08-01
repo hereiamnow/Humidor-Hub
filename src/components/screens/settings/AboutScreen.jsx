@@ -37,7 +37,7 @@ const AboutScreen = ({ navigate }) => {
                 <h1 className="text-3xl font-bold text-white">About Humidor Hub</h1>
             </div>
             <div className="space-y-6">
-                <div className="bg-gray-800/50 p-6 rounded-xl text-center">
+                <div className="bg-gray-800/50 p-6 rounded-md text-center">
                     <div className="flex flex-col items-center">
                         <Box className="w-16 h-16 text-amber-400 mb-4" />
                         <h2 className="text-2xl font-bold text-white">Humidor Hub</h2>
@@ -53,7 +53,7 @@ const AboutScreen = ({ navigate }) => {
                     </div>
                 </div>
 
-                <div className="bg-gray-800/50 p-6 rounded-xl">
+                <div className="bg-gray-800/50 p-6 rounded-md">
                     <h3 className="font-bold text-amber-300 text-lg mb-4">Acknowledgements & Links</h3>
                     <div className="space-y-3">
                         <p className="text-sm text-gray-400">This app is built with amazing open-source technology.</p>

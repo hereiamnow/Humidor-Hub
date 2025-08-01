@@ -30,9 +30,9 @@
 import React, { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { ChevronLeft, MapPin } from 'lucide-react';
-import InputField from '../UI/InputField';
-import TextAreaField from '../UI/TextAreaField';
-import SmartImageModal from '../Modals/Composite/SmartImageModal';
+import InputField from '../../UI/InputField';
+import TextAreaField from '../../UI/TextAreaField';
+import SmartImageModal from '../../Modals/Composite/SmartImageModal';
 
 const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeDevices, theme }) => {
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
@@ -123,7 +123,7 @@ const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeD
                     <InputField name="location" label="Location" placeholder="e.g., Office" value={formData.location} onChange={handleInputChange} theme={theme} />
                 </div>
                 {/* Environment Tracking */}
-                <div pnl="pnlEnvironmentTracking" className={`${theme.card} p-4 rounded-xl`}>
+                <div pnl="pnlEnvironmentTracking" className={`${theme.card} p-4 rounded-md`}>
                     <h3 className="font-bold text-xl text-amber-300 mb-4 flex items-center"><MapPin className="w-5 h-5 mr-2" /> Environment Tracking</h3>
                     <div className="space-y-4">
                         <div>

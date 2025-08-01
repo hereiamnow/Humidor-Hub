@@ -95,7 +95,7 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
 
     return (
 
-        <div id="pnlInventoryAnalysisPanel" className={`${theme.card} border ${theme.borderColor} rounded-xl overflow-hidden`}>
+        <div id="pnlInventoryAnalysisPanel" className={`${theme.card} border ${theme.borderColor} rounded-md overflow-hidden`}>
 
 
 

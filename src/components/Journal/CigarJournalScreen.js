@@ -183,7 +183,7 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-10 bg-gray-800/50 rounded-xl">
+                <div className="text-center py-10 bg-gray-800/50 rounded-md">
                     <BookText className="w-12 h-12 mx-auto text-gray-500 mb-4" />
                     <h3 className="font-bold text-white">Your Journal is Empty</h3>
                     <p className="text-gray-400 mt-2">Smoke a cigar and log your experience to start your journal.</p>

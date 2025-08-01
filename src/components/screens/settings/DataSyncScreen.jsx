@@ -17,14 +17,14 @@ import React, { useState } from 'react';
 import { ChevronLeft, Cigarette, Box, Thermometer, UploadCloud, Download } from 'lucide-react';
 
 // Import UI components
-import CollapsiblePanel from '../UI/CollapsiblePanel';
+import CollapsiblePanel from '../../UI/CollapsiblePanel';
 
 // Import modal components
-import ImportCsvModal from '../Modals/Data/ImportCsvModal';
-import ExportModal from '../Modals/Data/ExportModal';
+import ImportCsvModal from '../../Modals/Data/ImportCsvModal';
+import ExportModal from '../../Modals/Data/ExportModal';
 
 // Import utilities
-import { downloadFile } from '../../utils/fileUtils';
+import { downloadFile } from '../../../utils/fileUtils';
 
 const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);

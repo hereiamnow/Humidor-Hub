@@ -57,7 +57,7 @@ const GridJournalEntryCard = ({ entry, onEdit, onDelete, theme }) => {
     );
 
     return (
-        <div className={`${theme.card} rounded-xl overflow-hidden group cursor-pointer transition-all duration-200 relative`}>
+        <div className={`${theme.card} rounded-md overflow-hidden group cursor-pointer transition-all duration-200 relative`}>
             {/* Header with date */}
             <div className="bg-gray-900/50 px-3 py-2 border-b border-gray-700/50">
                 <div className="flex items-center justify-between">

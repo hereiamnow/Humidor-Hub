@@ -45,7 +45,7 @@ const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect, th
 
     return (
         <div className="relative" onClick={clickHandler}>
-            <div className={`bg-gray-800/50 rounded-xl overflow-hidden group cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
+            <div className={`bg-gray-800/50 rounded-md overflow-hidden group cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
                 <div className="relative">
                     <img
                         src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?text=${cigar.brand.replace(/\s/g, '+')}`}

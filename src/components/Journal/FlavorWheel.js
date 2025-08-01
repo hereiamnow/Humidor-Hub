@@ -82,7 +82,7 @@ const FlavorWheel = ({ onFlavorSelect }) => {
 
             {selectedCategory && (
                 <div className="mt-6 w-full max-w-sm">
-                    <div className="flex flex-wrap justify-center gap-2 p-4 bg-gray-800/50 rounded-xl">
+                    <div className="flex flex-wrap justify-center gap-2 p-4 bg-gray-800/50 rounded-md">
                         {flavorData[selectedCategory].map((flavor) => (
                             <button
                                 key={flavor}
