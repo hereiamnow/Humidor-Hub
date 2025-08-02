@@ -12,7 +12,7 @@
 // browsing with real-time search suggestions and filter management.
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Box, Droplets, Filter, LayoutGrid, Leaf, List, MapPin, Plus, Search, ShieldPlus, Thermometer, X } from 'lucide-react';
+import { Box, Droplets, Filter, LayoutGrid, Leaf, List, MapPin, Plus, Search, ShieldPlus, Thermometer, Wind, X } from 'lucide-react';
 
 import ListCigarCard from '../Cigar/ListCigarCard';
 import GridCigarCard from '../Cigar/GridCigarCard';
@@ -742,6 +742,26 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     )}
                 </div>
             )}
+            {/* ===== ROXYS CORNER - NO HUMIDORS MESSAGE ===== */}
+            {/* Displayed when user has no humidors - encourages adding a humidor */}            
+            {humidors.length === 0 && (
+                <div
+                    id="pnlRoxysCorner_NoHumidors"
+                    className={`bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left`}>
+                    <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                        <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
+                    </h3>
+                    <p className="text-amber-200 text-sm mb-4">
+                        Ruff! You need to add a humidor before you can add any cigars. Let's get your first one set up!
+                    </p>
+                    <button
+                        onClick={() => navigate('AddHumidor')}
+                        className="flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors w-full"
+                    >
+                        <Plus className="w-4 h-4" /> Add a Humidor
+                    </button>
+                </div>
+            )}
 
             {/* Browse By Panel Component */}
             <BrowseByPanel
@@ -755,6 +775,8 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 itemLabelKey="label"
                 itemQuantityKey="quantity"
             />
+
+
         </div>
     );
 };

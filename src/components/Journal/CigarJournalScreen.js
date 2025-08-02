@@ -21,7 +21,7 @@
  *
  */
 import React, { useMemo, useState } from 'react';
-import { BookText, Search, X, Trash2, LayoutGrid, List, Plus } from 'lucide-react';
+import { BookText, Search, X, Trash2, LayoutGrid, List, Plus, Wind } from 'lucide-react';
 import { doc, deleteDoc } from 'firebase/firestore';
 import JournalEntryCard from './JournalEntryCard';
 import GridJournalEntryCard from './GridJournalEntryCard';
@@ -81,7 +81,12 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 subtitle="Track your smoking experiences and tasting notes"
                 theme={theme}
             />
-            <div className="relative mb-6">
+
+
+            {/* Search Wrapper */}
+            <div
+                id="pnlSearchWrapper"
+                className="relative mb-6">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                     type="text"
@@ -95,34 +100,42 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                         <X className="w-5 h-5" />
                     </button>
                 )}
-            </div>
+            </div>{/* End Search Wrapper */}
 
-            {/* View Controls Toolbar */}
-            <div className="flex justify-between items-center mb-6 px-2">
-                {/* View Toggle Buttons */}
-                <div className="flex gap-2">
-                    <div className="relative group">
-                        <button
-                            onClick={() => handleViewModeChange('grid')}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
-                                    ? 'bg-amber-500 text-white border-amber-400'
-                                    : `${theme.primary} hover:bg-gray-700`
-                                }`}
-                        >
-                            <LayoutGrid className="w-5 h-5" />
-                        </button>
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                            Grid View
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                        </div>
-                    </div>
+            {/* toolbar */}
+            <div
+                id="toolbar"
+                className="flex items-center gap-4 mb-6 px-2 justify-end">
+                {/* Grid View Button */}
+                <div
+                    id="btnGridWrapper"
+                    className="relative group flex items-center gap-4">
+                    <button
+                        id="btnGrid"
+                        onClick={() => handleViewModeChange('grid')}
+                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
+                            ? 'bg-amber-500 text-white border-amber-400'
+                            : `${theme.primary} hover:bg-gray-700`
+                            }`}
+                    >
+                        <LayoutGrid className="w-5 h-5" />
+                    </button>
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                        Grid View
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                    </div>{/* End pnlLayoutGrid */}
 
-                    <div className="relative group">
+
+
+                    {/* List View Button */}
+                    <div
+                        id="pnlLayoutList"
+                        className="relative group">
                         <button
                             onClick={() => handleViewModeChange('list')}
                             className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
-                                    ? 'bg-amber-500 text-white border-amber-400'
-                                    : `${theme.primary} hover:bg-gray-700`
+                                ? 'bg-amber-500 text-white border-amber-400'
+                                : `${theme.primary} hover:bg-gray-700`
                                 }`}
                         >
                             <List className="w-5 h-5" />
@@ -132,10 +145,15 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
                         </div>
                     </div>
+
+
+
                 </div>
 
                 {/* Add Journal Entry Button */}
-                <div className="relative group">
+                <div
+                    id="pnlAddJournalEntryButton"
+                    className="relative group">
                     <button
                         onClick={handleAddJournalEntry}
                         className="p-3 bg-amber-500 border border-amber-400 rounded-full text-white hover:bg-amber-600 transition-colors"
@@ -150,82 +168,94 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 </div>
             </div>
 
-            {/* Journal Entries Container - Conditional rendering based on view mode */}
-            {filteredEntries.length > 0 ? (
-                <div className={viewMode === 'grid'
-                    ? "grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4"
-                    : "space-y-4"
-                }>
-                    {filteredEntries.map(entry => (
-                        viewMode === 'grid' ? (
-                            <GridJournalEntryCard
-                                key={entry.id}
-                                entry={entry}
-                                onEdit={handleEdit}
-                                onDelete={() => {
-                                    setEntryToDelete(entry);
-                                    setIsDeleteModalOpen(true);
-                                }}
-                                theme={theme}
-                            />
-                        ) : (
-                            <JournalEntryCard
-                                key={entry.id}
-                                entry={entry}
-                                onEdit={handleEdit}
-                                onDelete={() => {
-                                    setEntryToDelete(entry);
-                                    setIsDeleteModalOpen(true);
-                                }}
-                                theme={theme}
-                            />
-                        )
-                    ))}
-                </div>
-            ) : (
-                <div className="text-center py-10 bg-gray-800/50 rounded-md">
-                    <BookText className="w-12 h-12 mx-auto text-gray-500 mb-4" />
-                    <h3 className="font-bold text-white">Your Journal is Empty</h3>
-                    <p className="text-gray-400 mt-2">Smoke a cigar and log your experience to start your journal.</p>
-                </div>
-            )}
 
-            {/* Delete Confirmation Modal */}
-            {isDeleteModalOpen && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[100]" onClick={() => setIsDeleteModalOpen(false)}>
-                    <div className="bg-gray-800 rounded-2xl p-6 w-full max-w-sm flex flex-col" onClick={e => e.stopPropagation()}>
-                        <div className="flex justify-between items-center mb-2">
-                            <h3 className="text-xl font-bold text-red-400 flex items-center">
-                                <Trash2 className="w-5 h-5 mr-2" /> Delete Journal Entry
-                            </h3>
-                            <button onClick={() => setIsDeleteModalOpen(false)} className="text-gray-400 hover:text-white">&times;</button>
-                        </div>
-                        <p className="text-gray-300 mb-4">
-                            Are you sure you want to delete this journal entry? This action cannot be undone.
+            <div className="flex justify-between items-center mb-6 px-2">
+                {/* Journal Entries Container - Conditional rendering based on view mode */}
+                {filteredEntries.length > 0 ? (
+                    <div className={viewMode === 'grid'
+                        ? "grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4"
+                        : "space-y-4"
+                    }>
+                        {filteredEntries.map(entry => (
+                            viewMode === 'grid' ? (
+                                <GridJournalEntryCard
+                                    key={entry.id}
+                                    entry={entry}
+                                    onEdit={handleEdit}
+                                    onDelete={() => {
+                                        setEntryToDelete(entry);
+                                        setIsDeleteModalOpen(true);
+                                    }}
+                                    theme={theme}
+                                />
+                            ) : (
+                                <JournalEntryCard
+                                    key={entry.id}
+                                    entry={entry}
+                                    onEdit={handleEdit}
+                                    onDelete={() => {
+                                        setEntryToDelete(entry);
+                                        setIsDeleteModalOpen(true);
+                                    }}
+                                    theme={theme}
+                                />
+                            )
+                        ))}
+                    </div>
+                ) : (
+                    // Roxy's Corner Message: No entries message
+                    <div id="pnlRoxysCorner_NoEntries"
+                        className="bg-gray-800/50 border border-amber-800 rounded-md p-4 mb-6 text-left">
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                            <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
+                        </h3>
+                        <p className="text-amber-200 text-sm mb-4">
+                            Your Journal is Empty.You haven't logged any cigar experiences yet.
+                            Roxy suggests you start by adding a humidor and cigars to your collection.
                         </p>
-                        <div className="flex justify-end gap-3 pt-4 mt-4 border-t border-gray-700">
-                            <button
-                                type="button"
-                                onClick={() => setIsDeleteModalOpen(false)}
-                                className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                onClick={async () => {
-                                    await handleDelete();
-                                    setIsDeleteModalOpen(false);
-                                }}
-                                className="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
-                            >
-                                Confirm Delete
-                            </button>
+                        <p className="text-amber-200 text-sm ">
+                            Once you have cigars, you can log your smoking experiences here.
+                        </p>
+                    </div>
+                )}
+
+                {/* Delete Confirmation Modal */}
+                {isDeleteModalOpen && (
+                    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[100]" onClick={() => setIsDeleteModalOpen(false)}>
+                        <div className="bg-gray-800 rounded-2xl p-6 w-full max-w-sm flex flex-col" onClick={e => e.stopPropagation()}>
+                            <div className="flex justify-between items-center mb-2">
+                                <h3 className="text-xl font-bold text-red-400 flex items-center">
+                                    <Trash2 className="w-5 h-5 mr-2" /> Delete Journal Entry
+                                </h3>
+                                <button onClick={() => setIsDeleteModalOpen(false)} className="text-gray-400 hover:text-white">&times;</button>
+                            </div>
+                            <p className="text-gray-300 mb-4">
+                                Are you sure you want to delete this journal entry? This action cannot be undone.
+                            </p>
+                            <div className="flex justify-end gap-3 pt-4 mt-4 border-t border-gray-700">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsDeleteModalOpen(false)}
+                                    className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={async () => {
+                                        await handleDelete();
+                                        setIsDeleteModalOpen(false);
+                                    }}
+                                    className="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+                                >
+                                    Confirm Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
+            </div>
         </div>
     );
 };

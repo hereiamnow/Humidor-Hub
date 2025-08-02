@@ -39,6 +39,8 @@
  * @param {string} props.appId - Application identifier for Firestore paths
  * @param {string} props.userId - Current user's unique identifier
  * @param {Object} props.theme - Theme configuration object for styling
+ * @param {Function} props.setCigars - Function to update the cigars state
+ * @param {Function} props.setHumidors - Function to update the humidors state
  */
 
 // React and core imports
@@ -81,7 +83,7 @@ import MoveCigarsModal from '../../Modals/Actions/MoveCigarsModal';
 import DeleteHumidorModal from '../../Modals/Actions/DeleteHumidorModal';
 import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal';
 import ExportModal from '../../Modals/Data/ExportModal';
-const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme }) => {
+const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme, setCigars, setHumidors }) => {
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {
         humidorId: humidor?.id,
@@ -410,6 +412,14 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, the
         batch.delete(humidorRef);
 
         await batch.commit();
+
+        // Update local state to reflect deletion
+        const updatedCigars = cigars.filter(c => c.humidorId !== humidor.id);
+        const updatedHumidors = humidors.filter(h => h.id !== humidor.id);
+
+        setCigars(updatedCigars);
+        setHumidors(updatedHumidors);
+
         setIsDeleteHumidorModalOpen(false);
         navigate('HumidorsScreen');
     };
