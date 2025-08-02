@@ -534,6 +534,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     {/* Main humidor overview panel with stats and toolbar */}
                     <div id="pnlHumidorOverview" className="flex justify-between items-center mb-6 px-2">
 
+                        {/* Humidor overview stats */}
                         <div id="pnlHumidorStatsNum" className="relative group">
                             <div className="bg-gray-800/60 border border-gray-700/50 rounded-lg px-3 py-2 backdrop-blur-sm">
                                 <div className="flex items-center justify-center gap-1">
@@ -554,7 +555,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                 {/* <div className="text-xs text-gray-500 text-center mt-0.5">cigars</div> */}
                             </div>
 
-                            {/* Tooltip */}
+                            {/* Tooltip for cigar statistics */}
                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 <div className="text-center">
                                     <div className="text-amber-300">{totalUniqueCigars} unique cigars</div>
@@ -569,50 +570,54 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                         <div className="flex items-center gap-3">
 
                             {/* Browse by buttons group - triggers flyup panels for filtering */}
-                            <div id="pnlBrowseByToolbar" className="flex gap-2">
-                                {/* btnBrowseByWrapper */}
-                                <div className="relative group">
-                                    <button
-                                        id="btnBrowseByWrapper"
-                                        onClick={() => handleBrowseByClick('wrapper')}
-                                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                                    >
-                                        <Leaf className="w-5 h-5" />
-                                    </button>
-                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                        Browse by Wrapper
-                                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                            {cigars?.some(cigar => cigar.humidorId) && (
+                                <div id="pnlBrowseByToolbar" className="flex gap-2">
+                                    {/* Browse by Wrapper button */}
+                                    <div className="relative group">
+                                        <button
+                                            id="btnBrowseByWrapper"
+                                            onClick={() => handleBrowseByClick('wrapper')}
+                                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                        >
+                                            <Leaf className="w-5 h-5" />
+                                        </button>
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                            Browse by Wrapper
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                        </div>
+                                    </div>
+
+                                    {/* Browse by Strength button */}
+                                    <div className="relative group">
+                                        <button
+                                            id="btnBrowseByStrength"
+                                            onClick={() => handleBrowseByClick('strength')}
+                                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                        >
+                                            <ShieldPlus className="w-5 h-5" />
+                                        </button>
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                            Browse by Strength
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                        </div>
+                                    </div>
+
+                                    {/* Browse by Country button */}
+                                    <div className="relative group">
+                                        <button
+                                            id="btnBrowseByCountry"
+                                            onClick={() => handleBrowseByClick('country')}
+                                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                        >
+                                            <MapPin className="w-5 h-5" />
+                                        </button>
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                            Browse by Country
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                {/* btnBrowseByStrength */}
-                                <div className="relative group">
-                                    <button
-                                        id="btnBrowseByStrength"
-                                        onClick={() => handleBrowseByClick('strength')}
-                                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                                    >
-                                        <ShieldPlus className="w-5 h-5" />
-                                    </button>
-                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                        Browse by Strength
-                                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                                    </div>
-                                </div>
-                                {/* btnBrowseByCountry */}
-                                <div className="relative group">
-                                    <button
-                                        id="btnBrowseByCountry"
-                                        onClick={() => handleBrowseByClick('country')}
-                                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                                    >
-                                        <MapPin className="w-5 h-5" />
-                                    </button>
-                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
-                                        Browse by Country
-                                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            )}
 
                             {/* Add Humidor button */}
                             <div className="relative group">
@@ -630,7 +635,6 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>

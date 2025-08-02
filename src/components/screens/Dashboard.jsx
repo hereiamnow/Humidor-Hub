@@ -367,117 +367,132 @@ const Dashboard = ({
                 />
             )}
 
-            {/* Roxy's Tips panel when no humidors are present */}
-            {!hasHumidors && (
-                <div id="pnlRoxysCorner" className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-mb p-4 mb-6 text-center`}>
-                    <h3 id="pnlTitle" className={`font-bold ${theme.primary} text-lg flex items-center justify-center mb-3`}>
-                        <Wind id="pnlIcon" className={`w-5 h-5 mr-2 ${theme.icon}`} /> Roxy's Tips!
-                    </h3>
-                    <p id="roxyMessage" className={`${theme.roxyText} text-sm mb-4`}>
-                        Looks like your humidor collection is empty! Add your first humidor and some cigars to get insightful analytics on your dashboard.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                        <button
-                            onClick={() => navigate('AddHumidor')}
-                            className="flex-1 flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-2 rounded-lg hover:bg-amber-600 transition-colors"
-                        >
-                            <Plus id="plusIcon" className={`w-4 h-4 ${theme.icon}`} /> Add Humidor
-                        </button>
-                        {/* Disable Add Cigar if no humidors exist to put them in */}
-                        <button
-                            disabled={true}
-                            title="Add a humidor first to add cigars"
-                            className="flex-1 flex items-center justify-center gap-2 bg-gray-700 text-gray-500 font-bold py-2 rounded-lg cursor-not-allowed"
-                        >
-                            <Cigarette id="cigarIcon" className={`w-4 h-4 ${theme.icon}`} /> Add Cigar
-                        </button>
-                    </div>
-                </div>
-            )}
-
             <div className="space-y-6">
 
+
+
+                {/* Roxy's Tips panel when no humidors are present */}
+                {(humidors?.length === 0 || cigars?.length === 0) && (
+                    <div id="panel-getting-started"
+                        className="bg-gray-800/50 border border-amber-800 rounded-md p-4 mb-6 text-center">
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                            <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" /> Let's get Started!
+                        </h3>
+
+                        <p id="roxyMessage" className="text-amber-200 text-sm mb-4">
+                            Looks like your humidor collection is empty! Add your first humidor and some cigars to get insightful analytics on your dashboard.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <button
+                                id="btnAddHumidor"
+                                onClick={() => navigate('AddHumidor')}
+                                className="flex-1 flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-2 rounded-md hover:bg-amber-600 transition-colors"
+                            >
+                                Add Humidor
+                            </button>
+                            <button
+                                id="btnAddCigar"
+                                disabled={humidors?.length === 0} // Enable button if humidors exist
+                                title="Add a humidor first to add cigars"
+                                className={`flex-1 flex items-center justify-center gap-2 font-bold py-2 rounded-md ${humidors?.length > 0
+                                    ? 'bg-amber-500 text-white hover:bg-amber-600 transition-colors'
+                                    : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                                    }`}
+                            >
+                                Add Cigar
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 {/* Browse by mode buttons */}
-                <div id="toolbar-browse-by-mode-buttons" className="flex justify-end gap-3">
-                    <button
-                        id="btnBrowseByWrapper"
-                        onClick={() => handleBrowseByClick('wrapper')}
-                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                    >
-                        <Leaf id="wrapperIcon" className={`w-5 h-5 ${theme.icon}`} />
-                    </button>
-                    <button
-                        id="btnBrowseByStrength"
-                        onClick={() => handleBrowseByClick('strength')}
-                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                    >
-                        <ShieldPlus id="strengthIcon" className={`w-5 h-5 ${theme.icon}`} />
-                    </button>
-                    <button
-                        id="btnBrowseByCountry"
-                        onClick={() => handleBrowseByClick('country')}
-                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
-                    >
-                        <MapPin id="countryIcon" className={`w-5 h-5 ${theme.icon}`} />
-                    </button>
-                </div>
+                {hasHumidors && hasCigars && (
+                    <div
+                        id="toolbar-browse-by-mode-buttons"
+                        className="flex justify-end gap-3">
+                        <button
+                            id="btnBrowseByWrapper"
+                            onClick={() => handleBrowseByClick('wrapper')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full text-amber-400 hover:bg-gray-700 transition-colors`}
+                        >
+                            <Leaf id="wrapperIcon" className={`w-5 h-5 ${theme.icon}`} />
+                        </button>
+                        <button
+                            id="btnBrowseByStrength"
+                            onClick={() => handleBrowseByClick('strength')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full text-amber-400 hover:bg-gray-700 transition-colors`}
+                        >
+                            <ShieldPlus id="strengthIcon" className={`w-5 h-5`} />
+                        </button>
+                        <button
+                            id="btnBrowseByCountry"
+                            onClick={() => handleBrowseByClick('country')}
+                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full text-amber-400 hover:bg-gray-700 transition-colors`}
+                        >
+                            <MapPin id="countryIcon" className={`w-5 h-5`} />
+                        </button>
+                    </div>
+                )}
 
                 {/* Roxy's Corner panel */}
-                <div className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden`}>
-                    <button onClick={() => handlePanelToggle('roxy')} className="w-full p-4 flex justify-between items-center">
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </h3>
-                        <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${!panelStates.roxy ? 'rotate-180' : ''}`} />
-                    </button>
-                    {!panelStates.roxy && (
-                        <div className="px-4 pb-4">
-                            {/* New: Friendly message when humidors exist but no cigars */}
-                            {hasHumidors && !hasCigars ? (
-                                <div className="text-amber-200 text-sm mb-4">
-                                    <p className="mb-3">Woof! Your humidors are looking a bit empty. Add some cigars or move them here to get personalized insights and organize your collection!</p>
-                                    <div className="flex flex-col sm:flex-row gap-3">
-                                        <button
-                                            // Pass the ID of the first humidor if available, otherwise null.
-                                            // The AddCigar screen should handle the case of no humidor selected.
-                                            onClick={() => navigate('AddCigar', { humidorId: humidors.length > 0 ? humidors[0].id : null })}
-                                            className="flex-1 flex items-center justify-center gap-2 bg-amber-500/20 border border-amber-500 text-amber-300 font-bold py-2 rounded-lg hover:bg-amber-500/30 transition-colors"
-                                        >
-                                            <Plus className="w-4 h-4" /> Add Cigar
-                                        </button>
-                                        <button
-                                            onClick={() => navigate('HumidorsScreen')}
-                                            className="flex-1 flex items-center justify-center gap-2 bg-sky-500/20 border border-sky-500 text-sky-300 font-bold py-2 rounded-lg hover:bg-sky-500/30 transition-colors"
-                                        >
-                                            <Move className="w-4 h-4" /> Manage & Move
-                                        </button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <>
-                                    <p className="text-amber-200 text-sm">{roxyTip}</p>
-                                    {/* Conditionally render "Ask Roxy for a Summary" if there are cigars AND user has valid Gemini API key */}
-                                    {hasCigars && hasGeminiKey && !keyCheckLoading && (
-                                        <button
-                                            onClick={handleSummarizeCollection}
-                                            className="mt-4 w-full flex items-center justify-center bg-purple-600/20 border border-purple-500 text-purple-300 font-bold py-2 rounded-lg hover:bg-purple-600/30 transition-colors"
-                                        >
-                                            <Sparkles className="w-5 h-5 mr-2" /> Ask Roxy for a Summary
-                                        </button>
-                                    )}
-                                    {/* Show message when user has cigars but no API key */}
-                                    {hasCigars && !hasGeminiKey && !keyCheckLoading && (
-                                        <div className="mt-4 p-3 bg-purple-900/20 border border-purple-600/50 rounded-lg">
-                                            <p className="text-purple-200 text-sm text-center">
-                                                💡 Add your Gemini API key in Settings to get AI-powered collection summaries from Roxy!
-                                            </p>
+                {hasHumidors && hasCigars && (
+                    <div
+                        id="panel-roxy"
+                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden">
+                        <button onClick={() => handlePanelToggle('roxy')} className="w-full p-4 flex justify-between items-center">
+                            <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                                <Wind className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
+                            </h3>
+                            <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${!panelStates.roxy ? 'rotate-180' : ''}`} />
+                        </button>
+                        {!panelStates.roxy && (
+                            <div className="px-4 pb-4">
+                                {/* New: Friendly message when humidors exist but no cigars */}
+                                {hasHumidors && !hasCigars ? (
+                                    <div className="text-amber-200 text-sm mb-4">
+                                        <p className="mb-3">Woof! Your humidors are looking a bit empty. Add some cigars or move them here to get personalized insights and organize your collection!</p>
+                                        <div className="flex flex-col sm:flex-row gap-3">
+                                            <button
+                                                onClick={() => navigate('AddCigar', { humidorId: humidors.length > 0 ? humidors[0].id : null })}
+                                                className="flex-1 flex items-center justify-center gap-2 bg-amber-500/20 border border-amber-500 text-amber-300 font-bold py-2 rounded-lg hover:bg-amber-500/30 transition-colors"
+                                            >
+                                                <Plus className="w-4 h-4 text-amber-300" /> Add Cigar
+                                            </button>
+                                            <button
+                                                onClick={() => navigate('HumidorsScreen')}
+                                                className="flex-1 flex items-center justify-center gap-2 bg-sky-500/20 border border-sky-500 text-sky-300 font-bold py-2 rounded-lg hover:bg-sky-500/30 transition-colors"
+                                            >
+                                                <Move className="w-4 h-4 text-sky-300" /> Manage & Move
+                                            </button>
                                         </div>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    )}
-                </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <p className="text-amber-200 text-sm">{roxyTip}</p>
+                                        {/* Conditionally render "Ask Roxy for a Summary" if there are cigars AND user has valid Gemini API key */}
+                                        {hasCigars && hasGeminiKey && !keyCheckLoading && (
+                                            <button
+                                                onClick={handleSummarizeCollection}
+                                                className="mt-4 w-full flex items-center justify-center bg-purple-600/20 border border-purple-500 text-purple-300 font-bold py-2 rounded-lg hover:bg-purple-600/30 transition-colors"
+                                            >
+                                                <Sparkles className="w-5 h-5 mr-2 text-purple-300" /> Ask Roxy for a Summary
+                                            </button>
+                                        )}
+                                        {/* Show message when user has cigars but no API key */}
+                                        {hasCigars && !hasGeminiKey && !keyCheckLoading && (
+                                            <div className="mt-4 p-3 bg-purple-900/20 border border-purple-600/50 rounded-lg">
+                                                <p className="text-purple-200 text-sm text-center">
+                                                    💡 Add your Gemini API key in Settings to get AI-powered collection summaries from Roxy!
+                                                </p>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {hasCigars && dashboardPanelVisibility.showAgingWellPanel && (
                     <AgingWellPanel
