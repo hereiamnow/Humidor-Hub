@@ -24,9 +24,9 @@
 import React, { useState } from 'react';
 import { doc, addDoc, updateDoc, collection, deleteDoc } from 'firebase/firestore';
 import { ChevronLeft, Star, MapPin, GlassWater, Calendar as CalendarIcon, Save, Trash2, HelpCircle } from 'lucide-react';
-import InputField from '../UI/InputField';
-import TextAreaField from '../UI/TextAreaField';
-import FlavorWheel from './FlavorWheel';
+import InputField from '../../UI/InputField';
+import TextAreaField from '../../UI/TextAreaField';
+import FlavorWheel from '../../Journal/FlavorWheel';
 
 
 

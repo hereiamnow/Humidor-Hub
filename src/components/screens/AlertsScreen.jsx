@@ -97,11 +97,15 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
                         </div>
                     ))
                 ) : (
-                    <div className={`${safeTheme.roxyBg} border ${safeTheme.roxyBorder} rounded-md p-6 text-center`}>
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-center mb-3">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
+                    
+                        <div
+                            id="pnlRoxysCorner_NoHumidors"
+                            className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                                                <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>
-                        <p className="text-amber-200 text-sm mb-4">
+                            <p id="roxyMessage"
+                                className="text-amber-200 text-sm mb-4">
                             Ruff! You need to add a humidor before you can set up any alerts. Let's get your first one set up!
                         </p>
                         <button

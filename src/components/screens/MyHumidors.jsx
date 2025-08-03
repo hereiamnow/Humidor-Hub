@@ -446,6 +446,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {/* ===== VIEW TOGGLE PANEL ===== */}
             {/* Grid/List view toggle buttons - only visible when showing filtered results */}
             {/* Allows users to switch between list and grid display modes */}
+            
             {(searchQuery !== '' || activeWrapperFilter || activeStrengthFilter || activeCountryFilter) && (
                 <div id="pnlViewToggle" className="flex items-center justify-end gap-2 mb-6">
                     <div className="relative group">
@@ -747,13 +748,17 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {humidors.length === 0 && (
                 <div
                     id="pnlRoxysCorner_NoHumidors"
-                    className={`bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left`}>
+                    className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
+                    
                     <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
                         <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                     </h3>
-                    <p className="text-amber-200 text-sm mb-4">
+
+                    <p id="roxyMessage"
+                        className="text-amber-200 text-sm mb-4">
                         Ruff! You need to add a humidor before you can add any cigars. Let's get your first one set up!
                     </p>
+
                     <button
                         onClick={() => navigate('AddHumidor')}
                         className="flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors w-full"

@@ -707,32 +707,26 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     </div>
                 </div>
 
+
+
+
+
+
                 {/* Roxy's Corner: Show the autofill banner if enabled, there are cigars with missing 
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div id="pnlRoxysCorner"
-                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden mb-4 shadow-lg`}
-                        style={{ boxShadow: '0 2px 12px 0 rgba(255, 193, 7, 0.10)' }}
-                    >
+                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-2 text-left" >
                         <button
                             onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
-                            className="w-full p-4 flex justify-between items-center"
+                            className="w-full flex justify-between items-center"
                         >
-                            <h3 className="font-bold text-amber-200 text-lg flex items-center">
-                                <Wind className="w-5 h-5 mr-2" />
+                            <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                                <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" />
                                 Roxy's Corner
                             </h3>
+
                             <div className="flex items-center gap-2">
-                                {/* <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowAutofillBanner(false);
-                                    }}
-                                    className="text-yellow-300 hover:text-white text-xl font-bold"
-                                    aria-label="Close"
-                                >
-                                    &times;
-                                </button> */}
                                 <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
                             </div>
                         </button>
@@ -757,38 +751,31 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     </div>
                 )}
 
+
+
+
+
+
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div id="pnlRoxysCornerNoKey"
-                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden mb-4 shadow-lg`}
-                        style={{ boxShadow: '0 2px 12px 0 rgba(255, 193, 7, 0.10)' }}
-                    >
+                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-4 text-left" >
                         <button
                             onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
-                            className="w-full p-4 flex justify-between items-center"
+                            className="w-full flex justify-between items-center"
                         >
-                            <h3 className="font-bold text-amber-200 text-lg flex items-center">
-                                <Wind className="w-5 h-5 mr-2" />
+                            <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                                <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" />
                                 Roxy's Corner
                             </h3>
                             <div className="flex items-center gap-2">
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowAutofillBanner(false);
-                                    }}
-                                    className="text-yellow-300 hover:text-white text-xl font-bold"
-                                    aria-label="Close"
-                                >
-                                    &times;
-                                </button>
                                 <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
                             </div>
                         </button>
                         {!isRoxyPanelCollapsed && (
                             <div className="px-4 pb-4">
                                 <span className="text-amber-100 text-sm mb-3 block">
-                                    Some cigars are missing details, but you need a Gemini API key to use auto-fill!
+                                    Some cigars are missing details and can be auto-filled, but you need a Gemini API key to use auto-fill!
                                 </span>
                                 <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
                                     <p className="text-purple-200 text-sm text-center">
@@ -799,6 +786,12 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                         )}
                     </div>
                 )}
+
+
+
+
+
+
 
                 {isFilterActive && (
                     <div className="flex justify-between items-center mb-4 bg-gray-800 p-3 rounded-md">

@@ -374,12 +374,14 @@ const Dashboard = ({
                 {/* Roxy's Tips panel when no humidors are present */}
                 {(humidors?.length === 0 || cigars?.length === 0) && (
                     <div id="pnlRoxysCorner_GettingStarted"
-                        className="bg-gray-800/50 border border-amber-800 rounded-md p-4 mb-6 text-center">
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
+                        
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
                             <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" /> Let's get Started!
                         </h3>
 
-                        <p id="roxyMessage" className="text-amber-200 text-sm mb-4">
+                        <p id="roxyMessage"
+                            className="text-amber-200 text-sm mb-4">
                             Looks like your humidor collection is empty! Add your first humidor and some cigars to get insightful analytics on your dashboard.
                         </p>
 

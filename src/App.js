@@ -40,8 +40,8 @@ import { fontOptions } from './constants/fontOptions';
 import { themes } from './constants/themes';
 
 // Components - Journal0
-import AddEditJournalEntry from './components/Journal/AddEditJournalEntry';
-import CigarJournalScreen from './components/Journal/CigarJournalScreen';
+import AddEditJournalEntry from './components/screens/journal/AddEditJournalEntry';
+import CigarJournalScreen from './components/screens/JournalScreen';
 
 // Components - Navigation
 import BottomNav from './components/Navigation/BottomNav';

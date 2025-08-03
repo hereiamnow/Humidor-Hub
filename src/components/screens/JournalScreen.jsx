@@ -23,8 +23,8 @@
 import React, { useMemo, useState } from 'react';
 import { BookText, Search, X, Trash2, LayoutGrid, List, Plus, Wind } from 'lucide-react';
 import { doc, deleteDoc } from 'firebase/firestore';
-import JournalEntryCard from './JournalEntryCard';
-import GridJournalEntryCard from './GridJournalEntryCard';
+import JournalEntryCard from '../Journal/JournalEntryCard';
+import GridJournalEntryCard from '../Journal/GridJournalEntryCard';
 import PageHeader from '../UI/PageHeader';
 
 
@@ -205,16 +205,16 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 ) : (
                     // Roxy's Corner Message: No entries message
                     <div id="pnlRoxysCorner_NoEntries"
-                        className="bg-gray-800/50 border border-amber-800 rounded-md p-4 mb-6 text-left">
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center">
-                            <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
+                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
+
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>
-                        <p className="text-amber-200 text-sm mb-4">
-                            Your Journal is Empty.You haven't logged any cigar experiences yet.
+
+                        <p id="roxyMessage"
+                            className="text-amber-200 text-sm mb-4">
+                            Your Journal is Empty. You haven't logged any cigar experiences yet.
                             Roxy suggests you start by adding a humidor and cigars to your collection.
-                        </p>
-                        <p className="text-amber-200 text-sm ">
-                            Once you have cigars, you can log your smoking experiences here.
                         </p>
                     </div>
                 )}
