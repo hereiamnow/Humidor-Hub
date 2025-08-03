@@ -74,16 +74,30 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
     }, [cigars]);
 
     return (
-        <div 
-        id="pnlContentWrapper_DeeperStatisticsScreen" 
-        className="p-4 pb-24">
+        <div
+            id="pnlContentWrapper_DeeperStatisticsScreen"
+            className="p-4 pb-24">
+
+
+
+
             <div className="flex items-center mb-6">
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2">
                     <ChevronLeft className={`w-7 h-7 ${theme.text}`} />
                 </button>
                 <h1 className="text-3xl font-bold text-white">Deeper Statistics & Insights</h1>
             </div>
+
+            <p className="text-gray-400 mb-6 leading-relaxed">
+                This screen is for testing components. Explore comprehensive analytics about your cigar collection. View collection value, 
+                rating patterns, favorite brands and countries, aging insights, and detailed tasting 
+                preferences to better understand your smoking habits.
+            </p>
+
             <div className="space-y-6">
+
+
+
                 {/* 1. Collection Value */}
                 <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
                     <DollarSign className="w-8 h-8 text-green-400" />

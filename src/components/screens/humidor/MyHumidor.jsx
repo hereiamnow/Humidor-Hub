@@ -48,7 +48,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 // Firebase imports
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../../firebase';
+import { auth } from '../../../firebase.js';
 
 // Icon imports from Lucide React
 import {
@@ -64,26 +64,26 @@ import { doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { callGeminiAPI } from '../../../services/geminiService.js';
 
 // Utils
-import { hasValidGeminiKey } from '../../../utils/geminiKeyUtils';
+import { hasValidGeminiKey } from '../../../utils/geminiKeyUtils.js';
 
 // Constants imports
-import { strengthOptions } from '../../../constants/cigarOptions';
+import { strengthOptions } from '../../../constants/cigarOptions.js';
 
 // UI Component imports
-import FilterSortModal from '../../UI/FilterSortModal';
-import GridCigarCard from '../../Cigar/GridCigarCard';
+import FilterSortModal from '../../UI/FilterSortModal.jsx';
+import GridCigarCard from '../../Cigar/GridCigarCard.jsx';
 import ListCigarCard from '../../Cigar/ListCigarCard.jsx';
 
 // Menu Component imports
-import HumidorActionMenu from '../../Menus/HumidorActionMenu';
+import HumidorActionMenu from '../../Menus/HumidorActionMenu.jsx';
 
 // Modal Component imports
-import ManualReadingModal from '../../Modals/Forms/ManualReadingModal';
-import MoveCigarsModal from '../../Modals/Actions/MoveCigarsModal';
-import DeleteHumidorModal from '../../Modals/Actions/DeleteHumidorModal';
-import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal';
-import ExportModal from '../../Modals/Data/ExportModal';
-import HumidorStatsCards from "../../UI/HumidorStatsCards";
+import ManualReadingModal from '../../Modals/Forms/ManualReadingModal.jsx';
+import MoveCigarsModal from '../../Modals/Actions/MoveCigarsModal.jsx';
+import DeleteHumidorModal from '../../Modals/Actions/DeleteHumidorModal.jsx';
+import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal.jsx';
+import ExportModal from '../../Modals/Data/ExportModal.jsx';
+import HumidorStatsCards from "../../UI/HumidorStatsCards.jsx";
 const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme, setCigars, setHumidors }) => {
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {

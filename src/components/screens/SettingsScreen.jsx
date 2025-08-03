@@ -22,6 +22,7 @@ import {
     Palette,
     Info,
     BarChart2,
+    Crown,
     Settings as SettingsIcon
 } from 'lucide-react';
 
@@ -87,6 +88,7 @@ const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, s
 
             <div className="space-y-4">
                 <SettingItem icon={User} title="Profile" subtitle="Manage your account details" onClick={() => navigate('Profile')} />
+                <SettingItem icon={Crown} title="Subscription" subtitle="Manage your plan and billing" onClick={() => navigate('Subscription')} />
                 <SettingItem icon={Database} title="Data & Sync" subtitle="Export or import your collection" onClick={() => navigate('DataSync')} />
                 <SettingItem icon={LayoutGrid} title="Dashboard Components" subtitle="Customize what appears on your dashboard" onClick={() => navigate('DashboardSettings')} />
                 {/* <SettingItem icon={Bell} title="Notifications" subtitle="Set up alerts for humidity and temp" onClick={() => navigate('Notifications')} /> */}

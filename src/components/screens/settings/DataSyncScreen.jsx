@@ -26,10 +26,15 @@ import ExportModal from '../../Modals/Data/ExportModal';
 // Import utilities
 import { downloadFile } from '../../../utils/fileUtils';
 
+// Import subscription components
+import SubscriptionGuard from '../../Subscription/SubscriptionGuard';
+import { useSubscription } from '../../../contexts/SubscriptionContext';
+
 const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
     const [isExportModalOpen, setIsExportModalOpen] = useState(false);
     const [modalDataType, setModalDataType] = useState(null); // 'cigar' or 'humidor'
+    const { subscriptionService } = useSubscription();
 
     const exportEnvironmentData = () => {
         let headers = ['humidorId,name,humidity,temp'];
@@ -53,8 +58,8 @@ const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
 
     return (
         <div
-        id="pnlContentWrapper_DataSyncScreen" 
-        className="p-4 pb-24">
+            id="pnlContentWrapper_DataSyncScreen"
+            className="p-4 pb-24">
             {isImportModalOpen && <ImportCsvModal dataType={modalDataType} data={modalDataType === 'cigar' ? cigars : humidors} db={db} appId={appId} userId={userId} onClose={() => setIsImportModalOpen(false)} humidors={humidors} navigate={navigate} />}
             {isExportModalOpen && <ExportModal dataType={modalDataType} data={modalDataType === 'cigar' ? cigars : humidors} onClose={() => setIsExportModalOpen(false)} />}
 
@@ -62,17 +67,32 @@ const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2"><ChevronLeft className="w-7 h-7 text-white" /></button>                <h1 className="text-3xl font-bold text-white">Import & Export</h1>
             </div>
 
+            <p className="text-gray-400 mb-6 leading-relaxed">
+                Manage your Humidor Hub data with comprehensive import and export tools. Back up your collection, 
+                transfer data between devices, or migrate from other applications using CSV files.
+            </p>
+
             <div className="space-y-6">
                 <CollapsiblePanel title="Cigar Collection" description="Import or export your individual cigar data." icon={Cigarette}>
                     <div className="grid grid-cols-1 gap-4">
-                        <button onClick={() => handleOpenImportModal('cigar')} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors"><UploadCloud className="w-5 h-5" />Import Cigars from CSV</button>
+                        <SubscriptionGuard
+                            feature="csvImport"
+                            customMessage="CSV import is available with Premium subscription. Free users can export their data."
+                        >
+                            <button onClick={() => handleOpenImportModal('cigar')} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors"><UploadCloud className="w-5 h-5" />Import Cigars from CSV</button>
+                        </SubscriptionGuard>
                         <button onClick={() => handleOpenExportModal('cigar')} className="w-full flex items-center justify-center gap-2 bg-green-600/80 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors"><Download className="w-5 h-5" />Export Cigars</button>
                     </div>
                 </CollapsiblePanel>
 
                 <CollapsiblePanel title="Humidor Management" description="Transfer your humidor setup and details." icon={Box}>
                     <div className="grid grid-cols-1 gap-4">
-                        <button onClick={() => handleOpenImportModal('humidor')} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors"><UploadCloud className="w-5 h-5" />Import Humidors from CSV</button>
+                        <SubscriptionGuard
+                            feature="csvImport"
+                            customMessage="CSV import is available with Premium subscription. Free users can export their data."
+                        >
+                            <button onClick={() => handleOpenImportModal('humidor')} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors"><UploadCloud className="w-5 h-5" />Import Humidors from CSV</button>
+                        </SubscriptionGuard>
                         <button onClick={() => handleOpenExportModal('humidor')} className="w-full flex items-center justify-center gap-2 bg-green-600/80 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors"><Download className="w-5 h-5" />Export Humidors</button>
                     </div>
                 </CollapsiblePanel>

@@ -40,33 +40,37 @@ import { fontOptions } from './constants/fontOptions';
 import { themes } from './constants/themes';
 
 // Components - Journal0
-import AddEditJournalEntry from './components/screens/journal/AddEditJournalEntry';
-import CigarJournalScreen from './components/screens/JournalScreen';
+import AddEditJournalEntry from './components/Screens/journal/AddEditJournalEntry';
+import CigarJournalScreen from './components/Screens/JournalScreen';
 
 // Components - Navigation
 import BottomNav from './components/Navigation/BottomNav';
 
 // Components - Settings
-import AboutScreen from './components/screens/settings/AboutScreen';
-import NotificationsScreen from './components/screens/settings/NotificationsScreen';
-import ProfileScreen from './components/screens/settings/ProfileScreen';
+import AboutScreen from './components/Screens/settings/AboutScreen';
+import NotificationsScreen from './components/Screens/settings/NotificationsScreen';
+import ProfileScreen from './components/Screens/settings/ProfileScreen';
+import SubscriptionScreen from './components/Screens/settings/SubscriptionScreen';
+
+// Subscription Context
+import { SubscriptionProvider } from './contexts/SubscriptionContext';
 
 // Screens
-import AddCigar from './components/screens/cigar/AddCigar';
-import AddHumidor from './components/screens/humidor/AddHumidor';
-import AlertsScreen from './components/screens/AlertsScreen';
-import CigarDetail from './components/screens/cigar/CigarDetail';
-import Dashboard from './components/screens/Dashboard';
-import DashboardSettingsScreen from './components/screens/settings/DashboardSettingsScreen';
-import DataSyncScreen from './components/screens/settings/DataSyncScreen';
-import DeeperStatisticsScreen from './components/screens/settings/DeeperStatisticsScreen';
-import EditCigar from './components/screens/cigar/EditCigar';
-import EditHumidor from './components/screens/humidor/EditHumidor';
-import FontsScreen from './components/screens/settings/FontsScreen';
-import HumidorsScreen from './components/screens/MyHumidors';
-import IntegrationsScreen from './components/screens/settings/IntegrationsScreen';
-import MyHumidor from './components/screens/humidor/MyHumidor';
-import SettingsScreen from './components/screens/SettingsScreen';
+import AddCigar from './components/Screens/cigar/AddCigar';
+import AddHumidor from './components/Screens/humidor/AddHumidor';
+import AlertsScreen from './components/Screens/AlertsScreen';
+import CigarDetail from './components/Screens/cigar/CigarDetail';
+import Dashboard from './components/Screens/Dashboard';
+import DashboardSettingsScreen from './components/Screens/settings/DashboardSettingsScreen';
+import DataSyncScreen from './components/Screens/settings/DataSyncScreen';
+import DeeperStatisticsScreen from './components/Screens/settings/DeeperStatisticsScreen';
+import EditCigar from './components/Screens/cigar/EditCigar';
+import EditHumidor from './components/Screens/humidor/EditHumidor';
+import FontsScreen from './components/Screens/settings/FontsScreen';
+import HumidorsScreen from './components/Screens/MyHumidors';
+import IntegrationsScreen from './components/Screens/settings/IntegrationsScreen';
+import MyHumidor from './components/Screens/humidor/MyHumidor';
+import SettingsScreen from './components/Screens/SettingsScreen';
 
 // Initialize Firebase Authentication token
 const initialAuthToken = typeof window !== "undefined" && window.initialAuthToken ? window.initialAuthToken : null;
@@ -110,12 +114,13 @@ export default function App() {
     // This state will determine which panels are shown in the Dashboard.
     // It is initialized to show all panels by default, will be conditionally overridden in Dashboard component
     const [dashboardPanelVisibility, setDashboardPanelVisibility] = useState({
+        showAchievements: true,
+        showAgingWellPanel: true,
         showWrapperPanel: false,
         showStrengthPanel: false,
         showCountryPanel: false,
         showInventoryAnalysis: true,
-        showWorldMap: true,
-        showAgingWellPanel: true,
+        showWorldMap: false        
     });
 
     // New state to manage the open/closed status of dashboard panels
@@ -366,7 +371,7 @@ export default function App() {
                 });
                 return cigar ? <CigarDetail cigar={cigar} navigate={navigate} db={db} appId={appId} userId={userId} journalEntries={journalEntries} theme={theme} /> : <div>Cigar not found</div>;
             case 'AddCigar':
-                return <AddCigar navigate={navigate} db={db} appId={appId} userId={userId} humidorId={params.humidorId} theme={theme} />;
+                return <AddCigar navigate={navigate} db={db} appId={appId} userId={userId} humidorId={params.humidorId} theme={theme} cigars={cigars} />;
             case 'EditCigar':
                 const cigarToEdit = cigars.find(c => c.id === params.cigarId);
                 return cigarToEdit ? <EditCigar navigate={navigate} db={db} appId={appId} userId={userId} cigar={cigarToEdit} theme={theme} /> : <div>Cigar not found</div>;
@@ -401,6 +406,8 @@ export default function App() {
                 return <AboutScreen navigate={navigate} />;
             case 'Profile':
                 return <ProfileScreen navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} userId={userId} auth={auth} />;
+            case 'Subscription':
+                return <SubscriptionScreen navigate={navigate} theme={theme} />;
             default:
                 return <Dashboard navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} showWrapperPanel={dashboardPanelVisibility.showWrapperPanel} showStrengthPanel={dashboardPanelVisibility.showStrengthPanel} showCountryPanel={dashboardPanelVisibility.showCountryPanel} showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis} panelStates={dashboardPanelStates} setPanelStates={setDashboardPanelStates} />;
         }
@@ -454,25 +461,27 @@ export default function App() {
     // It sets the minimum height of the element to the height of the viewport(the visible part of the browser window).
     // This ensures your app always fills the screen vertically, even if there isn’t much content.
     return (
-        <div
-            className={`min-h-screen ${theme.bg} ${theme.text}`}
-            style={{
-                fontFamily: selectedFont.body,
-            }}
-        >
-            
-            {/* 
-            max-w-md:
-            Sets the maximum width of the content to a medium size (by default, 28rem or 448px in Tailwind).
-            This keeps your content from stretching too wide on large screens, improving readability.
+        <SubscriptionProvider db={db} appId={appId} userId={userId}>
+            <div
+                className={`min-h-screen ${theme.bg} ${theme.text}`}
+                style={{
+                    fontFamily: selectedFont.body,
+                }}
+            >
 
-            mx-auto:
-            Applies automatic left and right margins, centering the content horizontally. 
-            */}
-            <div className="max-w-md mx-auto">
-                {renderScreen()}
+                {/* 
+                max-w-md:
+                Sets the maximum width of the content to a medium size (by default, 28rem or 448px in Tailwind).
+                This keeps your content from stretching too wide on large screens, improving readability.
+
+                mx-auto:
+                Applies automatic left and right margins, centering the content horizontally. 
+                */}
+                <div className="max-w-md mx-auto">
+                    {renderScreen()}
+                </div>
+                <BottomNav activeScreen={navigation.screen} navigate={navigate} theme={theme} />
             </div>
-            <BottomNav activeScreen={navigation.screen} navigate={navigate} theme={theme} />
-        </div>
+        </SubscriptionProvider>
     );
 }

@@ -81,6 +81,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ChevronLeft, LoaderCircle, Sparkles, Tag, Edit, Award } from 'lucide-react';
+import { useSubscription } from '../../../contexts/SubscriptionContext';
+import { useCigarLimits } from '../../../hooks/useCigarLimits';
+import CigarLimitWarning from '../../Subscription/CigarLimitWarning';
 import { strengthOptions, commonCigarDimensions, cigarLengths, cigarRingGauges, cigarWrapperColors, cigarBinderTypes, cigarFillerTypes, cigarCountryOfOrigin } from '../../../constants/cigarOptions';
 import InputField from '../../UI/InputField';
 import TextAreaField from '../../UI/TextAreaField';
@@ -178,8 +181,11 @@ const detectPuro = (wrapper, binder, filler) => {
     return { isPuro: false, country: null };
 };
 
-const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
+const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }) => {
     console.log('AddCigar component initialized with props:', { appId, userId, humidorId, theme: theme?.name || 'unknown' });
+    
+    const { subscriptionService } = useSubscription();
+    const { canAddCigar, isAtLimit, remainingSlots } = useCigarLimits(cigars);
 
     // Initialize formData with new fields length_inches, ring_gauge, and isPuro
     const [formData, setFormData] = useState({ brand: '', name: '', shape: '', size: '', wrapper: '', binder: '', filler: '', country: '', strength: '', price: '', rating: '', quantity: 1, image: '', shortDescription: '', description: '', flavorNotes: [], dateAdded: new Date().toISOString().split('T')[0], length_inches: '', ring_gauge: '', isPuro: false });
@@ -315,6 +321,16 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
         console.log('handleSave called - preparing to save cigar');
         console.log('handleSave: Current formData:', formData);
 
+        // Check subscription limits
+        if (!canAddCigar) {
+            setModalState({ 
+                isOpen: true, 
+                content: "You've reached your cigar limit. Upgrade to Premium for unlimited storage.", 
+                isLoading: false 
+            });
+            return;
+        }
+
         const newCigar = {
             ...formData,
             humidorId: humidorId,
@@ -348,6 +364,16 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
         if (!formData.name) {
             console.log('handleAutofill: No cigar name provided, showing error modal');
             setModalState({ isOpen: true, content: "Please enter a cigar name to auto-fill.", isLoading: false });
+            return;
+        }
+
+        // Check AI usage limits
+        if (subscriptionService && !(await subscriptionService.canUseAI())) {
+            setModalState({ 
+                isOpen: true, 
+                content: "You've reached your AI lookup limit for this month. Upgrade to Premium for more lookups.", 
+                isLoading: false 
+            });
             return;
         }
 
@@ -425,6 +451,11 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
                         console.log('handleAutofill: Final updated form data:', updatedData);
                         return updatedData;
                     });
+
+                    // Increment AI usage
+                    if (subscriptionService) {
+                        await subscriptionService.incrementAIUsage();
+                    }
 
                     // Create a user-friendly list of changes for the modal
                     const changesList = updatedFields
@@ -504,6 +535,12 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme }) => {
 
             {/* Cigar Name and Details */}
             <div id="pnlCigarNameAndDetails" className="p-4 space-y-4">
+                
+                {/* Subscription Limit Warning */}
+                <CigarLimitWarning 
+                    currentCount={cigars.length}
+                    onUpgrade={() => window.open('https://play.google.com/store/account/subscriptions', '_blank')}
+                />
 
                 <div id="pnlGeminiAutoFill" className={`${theme.roxyBg} p-4 rounded-md space-y-4`}>
                     {/* Name / Line */}
