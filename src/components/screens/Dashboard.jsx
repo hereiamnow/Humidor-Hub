@@ -56,6 +56,8 @@ import {
 
 import PageHeader from '../UI/PageHeader';
 import DashboardStatsCards from '../UI/HumidorStatsCards';
+import AchievementsPanel from '../Profile/AchievementsPanel';
+
 
 const Dashboard = ({
     navigate,
@@ -518,8 +520,8 @@ const Dashboard = ({
 
 
 
-
-
+                {/* --- Achievements Panel --- */}
+                <AchievementsPanel cigars={cigars} humidors={humidors} />
 
                 {/* Aging Well Panel */}
                 {hasCigars && dashboardPanelVisibility.showAgingWellPanel && (

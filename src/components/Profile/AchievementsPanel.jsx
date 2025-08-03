@@ -1,12 +1,27 @@
+/**
+ * @file AchievementsPanel.jsx
+ * @path src/components/Profile/AchievementsPanel.jsx
+ * @author Shawn Miller (hereiamnow@gmail.com)
+ * @date 2024-06-11
+ * 
+ * Achievements panel component for displaying user achievements based on their cigar and humidor collection.
+ */
+
 import React, { useMemo, useState } from 'react';
 import { ChevronDown, Box, MapPin, Database, Star, DollarSign } from 'lucide-react';
 
-const AchievementsPanel = ({ cigars, humidors, theme }) => {
+const AchievementsPanel = ({ cigars, humidors }) => {
+    // Debug: log incoming props
+    console.log('AchievementsPanel props:', { cigars, humidors });
+
     const [isAchievementsCollapsed, setIsAchievementsCollapsed] = useState(true);
-    
+
     const totalCigars = cigars.reduce((sum, c) => sum + c.quantity, 0);
     const totalValue = cigars.reduce((acc, cigar) => acc + ((cigar.price || 0) * cigar.quantity), 0);
     const uniqueCountries = useMemo(() => [...new Set(cigars.map(c => c.country).filter(Boolean))], [cigars]);
+
+    // Debug: log computed stats
+    console.log('AchievementsPanel stats:', { totalCigars, totalValue, uniqueCountriesCount: uniqueCountries.length });
 
     const achievementsList = useMemo(() => [
         { id: 'collector_bronze', name: 'Bronze Collector', description: 'Collect 10+ cigars', icon: Box, check: (stats) => stats.totalCigars >= 10 },
@@ -21,11 +36,16 @@ const AchievementsPanel = ({ cigars, humidors, theme }) => {
 
     const earnedAchievements = useMemo(() => {
         const stats = { totalCigars, totalValue, uniqueCountries, humidors, cigars };
-        return achievementsList.map(ach => ({ ...ach, earned: ach.check(stats) }));
+        const result = achievementsList.map(ach => ({ ...ach, earned: ach.check(stats) }));
+        // Debug: log earned achievements
+        console.log('AchievementsPanel earnedAchievements:', result);
+        return result;
     }, [cigars, humidors, totalCigars, totalValue, uniqueCountries, achievementsList]);
 
     const BadgeIcon = ({ achievement }) => (
         <div className="flex flex-col items-center group relative">
+            {/* Debug: log each achievement rendered */}
+            {console.log('Rendering BadgeIcon for:', achievement)}
             <div className={`w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${achievement.earned ? 'bg-amber-500/20 border-amber-400' : 'bg-gray-700/50 border-gray-600 opacity-60'}`}>
                 <achievement.icon className={`w-8 h-8 ${achievement.earned ? 'text-amber-400' : 'text-gray-400'}`} />
             </div>

@@ -98,7 +98,7 @@ const ProfileScreen = ({ navigate, cigars, humidors, theme, userId, auth }) => {
                 </div>
 
                 {/* --- Achievements Panel --- */}
-                <AchievementsPanel cigars={cigars} humidors={humidors} theme={theme} />
+                <AchievementsPanel cigars={cigars} humidors={humidors} />
 
                 {/* --- Subscription Panel --- */}
                 <SubscriptionPanel subscription={subscription} />
