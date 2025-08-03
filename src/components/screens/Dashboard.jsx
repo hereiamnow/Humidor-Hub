@@ -521,7 +521,7 @@ const Dashboard = ({
 
 
                 {/* --- Achievements Panel --- */}
-                <AchievementsPanel cigars={cigars} humidors={humidors} />
+                <AchievementsPanel cigars={cigars} humidors={humidors} showTitleIcon={false} />
 
                 {/* Aging Well Panel */}
                 {hasCigars && dashboardPanelVisibility.showAgingWellPanel && (

@@ -712,7 +712,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div
                         id="pnlRoxysCorner"
-                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden">
+                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden mb-4">
                         <button
                             onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
                             className="w-full p-4 flex justify-between items-center"
@@ -720,6 +720,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                             <h3 className="font-bold text-amber-300 text-lg flex items-center">
                                 <Wind className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
                             </h3>
+
                             <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
                         </button>
                         {!isRoxyPanelCollapsed && (
@@ -758,23 +759,24 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div
                         id="pnlRoxysCorner"
-                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden">
+                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden mb-4">
 
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
-                            <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" />
-                            Roxy's Corner
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center mx-4 my-2">
+                            <Wind className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
                         </h3>
 
 
                         <div className="px-4 pb-4">
 
                             <span className="text-amber-100 text-sm mb-3 block">
-                                Some cigars are missing details and can be auto-filled, but you need a Gemini API key to use auto-fill!
+                                Some cigars are missing details and can be auto-filled,
+                                but you need a Gemini API key to use auto-fill!
                             </span>
 
                             <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
                                 <p className="text-purple-200 text-sm text-center">
-                                    💡 Add your Gemini API key in Settings to enable AI-powered auto-fill for missing cigar details!
+                                    💡 Add your Gemini API key in Settings to
+                                    enable AI-powered auto-fill for missing cigar details!
                                 </p>
                             </div>
 

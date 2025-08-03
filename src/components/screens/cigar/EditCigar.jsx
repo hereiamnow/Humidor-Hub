@@ -278,9 +278,9 @@ Do not include any text or markdown formatting outside of the JSON object.`;
     };
 
     return (
-        <div 
-        id="pnlContentWrapper_EditCigar" 
-        className="pb-24">
+        <div
+            id="pnlContentWrapper_EditCigar"
+            className="pb-24">
             {modalState.isOpen && <GeminiModal title="Auto-fill Status" content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 
@@ -338,10 +338,31 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         </p>
                     </div>
                 )}
-                {/* Short Description */}
-                <InputField name="shortDescription" label="Short Description" placeholder="Brief overview of the cigar..." value={formData.shortDescription} onChange={handleInputChange} theme={theme} className={flashingFields.shortDescription ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+
+                {/* Overview */}
+                <TextAreaField
+                    name="shortDescription"
+                    label="Overview"
+                    placeholder="Brief overview of the cigar..."
+                    value={formData.shortDescription}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className={flashingFields.shortDescription ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+
+
+
                 {/* Description */}
-                <TextAreaField name="description" label="Description" placeholder="Notes on this cigar..." value={formData.description} onChange={handleInputChange} theme={theme} className={flashingFields.description ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+                <TextAreaField
+                    name="description"
+                    label="Description"
+                    placeholder="Notes on this cigar..."
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    rows={5}
+                    className={flashingFields.description ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+
+
+
                 {/* Shape and Size */}
                 <div id="pnlShapeAndSize" className="grid grid-cols-2 gap-3">
                     <AutoCompleteInputField
@@ -352,11 +373,12 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         value={formData.shape}
                         onChange={handleInputChange}
                         suggestions={cigarShapes}
-                        theme={theme}
                         className={flashingFields.shape ? 'ring-2 ring-amber-400 animate-pulse' : ''}
                     />
                     <InputField name="size" label="Size" placeholder="e.g., 5.5x50" value={formData.size} onChange={handleInputChange} theme={theme} className={flashingFields.size ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
                 </div>
+
+                
                 {/* Length and Ring Gauge */}
                 <div id="pnlLengthAndRing" className="grid grid-cols-2 gap-3">
                     <AutoCompleteInputField

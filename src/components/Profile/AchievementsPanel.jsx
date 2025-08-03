@@ -10,7 +10,7 @@
 import React, { useMemo, useState } from 'react';
 import { ChevronDown, Box, MapPin, Database, Star, DollarSign } from 'lucide-react';
 
-const AchievementsPanel = ({ cigars, humidors }) => {
+const AchievementsPanel = ({ cigars, humidors, showTitleIcon = true }) => {
     // Debug: log incoming props
     console.log('AchievementsPanel props:', { cigars, humidors });
 
@@ -64,7 +64,8 @@ const AchievementsPanel = ({ cigars, humidors }) => {
                 className="w-full p-4 flex justify-between items-center"
             >
                 <h3 className="font-bold text-amber-300 text-lg flex items-center">
-                    <Star className="w-5 h-5 mr-2" /> Achievements
+                    {showTitleIcon && <Star className="w-5 h-5 mr-2" />}
+                    Achievements
                 </h3>
                 <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${isAchievementsCollapsed ? '' : 'rotate-180'}`} />
             </button>
