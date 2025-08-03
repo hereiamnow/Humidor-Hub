@@ -533,7 +533,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {searchQuery === '' && !activeWrapperFilter && !activeStrengthFilter && !activeCountryFilter ? (
                 <div id="pnlMainToolbar">
                     {/* Main humidor overview panel with stats and toolbar */}
-                    <div id="pnlHumidorOverview" className="flex justify-between items-center mb-6 px-2">
+                    <div id="pnlHumidorOverview" className="flex justify-between items-center mb-6 px-0">
 
                         {/* Humidor overview stats */}
                         <div id="pnlHumidorStatsNum" className="relative group">

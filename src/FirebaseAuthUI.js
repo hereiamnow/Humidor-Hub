@@ -1,4 +1,3 @@
-
 /**
  *
  * @file FirebaseAuthUI.js
@@ -20,7 +19,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup
@@ -44,6 +43,11 @@ export default function CustomAuth({ onSignIn }) {
     // Firebase auth instance
     const auth = getAuth();
     console.log('🔥 Firebase auth instance initialized:', !!auth);
+
+    // Prevent auto login by signing out any existing user on mount
+    useEffect(() => {
+        auth.signOut();
+    }, [auth]);
 
     /**
      * Handles email/password authentication for both sign-in and registration
