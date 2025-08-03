@@ -281,9 +281,9 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
                     {/* Profile grid */}
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                        {/* Short Description */}
+                        {/* Overview */}
                         <div className="col-span-2">
-                            <p className="text-xs text-gray-400">Short Description</p>
+                            <p className="text-xs text-gray-400">Overview</p>
                             <p className="font-light text-white text-sm break-words">{cigar.shortDescription || 'No short description provided.'}</p>
                         </div>
 
@@ -312,21 +312,7 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                             </div>
                         </div>
 
-                        {/* My Rating (stars) */}
-                        <div>
-                            <p className="text-xs text-gray-400">My Rating</p>
-                            <StarRating
-                                rating={cigar.userRating || 0}
-                                readonly={true}
-                                size="w-4 h-4"
-                            />
-                        </div>
-
-                        {/* Additional details */}
-                        <DetailItem label="My Rating" value={cigar.userRating || 'N/A'} />
-                        <DetailItem label="Price Paid" value={cigar.price ? `${Number(cigar.price).toFixed(2)}` : 'N/A'} />
-                        <DetailItem label="Date Added" value={formatDate(cigar.dateAdded)} />
-                        <DetailItem label="Time in Humidor" value={calculateAge(cigar.dateAdded)} />
+                       
                     </div>
 
                     {/* Description section */}
@@ -337,19 +323,58 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
                     {/* Flavor notes section */}
                     <div className="border-t border-gray-700 pt-4">
-                        <h4 className="font-bold text-white flex items-center mb-3"><Tag className="w-4 h-4 mr-2 text-amber-400" /> Flavor Notes</h4>
+                        <h4 className="font-light text-white flex items-center mb-3">
+                            {/* <Tag className="w-4 h-4 mr-2 text-amber-400" /> */}
+                            Flavor Notes</h4>
+                        
                         <div className="flex flex-wrap gap-2">
                             {cigar.flavorNotes && cigar.flavorNotes.length > 0 ?
-                                cigar.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-3 py-1 rounded-full ${getFlavorTagColor(note)}`}>{note}</span>))
+                                cigar.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-3 py-1 rounded-sm ${getFlavorTagColor(note)}`}>{note}</span>))
                                 : <p className="text-sm text-gray-500">No flavor notes added.</p>
                             }
                         </div>
                     </div>
                 </div>
 
+                
+                {/* New: Another Panel */}
+                <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
+
+                    {/* Profile header */}
+                    <div className="flex justify-between items-center">
+                        <h3 className="font-bold text-amber-300 text-lg">Purchase, Aging & Rating</h3>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+
+                        {/* Date Added: Shows formatted date */}
+                        <DetailItem label="Date Added" value={formatDate(cigar.dateAdded)} />
+                        {/* Time in Humidor: Shows calculated age */}
+                        <DetailItem label="Time in Humidor" value={calculateAge(cigar.dateAdded)} />
+
+                        {/* Price Paid: Shows formatted price or N/A */}
+                        <DetailItem label="Price Paid" value={cigar.price ? `${Number(cigar.price).toFixed(2)}` : 'N/A'} />
+                        
+                        {/* My Rating (stars), shows 0 when empty */}
+                        <div>
+                            <p className="text-xs text-gray-400">My Rating</p>
+                            <StarRating
+                                rating={cigar.userRating || 0}
+                                readonly={true}
+                                size="w-4 h-4"
+                            />
+                        </div>
+
+                        {/* User Rating: 1-5 Stars, shows N/A when empty */}
+                        {/* <DetailItem label="My Rating" value={cigar.userRating || 'N/A'} /> */}
+                    </div>
+                </div>
+
                 {/* Journal History Panel */}
                 <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
-                    <h3 className="font-bold text-amber-300 text-lg flex items-center"><BookText className="w-5 h-5 mr-2" /> Journal History</h3>
+                    <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                        {/* <BookText className="w-5 h-5 mr-2" /> */}
+                        Journal History</h3>
                     {journalEntriesForCigar.length > 0 ? (
                         <div className="space-y-4">
                             {journalEntriesForCigar.map(entry => (

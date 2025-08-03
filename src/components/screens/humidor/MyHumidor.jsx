@@ -83,6 +83,7 @@ import MoveCigarsModal from '../../Modals/Actions/MoveCigarsModal';
 import DeleteHumidorModal from '../../Modals/Actions/DeleteHumidorModal';
 import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal';
 import ExportModal from '../../Modals/Data/ExportModal';
+import HumidorStatsCards from "../../UI/HumidorStatsCards";
 const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme, setCigars, setHumidors }) => {
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {
@@ -571,21 +572,15 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
             </div>
 
             <div className="p-4">
-                <div id="pnlHumidityTemperatureValue" className="flex justify-around items-center bg-gray-800/50 p-3 rounded-md mb-6 text-center">
-                    <div className="flex flex-col items-center">
-                        <p className="text-sm text-gray-400">Humidity</p>
-                        <p className="font-bold text-white text-base">{humidor.humidity}%</p>
-                    </div>
-                    <div className="h-10 w-px bg-gray-700"></div>
-                    <div className="flex flex-col items-center">
-                        <p className="text-sm text-gray-400">Temperature</p>
-                        <p className="font-bold text-white text-base">{humidor.temp}°F</p></div>
-                    <div className="h-10 w-px bg-gray-700"></div>
-                    <div className="flex flex-col items-center">
-                        <p className="text-sm text-gray-400">Est. Value</p>
-                        <p className="font-bold text-white text-base">${humidorValue.toFixed(2)}</p>
-                    </div>
-                </div>
+
+                {/* My Humidor Stats Cards */}
+                <HumidorStatsCards
+                    stats={[
+                        { label: "Humidity", value: `${humidor.humidity}%` },
+                        { label: "Temperature", value: `${humidor.temp}°F` },
+                        { label: "Est. Value", value: `$${humidorValue.toFixed(2)}` }
+                    ]}
+                />
 
                 {/* Search Bar */}
                 <div id="pnlSearchBar" className="relative mb-4">
@@ -715,26 +710,29 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {/* Roxy's Corner: Show the autofill banner if enabled, there are cigars with missing 
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
-                    <div id="pnlRoxysCorner"
-                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-2 text-left" >
+                    <div
+                        id="pnlRoxysCorner"
+                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden">
                         <button
                             onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
-                            className="w-full flex justify-between items-center"
+                            className="w-full p-4 flex justify-between items-center"
                         >
-                            <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
-                                <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" />
-                                Roxy's Corner
+                            <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                                <Wind className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
                             </h3>
-
-                            <div className="flex items-center gap-2">
-                                <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
-                            </div>
+                            <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
                         </button>
                         {!isRoxyPanelCollapsed && (
                             <div className="px-4 pb-4">
+
+
+
                                 <span className="text-amber-100 text-sm mb-3 block">
                                     Some imported cigars are missing many details. Let Roxy auto-fill them for you!
                                 </span>
+
+
+
                                 <button
                                     id="btnAutofillMissingDetails"
                                     onClick={handleAutofillMissingDetails}
@@ -758,32 +756,30 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
 
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
-                    <div id="pnlRoxysCornerNoKey"
-                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-4 text-left" >
-                        <button
-                            onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
-                            className="w-full flex justify-between items-center"
-                        >
-                            <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
-                                <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" />
-                                Roxy's Corner
-                            </h3>
-                            <div className="flex items-center gap-2">
-                                <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
+                    <div
+                        id="pnlRoxysCorner"
+                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden">
+
+                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                            <Wind id="pnlIcon" className="w-5 h-5 mr-2 text-amber-300" />
+                            Roxy's Corner
+                        </h3>
+
+
+                        <div className="px-4 pb-4">
+
+                            <span className="text-amber-100 text-sm mb-3 block">
+                                Some cigars are missing details and can be auto-filled, but you need a Gemini API key to use auto-fill!
+                            </span>
+
+                            <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
+                                <p className="text-purple-200 text-sm text-center">
+                                    💡 Add your Gemini API key in Settings to enable AI-powered auto-fill for missing cigar details!
+                                </p>
                             </div>
-                        </button>
-                        {!isRoxyPanelCollapsed && (
-                            <div className="px-4 pb-4">
-                                <span className="text-amber-100 text-sm mb-3 block">
-                                    Some cigars are missing details and can be auto-filled, but you need a Gemini API key to use auto-fill!
-                                </span>
-                                <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
-                                    <p className="text-purple-200 text-sm text-center">
-                                        💡 Add your Gemini API key in Settings to enable AI-powered auto-fill for missing cigar details!
-                                    </p>
-                                </div>
-                            </div>
-                        )}
+
+                        </div>
+
                     </div>
                 )}
 
