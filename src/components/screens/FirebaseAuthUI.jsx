@@ -170,6 +170,17 @@ export default function CustomAuth({ onSignIn, navigate }) {
         }
     };
 
+    // Helper to clear all fields and errors
+    const clearForm = () => {
+        setFirstName('');
+        setLastName('');
+        setPhone('');
+        setEmail('');
+        setPassword('');
+        setError('');
+        setFieldErrors({});
+    };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-amber-900 via-gray-900 to-gray-800">
             <div className="bg-gray-800/90 rounded-2xl shadow-2xl p-8 w-full max-w-sm flex flex-col items-center">
@@ -269,18 +280,21 @@ export default function CustomAuth({ onSignIn, navigate }) {
                     onClick={handleGoogleSignIn}
                     type="button"
                 >
-                    <svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.7 33.1 29.8 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c2.7 0 5.2.9 7.2 2.5l6.4-6.4C34.1 5.1 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 19.5-7.6 21-17.5.1-.8.1-1.6.1-2.5 0-1.4-.1-2.7-.3-4z" /><path fill="#34A853" d="M6.3 14.7l7 5.1C15.2 16.1 19.2 13 24 13c2.7 0 5.2.9 7.2 2.5l6.4-6.4C34.1 5.1 29.3 3 24 3c-7.7 0-14.3 4.4-17.7 10.7z" /><path fill="#FBBC05" d="M24 45c5.8 0 10.7-1.9 14.6-5.2l-6.7-5.5C29.9 36.7 27.1 38 24 38c-5.7 0-10.5-3.7-12.2-8.8l-7 5.4C7.7 41.6 15.3 45 24 45z" /><path fill="#EA4335" d="M44.5 20H24v8.5h11.7c-1.1 3.1-4.2 5.5-7.7 5.5-5.7 0-10.5-3.7-12.2-8.8l-7 5.4C7.7 41.6 15.3 45 24 45c10.5 0 19.5-7.6 21-17.5.1-.8.1-1.6.1-2.5 0-1.4-.1-2.7-.3-4z" /></g></svg>
+                    <svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.7 33.1 29.8 36 24 36c-6.6 0-12-4.477-12-10 0-1.657.336-3.234.938-4.675M6.343 6.343A7.963 7.963 0 004 12c0 4.418 3.582 8 8 8 1.657 0 3.234-.336 4.675-.938M17.657 17.657A7.963 7.963 0 0020 12c0-4.418-3.582-8-8-8-1.657 0-3.234.336-4.675.938M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></g>
+                    </svg>
                     Sign in with Google
                 </button>
-                {/* <button
-                    id="register-link"
+                  <button
+                    className="mt-4 text-amber-400 underline text-sm"
+                    onClick={() => {
+                        setIsRegister((prev) => {
+                            const next = !prev;
+                            clearForm();
+                            return next;
+                        });
+                    }}
                     type="button"
-                    className="mt-4 text-amber-400 underline text-sm block text-center bg-transparent border-none p-0 cursor-pointer"
-                    
                 >
-                    Don't have an account? Register
-                </button> */}
-                <button className="mt-4 text-amber-400 underline text-sm" onClick={() => setIsRegister(!isRegister)} type="button">
                     {isRegister ? 'Already have an account? Sign In' : "Don't have an account? Register"}
                 </button>
                 {error && <div className="mt-3 text-red-400 text-center">{error}</div>}
