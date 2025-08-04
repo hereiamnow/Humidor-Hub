@@ -16,6 +16,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 
+
+
 // Third-party library imports
 import {
     BarChart2,
@@ -58,6 +60,9 @@ import PageHeader from '../UI/PageHeader';
 import DashboardStatsCards from '../UI/HumidorStatsCards';
 import AchievementsPanel from '../Profile/AchievementsPanel';
 
+// Constants
+import { countryCategories } from '../../constants/countryCategories';
+import { strengthCategories } from '../../constants/strengthCategories';
 
 const Dashboard = ({
     navigate,
@@ -177,13 +182,15 @@ const Dashboard = ({
     // Memoized strength data for browse by strength functionality
     const strengthData = useMemo(() => {
         if (browseMode !== 'strength') return [];
-        const strengthCategories = [
-            { label: 'Mild Cigars', filterValue: 'Mild' },
-            { label: 'Mild to Medium Cigars', filterValue: 'Mild-Medium' },
-            { label: 'Medium Cigars', filterValue: 'Medium' },
-            { label: 'Medium to Full Cigars', filterValue: 'Medium-Full' },
-            { label: 'Full Bodied Cigars', filterValue: 'Full' }
-        ];
+        
+        // const strengthCategories = [
+        //     { label: 'Mild Cigars', filterValue: 'Mild' },
+        //     { label: 'Mild to Medium Cigars', filterValue: 'Mild-Medium' },
+        //     { label: 'Medium Cigars', filterValue: 'Medium' },
+        //     { label: 'Medium to Full Cigars', filterValue: 'Medium-Full' },
+        //     { label: 'Full Bodied Cigars', filterValue: 'Full' }
+        // ];
+
         const counts = strengthCategories.map(category => {
             const quantity = cigars
                 .filter(cigar => cigar.strength === category.filterValue)
@@ -204,15 +211,28 @@ const Dashboard = ({
     // Memoized country data for browse by country functionality
     const countryData = useMemo(() => {
         if (browseMode !== 'country') return [];
-        const countryCategories = [
-            { label: 'Dominican Cigars', filterValue: 'Dominican Republic' },
-            { label: 'Nicaraguan Cigars', filterValue: 'Nicaragua' },
-            { label: 'Honduran Cigars', filterValue: 'Honduras' },
-            { label: 'American Cigars', filterValue: 'USA' },
-            { label: 'Cuban Cigars', filterValue: 'Cuba' },
-            { label: 'Mexican Cigars', filterValue: 'Mexico' },
-            { label: 'Other Countries', filterValue: 'Other' }
-        ];
+        
+        // const countryCategories = [
+        //     { label: 'Dominican Cigars', filterValue: 'Dominican Republic' },
+        //     { label: 'Nicaraguan Cigars', filterValue: 'Nicaragua' },
+        //     { label: 'Honduran Cigars', filterValue: 'Honduras' },
+        //     { label: 'American Cigars', filterValue: 'USA' },
+        //     { label: 'Cuban Cigars', filterValue: 'Cuba' },
+        //     { label: 'Mexican Cigars', filterValue: 'Mexico' },
+        //     { label: 'Peruvian Cigars', filterValue: 'Peru' },
+        //     { label: 'Ecuadorian Cigars', filterValue: 'Ecuador' },
+        //     { label: 'Colombian Cigars', filterValue: 'Colombia' },
+        //     { label: 'Brazilian Cigars', filterValue: 'Brazil' },
+        //     { label: 'Panamanian Cigars', filterValue: 'Panama' },
+        //     { label: 'Costa Rican Cigars', filterValue: 'Costa Rica' },
+        //     { label: 'Philippine Cigars', filterValue: 'Philippines' },
+        //     { label: 'Canary Islands Cigars', filterValue: 'Canary Islands' },
+        //     { label: 'Italian Cigars', filterValue: 'Italy' },
+        //     { label: 'Dutch Cigars', filterValue: 'Netherlands' },
+        //     { label: 'Other Countries', filterValue: 'Other' } // Catch-all for unlisted countries
+        // ];
+
+
         const counts = cigars.reduce((acc, cigar) => {
             const country = cigar.country || 'Unknown';
             const matchedCategory = countryCategories.find(cat => cat.filterValue.toLowerCase() === country.toLowerCase());

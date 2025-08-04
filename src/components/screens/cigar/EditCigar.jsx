@@ -200,16 +200,20 @@ Here is the existing data for the cigar:
 - Shape: ${formData.shape || 'Not specified'}
 - Size: ${formData.size || 'Not specified'}
 - Country: ${formData.country || 'Not specified'}
+- Continent: ${formData.continent || 'Not specified'}
 - Wrapper: ${formData.wrapper || 'Not specified'}
 - Binder: ${formData.binder || 'Not specified'}
 - Filler: ${formData.filler || 'Not specified'}
 - Strength: ${formData.strength || 'Not specified'}
+- Rating: ${formData.rating || 'Not specified'}
 - Price: ${formData.price ? 'Already has a price.' : 'Not specified'}
 - Description: ${formData.description ? 'Already has a description.' : 'Not specified'}
 
-Based on the cigar name "${formData.name}", provide a complete and accurate JSON object with all available details. The schema MUST be: { "brand": "string", "shape": "string", "size": "string", "country": "string", "wrapper": "string", "binder": "string", "filler": "string", "strength": "Mild" | "Mild-Medium" | "Medium" | "Medium-Full" | "Full", "flavorNotes": ["string"], "shortDescription": "string", "description": "string", "image": "string", "rating": "number", "price": "number", "length_inches": "number", "ring_gauge": "number" }.
+Based on the cigar name "${formData.name}", provide a complete and accurate JSON object with all available details. 
+The schema MUST be: { "brand": "string", "shape": "string", "size": "string", "country": "string", "continent": "string", "wrapper": "string", "binder": "string", "filler": "string", "strength": "Mild" | "Mild-Medium" | "Medium" | "Medium-Full" | "Full",  "rating": "string",   "flavorNotes": ["string"], "shortDescription": "string", "description": "string", "image": "string", "rating": "number", "price": "number", "length_inches": "number", "ring_gauge": "number" }.
 
 Do not include any text or markdown formatting outside of the JSON object.`;
+        console.log('handleAutofill: Prepared prompt:', prompt);
 
         const responseSchema = {
             type: "OBJECT",
@@ -218,6 +222,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                 shape: { type: "STRING" },
                 size: { type: "STRING" },
                 country: { type: "STRING" },
+                continent: { type: "STRING" },
                 wrapper: { type: "STRING" },
                 binder: { type: "STRING" },
                 filler: { type: "STRING" },
@@ -452,6 +457,13 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         className={flashingFields.country ? 'ring-2 ring-amber-400 animate-pulse' : ''}
                     />
                 </div>
+
+                <div id="pnlContinent" className="grid grid-cols-1 gap-3">
+                    {/* continent */}
+                    <InputField name="continent" label="Continent" placeholder="e.g., North America" value={formData.continent} onChange={handleInputChange} />
+
+                </div>
+
                 {/* Profile and Price */}
                 <div id="pnlProfileAndPrice" className="grid grid-cols-2 gap-3">
                     <div className="relative">

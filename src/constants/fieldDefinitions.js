@@ -30,7 +30,7 @@ export const APP_HUMIDOR_FIELDS = [
     { key: 'name', label: 'Humidor Name', required: true },
 
     // Descriptive content fields
-    { key: 'shortDescription', label: 'Short Description', required: false },
+    { key: 'shortDescription', label: 'Overview', required: false },
     { key: 'longDescription', label: 'Long Description', required: false },
 
     // Physical characteristics
@@ -80,18 +80,19 @@ export const APP_CIGAR_FIELDS = [
     { key: 'size', label: 'Size (e.g., 5.5x50)', required: false }, // Combined length x ring gauge
 
     // Origin and tobacco composition
-    { key: 'country', label: 'Country', required: false }, // Country of origin
-    { key: 'wrapper', label: 'Wrapper', required: false }, // Outer tobacco leaf
-    { key: 'binder', label: 'Binder', required: false }, // Holds filler together
-    { key: 'filler', label: 'Filler', required: false }, // Interior tobacco blend
+    { key: 'continent', label: 'Continent', required: false },  // Continent of origin
+    { key: 'country', label: 'Country', required: false },      // Country of origin
+    { key: 'wrapper', label: 'Wrapper', required: false },      // Outer tobacco leaf
+    { key: 'binder', label: 'Binder', required: false },        // Holds filler together
+    { key: 'filler', label: 'Filler', required: false },        // Interior tobacco blend
 
     // Smoking characteristics
-    { key: 'strength', label: 'Strength', required: false }, // Mild, medium, full
+    { key: 'strength', label: 'Strength', required: false },    // Mild, Medium, Full
     { key: 'flavorNotes', label: 'Flavor Notes (semicolon-separated)', required: false, type: 'array' },
 
     // Rating and evaluation
-    { key: 'rating', label: 'Rating (Official)', required: false, type: 'number' }, // Professional ratings
-    { key: 'userRating', label: 'My Rating', required: false, type: 'number' }, // Personal rating
+    { key: 'rating', label: 'Rating (Official)', required: false, type: 'number' },     // Professional ratings
+    { key: 'userRating', label: 'My Rating', required: false, type: 'number' },         // Personal rating
 
     // Commercial and inventory data
     { key: 'price', label: 'Price', required: false, type: 'number' },
@@ -99,7 +100,7 @@ export const APP_CIGAR_FIELDS = [
 
     // Visual and descriptive content
     { key: 'image', label: 'Image URL', required: false },
-    { key: 'shortDescription', label: 'Short Description', required: false },
+    { key: 'shortDescription', label: 'Overview', required: false },
     { key: 'description', label: 'Long Description', required: false },
 
     // Metadata and tracking

@@ -38,13 +38,12 @@ const BrowseByWrapper = ({ cigars, navigate, theme, isCollapsed, onToggle }) => 
     }, [cigars]);
 
     return (
-        <div id="pnlBrowseByWrapper" className={`${theme.drawerBg} border ${theme.borderColor} rounded-md overflow-hidden`}>
+        <div id="pnlBrowseByWrapper" className="bg-gray-900 border border-gray-700 rounded-md overflow-hidden">
             <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
-                <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>
-                    {/* <Leaf className={`w-5 h-5 mr-2 ${theme.primary}`} />  */}
+                <h3 className={`font-bold text-amber-400 text-lg flex items-center`}>
                     Browse by Wrapper
                 </h3>
-                <ChevronDown className={`w-5 h-5 ${theme.primary} transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
+                <ChevronDown className={`w-5 h-5 text-amber-400 transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
             </button>
             {!isCollapsed && (
                 <div id="pnlContents" className="px-4 pb-4 space-y-2">

@@ -183,7 +183,7 @@ const detectPuro = (wrapper, binder, filler) => {
 
 const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }) => {
     console.log('AddCigar component initialized with props:', { appId, userId, humidorId, theme: theme?.name || 'unknown' });
-    
+
     const { subscriptionService } = useSubscription();
     const { canAddCigar, isAtLimit, remainingSlots } = useCigarLimits(cigars);
 
@@ -323,10 +323,10 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
 
         // Check subscription limits
         if (!canAddCigar) {
-            setModalState({ 
-                isOpen: true, 
-                content: "You've reached your cigar limit. Upgrade to Premium for unlimited storage.", 
-                isLoading: false 
+            setModalState({
+                isOpen: true,
+                content: "You've reached your cigar limit. Upgrade to Premium for unlimited storage.",
+                isLoading: false
             });
             return;
         }
@@ -369,10 +369,10 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
 
         // Check AI usage limits
         if (subscriptionService && !(await subscriptionService.canUseAI())) {
-            setModalState({ 
-                isOpen: true, 
-                content: "You've reached your AI lookup limit for this month. Upgrade to Premium for more lookups.", 
-                isLoading: false 
+            setModalState({
+                isOpen: true,
+                content: "You've reached your AI lookup limit for this month. Upgrade to Premium for more lookups.",
+                isLoading: false
             });
             return;
         }
@@ -380,7 +380,7 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
         console.log('handleAutofill: Starting auto-fill process');
         setIsAutofilling(true);
 
-        const prompt = `You are a cigar database. Based on the cigar name "${formData.name}", provide its details as a JSON object. The schema MUST be: { "brand": "string", "shape": "string", "size": "string", "country": "string", "wrapper": "string", "binder": "string", "filler": "string", "strength": "Mild" | "Mild-Medium" | "Medium" | "Medium-Full" | "Full", "flavorNotes": ["string", "string", "string", "string"], "shortDescription": "string", "description": "string", "image": "string", "rating": "number", "price": "number", "length_inches": "number", "ring_gauge": "number" }. If you cannot determine a value, use an empty string "" or an empty array [] or 0 for numbers. Do not include any text or markdown formatting outside of the JSON object.`;
+        const prompt = `You are a cigar database. Based on the cigar name "${formData.name}", provide its details as a JSON object. The schema MUST be: { "brand": "string", "shape": "string", "size": "string", "country": "string","continent": "string", "wrapper": "string", "binder": "string", "filler": "string", "strength": "Mild" | "Mild-Medium" | "Medium" | "Medium-Full" | "Full", "rating": "string", "flavorNotes": ["string", "string", "string", "string"], "shortDescription": "string", "description": "string", "image": "string", "rating": "number", "price": "number", "length_inches": "number", "ring_gauge": "number" }. If you cannot determine a value, use an empty string "" or an empty array [] or 0 for numbers. Do not include any text or markdown formatting outside of the JSON object.`;
         console.log('handleAutofill: Prepared prompt:', prompt);
 
         const responseSchema = {
@@ -494,9 +494,9 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
     };
 
     return (
-        <div 
-        id="pnlContentWrapper_AddCigar" 
-        className="pb-24">
+        <div
+            id="pnlContentWrapper_AddCigar"
+            className="pb-24">
             {modalState.isOpen && <GeminiModal title="Auto-fill Status" content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 
@@ -535,9 +535,9 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
 
             {/* Cigar Name and Details */}
             <div id="pnlCigarNameAndDetails" className="p-4 space-y-4">
-                
+
                 {/* Subscription Limit Warning */}
-                <CigarLimitWarning 
+                <CigarLimitWarning
                     currentCount={cigars.length}
                     onUpgrade={() => window.open('https://play.google.com/store/account/subscriptions', '_blank')}
                 />
@@ -656,6 +656,12 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                     />
                 </div>
 
+                <div id="pnlContinent" className="grid grid-cols-1 gap-3">
+                    {/* continent */}
+                    <InputField name="continent" label="Continent" placeholder="e.g., North America" value={formData.continent} onChange={handleInputChange} />
+
+                </div>
+
                 {/* Puro Detection Section */}
                 {(formData.wrapper && formData.binder && formData.filler) && (
                     <div className={`p-3 rounded-lg border ${formData.isPuro
@@ -729,19 +735,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                     <InputField name="rating" label="Rating" placeholder="e.g., 94" type="number" value={formData.rating} onChange={handleInputChange} theme={theme} />
                     <InputField name="dateAdded" Tooltip="Date Added to Humidor" label="Date Added" type="date" value={formData.dateAdded} onChange={handleInputChange} theme={theme} />
                 </div>
-
-                {/* User Rating */}
-                {/* <div id="pnlUserRating" className="grid grid-cols-2 gap-3">
-                    <InputField
-                        name="userRating"
-                        label="User Rating"
-                        placeholder="e.g., 90"
-                        type="number"
-                        value={formData.userRating}
-                        onChange={handleInputChange}
-                        theme={theme}
-                    />
-                </div> */}
 
                 {/* New User Rating section: */}
                 <div id="pnlUserRating" className="space-y-2">
