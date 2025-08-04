@@ -9,9 +9,9 @@
  * Firebase Authentication UI Component
  *
  * Provides a custom authentication UI for Humidor Hub, supporting email/password and 
- * Google OAuth sign-in. Features user registration, password visibility toggle, error 
- * handling, and a responsive, branded interface for secure access to the cigar 
- * collection app.
+ * Google OAuth sign-in. Features user registration with email verification, password 
+ * visibility toggle, error handling, and a responsive, branded interface for secure 
+ * access to the cigar collection app.
  *
  *
  * @param {Object} props - Component props
@@ -22,7 +22,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
-    GoogleAuthProvider, signInWithPopup
+    GoogleAuthProvider, signInWithPopup, sendEmailVerification
 } from 'firebase/auth';
 import { Box } from 'lucide-react'; // Optional: Replace with your logo/icon
 
@@ -46,6 +46,10 @@ export default function CustomAuth({ onSignIn, navigate }) {
     const [phone, setPhone] = useState('');
     // Add validation error state for each field
     const [fieldErrors, setFieldErrors] = useState({});
+
+    // Add state for verification message
+    const [verificationSent, setVerificationSent] = useState(false);
+    const [pendingEmail, setPendingEmail] = useState('');
 
     // Firebase auth instance
     const auth = getAuth();
@@ -85,6 +89,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
         e.preventDefault();
         setError('');
         setFieldErrors({});
+        setVerificationSent(false);
 
         if (isRegister) {
             const errors = validateRegisterFields();
@@ -107,10 +112,29 @@ export default function CustomAuth({ onSignIn, navigate }) {
                 console.log('📧 Attempting user registration...');
                 userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 console.log('✅ Registration successful:', userCredential.user.uid);
-                // Optionally, update user profile with first/last name and phone here
+
+                // Send verification email
+                await sendEmailVerification(userCredential.user);
+                console.log('✅ Verification email sent.');
+                setVerificationSent(true);
+                setPendingEmail(email);
+                clearForm(); // Clear fields after successful registration submission
+
+                // Sign out the user to force them to verify before logging in
+                await auth.signOut();
+                return; // Stop further execution
             } else {
                 console.log('📧 Attempting user sign-in...');
                 userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+                // Check if email is verified
+                if (!userCredential.user.emailVerified) {
+                    setError('Please verify your email address before signing in. Check your inbox for a verification link.');
+                    setPendingEmail(email); // Set for potential resend
+                    setVerificationSent(true); // Show the resend button
+                    await auth.signOut(); // Prevent access
+                    return;
+                }
                 console.log('✅ Sign-in successful:', userCredential.user.uid);
             }
 
@@ -182,12 +206,24 @@ export default function CustomAuth({ onSignIn, navigate }) {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-amber-900 via-gray-900 to-gray-800">
+        <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="bg-gray-800/90 rounded-2xl shadow-2xl p-8 w-full max-w-sm flex flex-col items-center">
                 <Box className="w-14 h-14 text-amber-400 mb-4" />
                 <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight">Humidor Hub</h1>
                 <p className="text-gray-400 mb-6 text-center">Your personal cigar collection companion</p>
                 <h2 className="text-xl font-bold text-white mb-4">{isRegister ? 'Create Account' : 'Sign In'}</h2>
+
+                {verificationSent && !isRegister && (
+                    <div className="bg-amber-100 text-amber-800 rounded-lg p-3 mb-4 text-center text-sm w-full">
+                        A verification link was sent to <b>{pendingEmail}</b>. Please check your inbox.
+                    </div>
+                )}
+                {verificationSent && isRegister && (
+                    <div className="bg-green-100 text-green-800 rounded-lg p-3 mb-4 text-center text-sm w-full">
+                        Registration successful! A verification link has been sent to <b>{pendingEmail}</b>. Please verify your email before signing in.
+                    </div>
+                )}
+
                 <form onSubmit={handleEmailAuth} className="flex flex-col gap-3 w-full">
                     {/* Show extra fields only when registering */}
                     {isRegister && (
@@ -284,12 +320,14 @@ export default function CustomAuth({ onSignIn, navigate }) {
                     </svg>
                     Sign in with Google
                 </button>
-                  <button
+                <button
                     className="mt-4 text-amber-400 underline text-sm"
                     onClick={() => {
                         setIsRegister((prev) => {
                             const next = !prev;
                             clearForm();
+                            setVerificationSent(false);
+                            setPendingEmail('');
                             return next;
                         });
                     }}

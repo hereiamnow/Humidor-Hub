@@ -465,7 +465,7 @@ export default function App() {
     return (
         <SubscriptionProvider db={db} appId={appId} userId={userId}>
             <div
-                className={`min-h-screen ${theme.bg} ${theme.text}`}
+                className={`min-h-screen bg-gray-900 text-white`}
                 style={{
                     fontFamily: selectedFont.body,
                 }}
