@@ -74,7 +74,7 @@ const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, s
     };
 
     return (
-        <div id="pnlContainerWrapper" className={`${theme.bg} min-h-screen pb-24`}>
+        <div id="pnlContainerWrapper" className="bg-gray-900 min-h-screen pb-24 px-4 pt-4">
 
 
             {isThemeModalOpen && <ThemeModal currentTheme={theme} setTheme={setTheme} onClose={() => setIsThemeModalOpen(false)} />}
