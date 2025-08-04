@@ -1,4 +1,3 @@
-
 /**
  *
  * @file App.js
@@ -33,7 +32,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken, connectAuthEmulator } from "firebase/auth";
 import { getFirestore, collection, onSnapshot, connectFirestoreEmulator } from "firebase/firestore";
 import { firebaseConfigExport } from './firebase';
-import FirebaseAuthUI from './FirebaseAuthUI';
+import FirebaseAuthUI from './components/Screens/FirebaseAuthUI';
 
 // Constants
 import { fontOptions } from './constants/fontOptions';
@@ -71,6 +70,7 @@ import HumidorsScreen from './components/Screens/MyHumidors';
 import IntegrationsScreen from './components/Screens/settings/IntegrationsScreen';
 import MyHumidor from './components/Screens/humidor/MyHumidor';
 import SettingsScreen from './components/Screens/SettingsScreen';
+//import RegisterUser from './components/Screens/RegisterUser';
 
 // Initialize Firebase Authentication token
 const initialAuthToken = typeof window !== "undefined" && window.initialAuthToken ? window.initialAuthToken : null;
@@ -120,7 +120,7 @@ export default function App() {
         showStrengthPanel: false,
         showCountryPanel: false,
         showInventoryAnalysis: true,
-        showWorldMap: false        
+        showWorldMap: false
     });
 
     // New state to manage the open/closed status of dashboard panels
@@ -408,6 +408,8 @@ export default function App() {
                 return <ProfileScreen navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} userId={userId} auth={auth} />;
             case 'Subscription':
                 return <SubscriptionScreen navigate={navigate} theme={theme} />;
+            // case 'RegisterUser':
+            //     return <RegisterUser navigate={navigate} />;
             default:
                 return <Dashboard navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} showWrapperPanel={dashboardPanelVisibility.showWrapperPanel} showStrengthPanel={dashboardPanelVisibility.showStrengthPanel} showCountryPanel={dashboardPanelVisibility.showCountryPanel} showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis} panelStates={dashboardPanelStates} setPanelStates={setDashboardPanelStates} />;
         }
