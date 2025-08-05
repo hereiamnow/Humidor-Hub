@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
   /* Replace with the path to your image */
   background-image: url('/public/assets/images/bg1.jpg');

@@ -4,10 +4,12 @@ import { useSubscription } from '../../contexts/SubscriptionContext';
 import { SUBSCRIPTION_LIMITS, SUBSCRIPTION_TIERS } from '../../services/subscriptionService';
 
 const SubscriptionPanel = ({ subscription: propSubscription }) => {
-    const { subscription: contextSubscription, isPremium, isFree, setDevelopmentTier } = useSubscription();
+    const { subscription: contextSubscription, isPremium, isFree, setDevelopmentTier, saveDevelopmentTier } = useSubscription();
+    console.log('SubscriptionPanel: context values', { contextSubscription, isPremium, isFree, hasSaveDevelopmentTier: !!saveDevelopmentTier });
 
     // Use context subscription if available, otherwise fall back to prop
     const subscription = contextSubscription || propSubscription;
+    console.log('SubscriptionPanel: effective subscription', subscription);
 
     if (!subscription) return null;
 
@@ -95,7 +97,14 @@ const SubscriptionPanel = ({ subscription: propSubscription }) => {
                                 checked={isPremium}
                                 onChange={(e) => {
                                     const newTier = e.target.checked ? SUBSCRIPTION_TIERS.PREMIUM : SUBSCRIPTION_TIERS.FREE;
+                                    console.log('SubscriptionPanel: Toggling dev tier to', newTier);
                                     setDevelopmentTier(newTier);
+                                    if (saveDevelopmentTier) {
+                                        console.log('SubscriptionPanel: Calling saveDevelopmentTier...');
+                                        saveDevelopmentTier(newTier);
+                                    } else {
+                                        console.error('SubscriptionPanel: saveDevelopmentTier function is not available on the context.');
+                                    }
                                 }}
                             />
                             <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>

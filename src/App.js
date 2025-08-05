@@ -48,7 +48,7 @@ import BottomNav from './components/Navigation/BottomNav';
 // Components - Settings
 import AboutScreen from './components/Screens/settings/AboutScreen';
 import NotificationsScreen from './components/Screens/settings/NotificationsScreen';
-import ProfileScreen from './components/Screens/settings/ProfileScreen';
+import ProfileScreen from './components/Screens/Settings/ProfileScreen';
 import SubscriptionScreen from './components/Screens/settings/SubscriptionScreen';
 
 // Subscription Context
@@ -408,8 +408,6 @@ export default function App() {
                 return <ProfileScreen navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} userId={userId} auth={auth} />;
             case 'Subscription':
                 return <SubscriptionScreen navigate={navigate} theme={theme} />;
-            // case 'RegisterUser':
-            //     return <RegisterUser navigate={navigate} />;
             default:
                 return <Dashboard navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} showWrapperPanel={dashboardPanelVisibility.showWrapperPanel} showStrengthPanel={dashboardPanelVisibility.showStrengthPanel} showCountryPanel={dashboardPanelVisibility.showCountryPanel} showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis} panelStates={dashboardPanelStates} setPanelStates={setDashboardPanelStates} />;
         }
@@ -453,120 +451,9 @@ export default function App() {
         userId,
         authAvailable: !!auth,
         currentScreen: navigation.screen,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
         themeLoaded: !!theme
     });
 
-    // The main return statement for the App component.
-
-    // min - h - screen:
-    // This is a Tailwind CSS utility class.
-    // It sets the minimum height of the element to the height of the viewport(the visible part of the browser window).
-    // This ensures your app always fills the screen vertically, even if there isn’t much content.
     return (
         <SubscriptionProvider db={db} appId={appId} userId={userId}>
             <div
@@ -575,15 +462,6 @@ export default function App() {
                     fontFamily: selectedFont.body,
                 }}
             >
-
-                {/* 
-                max-w-md:
-                Sets the maximum width of the content to a medium size (by default, 28rem or 448px in Tailwind).
-                This keeps your content from stretching too wide on large screens, improving readability.
-
-                mx-auto:
-                Applies automatic left and right margins, centering the content horizontally. 
-                */}
                 <div className="max-w-md mx-auto">
                     {renderScreen()}
                 </div>

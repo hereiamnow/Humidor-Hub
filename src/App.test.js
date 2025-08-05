@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
 // Mock Firebase modules
@@ -16,7 +16,7 @@ jest.mock('firebase/auth', () => ({
 jest.mock('firebase/firestore', () => ({
   getFirestore: jest.fn(() => ({})),
   connectFirestoreEmulator: jest.fn(),
-  collection: jest.fn(),
+  collection: jest.fn((db, ...path) => ({ path: path.join('/') })),
   onSnapshot: jest.fn(() => jest.fn()), // returns unsubscribe
 }));
 
@@ -46,9 +46,26 @@ import * as firebaseAuth from 'firebase/auth';
 function triggerAuthStateChanged(user) {
   firebaseAuth.onAuthStateChanged.mockImplementation((auth, cb) => {
     cb(user);
+    return jest.fn(); // return unsubscribe
   });
 }
-// ...existing code...
+
+// Helper to mock onSnapshot
+import * as firestore from 'firebase/firestore';
+function triggerOnSnapshot(collectionPath, data) {
+  firestore.onSnapshot.mockImplementation((ref, cb) => {
+    if (ref.path.endsWith(collectionPath)) {
+      const snapshot = {
+        docs: data.map(item => ({
+          id: item.id,
+          data: () => ({ ...item }),
+        })),
+      };
+      cb(snapshot);
+    }
+    return jest.fn(); // return unsubscribe
+  });
+}
 
 describe('App Firebase initialization', () => {
   beforeEach(() => {
@@ -82,9 +99,13 @@ describe('App Firebase initialization', () => {
 
   it('signs in with custom token in production', async () => {
     window.location.hostname = 'production.com';
+    window.initialAuthToken = 'test-token';
     triggerAuthStateChanged(null);
     render(<App />);
-    // expect(require('firebase/auth').signInWithCustomToken).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(require('firebase/auth').signInWithCustomToken).toHaveBeenCalledWith(expect.anything(), 'test-token');
+    });
+    delete window.initialAuthToken;
     window.location.hostname = 'localhost'; // reset
   });
 
@@ -132,5 +153,80 @@ describe('App Firebase initialization', () => {
     triggerAuthStateChanged({ uid: 'test', isAnonymous: false, providerData: [{}] });
     render(<App />);
     expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+  });
+});
+
+describe('App Data Fetching and State', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    window.location.hostname = 'localhost';
+    localStorageMock.clear();
+  });
+
+  it('shows loading indicator initially', () => {
+    triggerAuthStateChanged(null); // No user yet, so it should be loading
+    render(<App />);
+    expect(screen.getByText(/Loading Your Collection/i)).toBeInTheDocument();
+  });
+
+  it('fetches data when user is authenticated', async () => {
+    triggerAuthStateChanged({ uid: 'test-user', isAnonymous: false, providerData: [{}] });
+    render(<App />);
+    await waitFor(() => {
+      expect(firestore.onSnapshot).toHaveBeenCalledWith(expect.objectContaining({ path: 'artifacts/undefined/users/test-user/humidors' }), expect.any(Function), expect.any(Function));
+      expect(firestore.onSnapshot).toHaveBeenCalledWith(expect.objectContaining({ path: 'artifacts/undefined/users/test-user/cigars' }), expect.any(Function), expect.any(Function));
+      expect(firestore.onSnapshot).toHaveBeenCalledWith(expect.objectContaining({ path: 'artifacts/undefined/users/test-user/journalEntries' }), expect.any(Function), expect.any(Function));
+    });
+  });
+});
+
+describe('App Navigation', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    triggerAuthStateChanged({ uid: 'test-user', isAnonymous: false, providerData: [{}] });
+    // Mock some data to prevent "not found" errors
+    triggerOnSnapshot('cigars', [{ id: 'c1', name: 'Test Cigar' }]);
+    triggerOnSnapshot('humidors', [{ id: 'h1', name: 'Test Humidor' }]);
+  });
+
+  it('navigates to HumidorsScreen when humidor icon is clicked', async () => {
+    render(<App />);
+    // Wait for dashboard to load
+    await screen.findByText(/dashboard/i);
+
+    // Find the navigation button for humidors (assuming it has text 'My Humidors')
+    const humidorNavButton = screen.getByRole('button', { name: /my humidors/i });
+    fireEvent.click(humidorNavButton);
+
+    // Check if the HumidorsScreen is rendered
+    await waitFor(() => {
+      expect(screen.getByText(/Test Humidor/i)).toBeInTheDocument();
+    });
+  });
+});
+
+describe('App Theme Handling', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    localStorageMock.clear();
+    triggerAuthStateChanged({ uid: 'test-user', isAnonymous: false, providerData: [{}] });
+  });
+
+  it('loads default theme if localStorage is empty', async () => {
+    render(<App />);
+    await screen.findByText(/dashboard/i);
+    // Assuming default theme has a specific text color or class
+    // This is an indirect check. A better check would be to see if localStorage is set.
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('humidor-hub-theme', expect.stringContaining('Humidor Hub'));
+  });
+
+  it('loads theme from localStorage if present', async () => {
+    const customTheme = { name: 'Midnight', bg: 'bg-gray-900', text: 'text-gray-100' };
+    localStorageMock.setItem('humidor-hub-theme', JSON.stringify(customTheme));
+    render(<App />);
+    await screen.findByText(/dashboard/i);
+    expect(localStorageMock.getItem).toHaveBeenCalledWith('humidor-hub-theme');
+    // Check that it doesn't try to set the default theme again
+    expect(localStorageMock.setItem).not.toHaveBeenCalledWith('humidor-hub-theme', expect.stringContaining('Humidor Hub'));
   });
 });
