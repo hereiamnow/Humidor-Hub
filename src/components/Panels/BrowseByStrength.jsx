@@ -48,32 +48,28 @@ const BrowseByStrength = ({ cigars, navigate, theme, isCollapsed, onToggle }) =>
     }, [cigars, strengthCategories]);
 
     return (
-        <div id="pnlBrowseByStrength" className={`${theme.drawerBg} border ${theme.borderColor} rounded-md overflow-hidden`}>
-            <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
-                <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>
-                    {/* <Cigarette className={`w-5 h-5 mr-2 ${theme.primary}`} />  */}
-                    Browse by Profile
-                </h3>
-                <ChevronDown className={`w-5 h-5 ${theme.primary} transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            {!isCollapsed && (
-                <div className="px-4 pb-4 space-y-2">
-                    {strengthData.length > 0 ? (
-                        strengthData.map(({ label, quantity, filterValue }) => (
-                            <button
-                                key={label}
-                                onClick={() => navigate('HumidorsScreen', { preFilterStrength: filterValue })}
-                                className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
-                            >
-                                <span className="text-gray-300">{label}</span>
-                                <span className="text-gray-400">({quantity})</span>
-                            </button>
-                        ))
-                    ) : (
-                        <p className="text-gray-500 text-sm text-center py-4">No strength or flavored cigar data available.</p>
-                    )}
-                </div>
-            )}
+        <div id="pnlBrowseByStrength" tabIndex={0} className="collapse  collapse-plus bg-base-100 border-base-300 border">
+          
+            <div className="collapse-title font-semibold">
+                Browse by Profile
+            </div>
+            <div className="collapse-content text-sm">
+                {strengthData.length > 0 ? (
+                    strengthData.map(({ label, quantity, filterValue }) => (
+                        <button
+                            key={label}
+                            onClick={() => navigate('HumidorsScreen', { preFilterStrength: filterValue })}
+                            className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
+                        >
+                            <span className="text-gray-300">{label}</span>
+                            <span className="text-gray-400">({quantity})</span>
+                        </button>
+                    ))
+                ) : (
+                    <p className="text-gray-500 text-sm text-center py-4">No strength data available.</p>
+                )}
+            </div>
+
         </div>
     );
 };

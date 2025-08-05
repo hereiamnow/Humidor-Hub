@@ -38,15 +38,12 @@ const BrowseByWrapper = ({ cigars, navigate, theme, isCollapsed, onToggle }) => 
     }, [cigars]);
 
     return (
-        <div id="pnlBrowseByWrapper" className="bg-gray-900 border border-gray-700 rounded-md overflow-hidden">
-            <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
-                <h3 className={`font-bold text-amber-400 text-lg flex items-center`}>
+        <div id="pnlBrowseByWrapper" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
+           
+            <div className="collapse-title font-semibold">
                     Browse by Wrapper
-                </h3>
-                <ChevronDown className={`w-5 h-5 text-amber-400 transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            {!isCollapsed && (
-                <div id="pnlContents" className="px-4 pb-4 space-y-2">
+                </div>
+            <div className="collapse-content text-sm">
                     {wrapperData.length > 0 ? (
                         wrapperData.map(({ wrapper, quantity }) => (
                             <button
@@ -62,7 +59,6 @@ const BrowseByWrapper = ({ cigars, navigate, theme, isCollapsed, onToggle }) => 
                         <p className="text-gray-500 text-sm text-center py-4">No wrapper data available.</p>
                     )}
                 </div>
-            )}
         </div>
     );
 };

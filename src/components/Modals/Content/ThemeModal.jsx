@@ -116,7 +116,7 @@ const ThemeModal = ({ currentTheme, setTheme, onClose }) => {
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-[100]" onClick={handleCancel}>
             <div
-                className={`${currentTheme.card} rounded-md p-0 w-full max-w-4xl max-h-[90vh] shadow-2xl ${currentTheme.borderColor} border relative flex flex-col`}
+                className={`bg-gray-800 rounded-md p-0 w-full max-w-4xl max-h-[90vh] shadow-2xl ${currentTheme.borderColor} border relative flex flex-col`}
                 style={{ minHeight: 0 }}
                 onClick={e => e.stopPropagation()}
             >
@@ -187,8 +187,8 @@ const ThemeModal = ({ currentTheme, setTheme, onClose }) => {
                                         key={key}
                                         onClick={() => setSelectedTheme(theme)}
                                         className={`group relative p-4 rounded-md border-2 transition-all duration-300 transform hover:scale-105 ${isSelected
-                                            ? `${currentTheme.borderColor.replace('border-', 'border-')} bg-gradient-to-br ${currentTheme.primary.replace('text-', 'from-')}/20 ${currentTheme.primary.replace('text-', 'to-')}/10 shadow-lg`
-                                            : `${currentTheme.borderColor} hover:${currentTheme.borderColor.replace('gray-700', 'gray-500')} hover:${currentTheme.card}/30`
+                                            ? ` bg-gradient-to-br  shadow-lg`
+                                            : `${currentTheme.borderColor} hover:gray-700 hover:bg-gray-800/30`
                                             }`}
                                     >
                                         {isSelected && (
@@ -255,7 +255,7 @@ const ThemeModal = ({ currentTheme, setTheme, onClose }) => {
                                             onClick={() => setSelectedTheme(themeObj)}
                                             className={`group relative p-4 rounded-md border-2 transition-all duration-300 transform hover:scale-105 ${isSelected
                                                 ? `border-blue-500 bg-gradient-to-br from-blue-500/20 to-blue-600/10 shadow-lg`
-                                                : `${currentTheme.borderColor} hover:border-gray-500 hover:${currentTheme.card}/30`
+                                                : `${currentTheme.borderColor} hover:border-gray-500 hover:bg-gray-800/30`
                                                 }`}
                                         >
                                             {isSelected && (

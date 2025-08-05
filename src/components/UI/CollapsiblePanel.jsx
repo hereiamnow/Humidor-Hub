@@ -13,18 +13,18 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-const CollapsiblePanel = ({ title, description, children, icon: Icon, theme }) => {
+const CollapsiblePanel = ({ title, description, children, icon: Icon }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     return (
-        <div className="bg-gray-800/50 border border-gray-700 rounded-md overflow-hidden">
+        <div tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
             <button onClick={() => setIsCollapsed(!isCollapsed)} className="w-full p-4 flex justify-between items-center">
-                <h3 className="font-bold text-amber-300 text-lg flex items-center">
+                <div className="collapse-title font-semibold">
                     {Icon && <Icon className="w-5 h-5 mr-2" />} {title}
-                </h3>
+                </div>
                 <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
             </button>
             {!isCollapsed && (
-                <div className="px-4 pb-4 space-y-4">
+                <div className="collapse-content text-sm">
                     <p className="text-gray-400 text-sm">{description}</p>
                     {children}
                 </div>

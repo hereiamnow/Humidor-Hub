@@ -45,80 +45,83 @@ const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect, th
 
     return (
         <div className="relative" onClick={clickHandler}>
-            <div className={`bg-gray-800/50 rounded-md overflow-hidden group cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
-                <div className="relative">
-                    <img
-                        src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?text=${cigar.brand.replace(/\s/g, '+')}`}
-                        alt={`${cigar.brand} ${cigar.name}`}
-                        className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-2 left-2 bg-black/60 rounded-lg px-2 py-1 max-w-[70%]">
-                        <p className="text-gray-200 text-xs font-semibold uppercase truncate flex items-center gap-1">
-                            {cigar.brand}
-                            {/* {cigar.country && (
-                                <span className={isPuro ? 'text-amber-300' : ''}>
-                                    - {cigar.country}
-                                </span>
-                            )} */}
-                        </p>
-                        <h3 className="text-white font-bold text-sm truncate">{cigar.name}</h3>
-                    </div>
 
-                    {/* Position IsPuroBadge and RatingBadge on the same row at the bottom right */}
-                    <div id="pnlIsPuroRating" className="absolute bottom-2 right-2 flex flex-row items-end gap-1 z-10">
-                        <IsPuroBadge
-                            isPuro={isPuro}
-                            theme={theme}
-                            size="md"
-                        />
-                        <RatingBadge
-                            rating={cigar.rating}
-                            theme={theme}
-                            size="md"
-                        />
-                    </div>
-                </div>
-                <div className="p-3 space-y-3">
-                    {/* Details */}
-                    <div className="text-xs space-y-2">
-                        <div id="pnlShapeSizeStrength" className="grid grid-cols-3 gap-x-2 mb-2 text-left">
-                            <div>
-                                <p className="text-gray-400">Shape</p>
-                                <p className="font-semibold text-gray-200 truncate" title={cigar.shape}>{cigar.shape || 'N/A'}</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400">Size</p>
-                                <p className="font-semibold text-gray-200 truncate" title={cigar.size}>{cigar.size || 'N/A'}</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400">Strength</p>
-                                <p className="font-semibold text-gray-200 truncate" title={cigar.strength}>{cigar.strength || 'N/A'}</p>
-                            </div>
+                <div className={`card bg-base-100 shadow-sm overflow-hidden group cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
+                    <div className="relative">
+                        <figure>
+                            <img
+                                src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?text=${cigar.brand.replace(/\s/g, '+')}`}
+                                alt={`${cigar.brand} ${cigar.name}`}
+                                className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                        </figure>
+                        <div className="absolute top-2 left-2 bg-black/60 rounded-lg px-2 py-1 max-w-[70%]">
+                            <p className="text-gray-200 text-xs font-semibold uppercase truncate flex items-center gap-1">
+                                {cigar.brand}
+
+                            </p>
+                            <h3 className="text-white font-bold text-sm truncate">{cigar.name}</h3>
                         </div>
 
-                        <div id="pnlWrapperBinderFiller" className="grid grid-cols-3 gap-x-2 text-left">
-                            <div>
-                                <p className="text-gray-400">Wrapper</p>
-                                <p className="font-semibold text-gray-200 truncate" title={cigar.wrapper}>{cigar.wrapper || 'N/A'}</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400">Binder</p>
-                                <p className="font-semibold text-gray-200 truncate" title={cigar.binder}>{cigar.binder || 'N/A'}</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400">Filler</p>
-                                <p className="font-semibold text-gray-200 truncate" title={cigar.filler}>{cigar.filler || 'N/A'}</p>
-                            </div>
+                        {/* Position IsPuroBadge and RatingBadge on the same row at the bottom right */}
+                        <div id="pnlIsPuroRating" className="absolute bottom-2 right-2 flex flex-row items-end gap-1 z-10">
+                            <IsPuroBadge
+                                isPuro={isPuro}
+                                theme={theme}
+                                size="md"
+                            />
+                            <RatingBadge
+                                rating={cigar.rating}
+                                theme={theme}
+                                size="md"
+                            />
                         </div>
-                        <div id="pnlShortDescription"> {cigar.shortDescription && <p className="text-gray-400 pt-1">{cigar.shortDescription}</p>}</div>
-
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-gray-700/50">
-                        <p className="text-gray-400 text-xs">Time in Humidor: <span className="font-semibold text-gray-200">{calculateAge(cigar.dateAdded)}</span></p>
-                        <span id="cigar-quantity" className="text-lg font-bold bg-gray-700 text-white px-3 py-1 rounded-full">{cigar.quantity}</span>
+
+
+                    <div className="card-body">
+                        {/* Details */}
+                        <div className="text-xs space-y-2">
+                            <div id="pnlShapeSizeStrength" className="grid grid-cols-3 gap-x-2 mb-2 text-left">
+                                <div>
+                                    <p className="text-gray-400">Shape</p>
+                                    <p className="font-semibold text-gray-200 truncate" title={cigar.shape}>{cigar.shape || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p className="text-gray-400">Size</p>
+                                    <p className="font-semibold text-gray-200 truncate" title={cigar.size}>{cigar.size || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p className="text-gray-400">Strength</p>
+                                    <p className="font-semibold text-gray-200 truncate" title={cigar.strength}>{cigar.strength || 'N/A'}</p>
+                                </div>
+                            </div>
+
+                            <div id="pnlWrapperBinderFiller" className="grid grid-cols-3 gap-x-2 text-left">
+                                <div>
+                                    <p className="text-gray-400">Wrapper</p>
+                                    <p className="font-semibold text-gray-200 truncate" title={cigar.wrapper}>{cigar.wrapper || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p className="text-gray-400">Binder</p>
+                                    <p className="font-semibold text-gray-200 truncate" title={cigar.binder}>{cigar.binder || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p className="text-gray-400">Filler</p>
+                                    <p className="font-semibold text-gray-200 truncate" title={cigar.filler}>{cigar.filler || 'N/A'}</p>
+                                </div>
+                            </div>
+                            <div id="pnlShortDescription"> {cigar.shortDescription && <p className="text-gray-400 pt-1">{cigar.shortDescription}</p>}</div>
+
+                        </div>
+                        <div className="flex justify-between items-center pt-2 border-t border-gray-700/50">
+                            <p className="text-gray-400 text-xs">Time in Humidor: <span className="font-semibold text-gray-200">{calculateAge(cigar.dateAdded)}</span></p>
+                            <span id="cigar-quantity" className="text-lg font-bold bg-gray-700 text-white px-3 py-1 rounded-full">{cigar.quantity}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+
             {isSelectMode && (
                 <div className={`absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center border-2 ${isSelected ? 'bg-amber-500 border-white' : 'bg-gray-900/50 border-gray-400'}`}>
                     {isSelected && <Check className="w-4 h-4 text-white" />}

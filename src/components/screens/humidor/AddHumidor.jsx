@@ -140,17 +140,16 @@ const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
                 </div>
 
                 <div className="pt-4 flex space-x-4">
-                    <button
-                        onClick={handleSave}
-                        className={`w-full ${theme.primaryBg} ${theme.text === 'text-white' ? 'text-white' : 'text-black'} font-bold py-3 rounded-lg ${theme.hoverPrimaryBg} transition-colors`}
-                    >
-                        Save Humidor
-                    </button>
+
                     <button
                         onClick={() => navigate('HumidorsScreen')}
-                        className={`w-full ${theme.button} ${theme.text} font-bold py-3 rounded-lg transition-colors`}
-                    >
+                        className="btn btn-soft btn-secondary">
                         Cancel
+                    </button>
+                    <button
+                        onClick={handleSave}
+                        className="btn btn-soft btn-primary">
+                        Save Humidor
                     </button>
                 </div>
 

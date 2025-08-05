@@ -27,31 +27,7 @@ import React, { useMemo } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { countryCategories } from '../../constants/countryCategories';
 
-const BrowseByCountry = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
-
-
-    // const countryCategories = useMemo(() => [
-    //     { label: 'Dominican Cigars', filterValue: 'Dominican Republic' },
-    //     { label: 'Nicaraguan Cigars', filterValue: 'Nicaragua' },
-    //     { label: 'Honduran Cigars', filterValue: 'Honduras' },
-    //     { label: 'American Cigars', filterValue: 'USA' },
-    //     { label: 'Cuban Cigars', filterValue: 'Cuba' },
-    //     { label: 'Mexican Cigars', filterValue: 'Mexico' },
-    //     { label: 'Peruvian Cigars', filterValue: 'Peru' },
-    //     { label: 'Ecuadorian Cigars', filterValue: 'Ecuador' },
-    //     { label: 'Colombian Cigars', filterValue: 'Colombia' },
-    //     { label: 'Brazilian Cigars', filterValue: 'Brazil' },
-    //     { label: 'Panamanian Cigars', filterValue: 'Panama' },
-    //     { label: 'Costa Rican Cigars', filterValue: 'Costa Rica' },
-    //     { label: 'Philippine Cigars', filterValue: 'Philippines' },
-    //     { label: 'Canary Islands Cigars', filterValue: 'Canary Islands' },
-    //     { label: 'Italian Cigars', filterValue: 'Italy' },
-    //     { label: 'Dutch Cigars', filterValue: 'Netherlands' },
-    //     { label: 'Other Countries', filterValue: 'Other' } // Catch-all for unlisted countries
-    // ], []);
-
-
-
+const BrowseByCountry = ({ cigars, navigate, isCollapsed, onToggle }) => {
 
     const countryData = useMemo(() => {
         const counts = cigars.reduce((acc, cigar) => {
@@ -79,32 +55,28 @@ const BrowseByCountry = ({ cigars, navigate, theme, isCollapsed, onToggle }) => 
     }, [cigars, countryCategories]);
 
     return (
-        <div id="pnlBrowseByCountry" className={`${theme.drawerBg} border ${theme.borderColor} rounded-md overflow-hidden`}>
-            <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
-                <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>
-                    {/* <MapPin className={`w-5 h-5 mr-2 ${theme.primary}`} />  */}
-                    Browse by Country of Origin
-                </h3>
-                <ChevronDown className={`w-5 h-5 ${theme.primary} transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            {!isCollapsed && (
-                <div className="px-4 pb-4 space-y-2">
-                    {countryData.length > 0 ? (
-                        countryData.map(({ label, quantity, filterValue }) => (
-                            <button
-                                key={label}
-                                onClick={() => navigate('HumidorsScreen', { preFilterCountry: filterValue })}
-                                className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
-                            >
-                                <span className="text-gray-300">{label}</span>
-                                <span className="text-gray-400">({quantity})</span>
-                            </button>
-                        ))
-                    ) : (
-                        <p className="text-gray-500 text-sm text-center py-4">No country of origin data available.</p>
-                    )}
-                </div>
-            )}
+        <div id="pnlBrowseByCountry" tabIndex={0} className="collapse  collapse-plus bg-base-100 border-base-300 border">
+          
+            <div className="collapse-title font-semibold">
+                Browse by Country of Origin
+            </div>
+            <div className="collapse-content text-sm">
+                {countryData.length > 0 ? (
+                    countryData.map(({ label, quantity, filterValue }) => (
+                        <button
+                            key={label}
+                            onClick={() => navigate('HumidorsScreen', { preFilterCountry: filterValue })}
+                            className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
+                        >
+                            <span className="text-gray-300">{label}</span>
+                            <span className="text-gray-400">({quantity})</span>
+                        </button>
+                    ))
+                ) : (
+                    <p className="text-gray-500 text-sm text-center py-4">No country of origin data available.</p>
+                )}
+            </div>
+
         </div>
     );
 };

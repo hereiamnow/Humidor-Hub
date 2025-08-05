@@ -30,32 +30,49 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
 
     return (
         <div className="relative" onClick={clickHandler}>
-            <div className={`bg-gray-800/50 rounded-md overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
-                <div className="p-3 flex-grow flex flex-col justify-between">
 
 
-                    <div id="cigar-header" className="flex flex-row justify-between items-start gap-2">
+
+
+
+
+            <div className={`card bg-primary card-sm shadow-sm overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
+                <div className="card-body">
+
+                    <div id="card-header" className="flex flex-row justify-between items-start gap-2">
+
+
                         <div className="flex flex-col flex-grow min-w-0">
                             <div className="flex items-center gap-1">
-                                {/* Add Award icon here if its isPuiro */}
-                                {cigar.isPuro && (
-                                    <span title="Puro">
-                                        <Award className="w-4 h-4 text-amber-400 inline-block" />
-                                    </span>
-                                )}
-                                <p className="text-gray-400 text-xs font-semibold uppercase">{cigar.brand}</p>
+                                <p id="cigar-brand" className="text-gray-400 font-semibold uppercase">{cigar.brand}</p>
                             </div>
-                            <h3 className="text-white font-bold text-base truncate">{cigar.name}</h3>
+                            <h3 id="cigar-name" className="card-title">{cigar.name}</h3>
                         </div>
+
+
+
+
+                        {cigar.isPuro && (
+                            <div
+                                id="puro-award"
+                                className={`flex flex-col items-center justify-center w-8 h-8 rounded-full border-2 aspect-square border-blue-400 bg-gray-900/50 backdrop-blur-sm`}
+                                style={{ aspectRatio: '1 / 1' }}
+                                title="Is Puro"
+                            >
+                                <Award className="w-6 h-6 text-amber-400 inline-block" />
+                            </div>
+                        )}
+
                         {cigar.rating > 0 && (
                             <div className="flex items-center">
                                 <RatingBadge rating={cigar.rating} size="sm" />
                             </div>
                         )}
+
                     </div>
 
 
-                    <div className="text-xs mt-2 space-y-1">
+                    <div className="mt-2 space-y-1">
 
                         <div id="cigar-details" className="flex w-full gap-x-4 gap-y-1">
 
@@ -82,11 +99,15 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
 
                 </div>
             </div>
+
             {isSelectMode && (
                 <div className={`absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center border-2 ${isSelected ? 'bg-amber-500 border-white' : 'bg-gray-900/50 border-gray-400'}`}>
                     {isSelected && <Check className="w-4 h-4 text-white" />}
                 </div>
             )}
+
+
+
         </div>
     );
 };

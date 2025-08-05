@@ -151,18 +151,16 @@ const InteractiveWorldMap = ({ cigars, navigate, theme, isCollapsed, onToggle })
     };
 
     return (
-        <div id="pnlBrowseWorldMap" className={`${theme.card} border ${theme.borderColor} rounded-md overflow-hidden`}>
-            {/* Collapsible header with toggle functionality */}
-            <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
-                <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>
-                    World Map
-                </h3>
-                {/* Chevron rotates based on collapse state */}
-                <ChevronDown className={`w-5 h-5 ${theme.primary} transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
-            </button>
+        <div id="pnlBrowseWorldMap" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
 
-            {!isCollapsed && (
-                <div className="p-4">
+           
+            <div className="collapse-title font-semibold">
+                    World Map
+                </div>
+         
+
+         
+            <div className="collapse-content text-sm">
                     <div className="w-full" style={{ minHeight: 300, position: "relative" }}>
                         {/* Dismissible instructions overlay for first-time users */}
                         {showInstructions && (
@@ -311,7 +309,7 @@ const InteractiveWorldMap = ({ cigars, navigate, theme, isCollapsed, onToggle })
                         </ComposableMap>
                     </div>
                 </div>
-            )}
+           
         </div>
     );
 };

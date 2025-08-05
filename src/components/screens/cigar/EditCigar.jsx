@@ -383,7 +383,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                     <InputField name="size" label="Size" placeholder="e.g., 5.5x50" value={formData.size} onChange={handleInputChange} theme={theme} className={flashingFields.size ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
                 </div>
 
-                
+
                 {/* Length and Ring Gauge */}
                 <div id="pnlLengthAndRing" className="grid grid-cols-2 gap-3">
                     <AutoCompleteInputField
@@ -519,8 +519,14 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                 </div>
                 {/* Save/Cancel Buttons */}
                 <div id="pnlSaveCancelButtons" className="pt-4 flex space-x-4">
-                    <button onClick={handleSave} className="w-full bg-amber-500 text-white font-bold py-3 rounded-lg hover:bg-amber-600 transition-colors">Save Changes</button>
-                    <button onClick={() => navigate('CigarDetail', { cigarId: cigar.id })} className="w-full bg-gray-700 text-white font-bold py-3 rounded-lg hover:bg-gray-600 transition-colors">Cancel</button>
+                    <button
+                        onClick={() => navigate('CigarDetail', { cigarId: cigar.id })}
+                        className="btn btn-soft btn-secondary">
+                        Cancel</button>
+                    <button
+                        onClick={handleSave}
+                        className="btn btn-soft btn-primary">
+                        Save Changes</button>
                 </div>
             </div>
         </div>

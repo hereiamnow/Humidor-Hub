@@ -446,7 +446,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {/* ===== VIEW TOGGLE PANEL ===== */}
             {/* Grid/List view toggle buttons - only visible when showing filtered results */}
             {/* Allows users to switch between list and grid display modes */}
-            
+
             {(searchQuery !== '' || activeWrapperFilter || activeStrengthFilter || activeCountryFilter) && (
                 <div id="pnlViewToggle" className="flex items-center justify-end gap-2 mb-6">
                     <div className="relative group">
@@ -664,48 +664,65 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
 
                             return (
                                 // Individual humidor card panel
-                                <div key={humidor.id} id={`pnlHumidorCard_${humidor.id}`} className="bg-gray-800/50 rounded-md overflow-hidden group cursor-pointer shadow-lg hover:shadow-amber-500/20 transition-shadow duration-300" onClick={() => {
-                                    console.log('HumidorsScreen: Humidor card clicked', { humidorId: humidor.id, name: humidor.name });
-                                    navigate('MyHumidor', { humidorId: humidor.id });
-                                }}>
-                                    <div className="relative">
+                                <div
+                                    key={humidor.id}
+                                    id={`pnlHumidorCard_${humidor.id}`}
+                                    className="card card-sm shadow-sm bg-base-100 card-border"
+                                    onClick={() => {
+                                        console.log('HumidorsScreen: Humidor card clicked', { humidorId: humidor.id, name: humidor.name });
+                                        navigate('MyHumidor', { humidorId: humidor.id });
+                                    }}>
+
+
+
+                                    <figure className="relative">
                                         <img src={humidor.image} alt={humidor.name} className="w-full h-32 object-cover" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                         <div className="absolute bottom-0 left-0 p-4">
                                             <h2 className="text-2xl font-bold text-white">{humidor.name}</h2>
                                             <p className="text-sm text-gray-300">{humidor.location}</p>
                                         </div>
-                                    </div>
-                                    <div className="p-4 bg-gray-800 flex gap-4">
-                                        <div className="flex flex-col justify-center items-center space-y-2 pr-4 border-r border-gray-700">
-                                            <div className="flex items-center gap-2">
-                                                <Thermometer className="w-6 h-6 text-red-400" />
-                                                <span className="text-2xl font-bold text-white">{humidor.temp}°F</span>
+                                    </figure>
+
+
+
+                                    <div className="card-body">
+                                        <div className="flex gap-1">
+                                            <div className="flex flex-col justify-center items-center space-y-2 pr-2 border-r border-gray-700">
+                                                <div className="flex items-center gap-2">
+                                                    <Thermometer className="w-4 h-4 text-red-400" />
+                                                    <span className="text-lg font-bold text-white">{humidor.temp}°F</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Droplets className="w-4 h-4 text-blue-400" />
+                                                    <span className="text-lg font-bold text-white">{humidor.humidity}%</span>
+                                                </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                <Droplets className="w-6 h-6 text-blue-400" />
-                                                <span className="text-2xl font-bold text-white">{humidor.humidity}%</span>
+
+                                            <div className="flex-grow flex flex-col justify-center pl-2">
+                                                <div>
+                                                    <label className="text-xs text-gray-400">Capacity</label>
+                                                    <div className="relative w-full bg-gray-700 rounded-md h-6 mt-1">
+                                                        <div style={{ width: `${percentageFull}%` }} className={`h-full rounded-md ${capacityColor} transition-all duration-500`}></div>
+                                                        <span className="absolute inset-0 flex items-center justify-center text-sm text-white">{percentageFull}% Full</span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex justify-between mt-2">
+                                                    <div className="text-xs text-gray-400">
+                                                        Value: <span className="font-bold text-white">${humidorValue.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="text-xs text-gray-400">
+                                                        Cigars: <span className="font-bold text-white">{cigarCount}</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex-grow flex flex-col justify-center">
-                                            <div>
-                                                <label className="text-xs text-gray-400">Capacity</label>
-                                                <div className="relative w-full bg-gray-700 rounded-md h-6 mt-1">
-                                                    <div style={{ width: `${percentageFull}%` }} className={`h-full rounded-md ${capacityColor} transition-all duration-500`}></div>
-                                                    <span className="absolute inset-0 flex items-center justify-center text-sm text-white">{percentageFull}% Full</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex justify-between mt-2">
-                                                <div className="text-xs text-gray-400">
-                                                    Value: <span className="font-bold text-white">${humidorValue.toFixed(2)}</span>
-                                                </div>
-                                                <div className="text-xs text-gray-400">
-                                                    Cigars: <span className="font-bold text-white">{cigarCount}</span>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
+
                                 </div>
+
+
+
                             );
                         })}
                     </div>
@@ -744,12 +761,12 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 </div>
             )}
             {/* ===== ROXYS CORNER - NO HUMIDORS MESSAGE ===== */}
-            {/* Displayed when user has no humidors - encourages adding a humidor */}            
+            {/* Displayed when user has no humidors - encourages adding a humidor */}
             {humidors.length === 0 && (
                 <div
                     id="pnlRoxysCorner_NoHumidors"
                     className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
-                    
+
                     <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
                         <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                     </h3>

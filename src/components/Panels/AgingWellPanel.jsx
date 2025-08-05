@@ -42,16 +42,12 @@ const AgingWellPanel = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
     };
 
     return (
-        <div id="pnlAgingWell" className={`${theme.card} border ${theme.borderColor} rounded-md overflow-hidden`}>
-            <button onClick={onToggle} className="w-full p-4 flex justify-between items-center">
-                <h3 className={`font-bold ${theme.primary} text-lg flex items-center`}>
-                    {/* <Award className={`w-5 h-5 mr-2 ${theme.primary}`} />  */}
+        <div id="pnlAgingWell" tabIndex={0} className="collapse  collapse-plus bg-base-100 border-base-300 border">
+       
+            <div className="collapse-title font-semibold">
                     Aging Well / From the Cellar
-                </h3>
-                <ChevronDown className={`w-5 h-5 ${theme.primary} transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            {!isCollapsed && (
-                <div className="p-4 space-y-3">
+                </div>
+            <div className="collapse-content text-sm">
                     {oldestCigars.length > 0 ? (
                         oldestCigars.map((cigar, index) => {
                             const ageInDays = calculateAge(cigar.dateAdded, true);
@@ -99,7 +95,7 @@ const AgingWellPanel = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
                         </div>
                     )}
                 </div>
-            )}
+    
         </div>
     );
 };

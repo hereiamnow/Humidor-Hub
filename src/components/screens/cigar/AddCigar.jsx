@@ -769,11 +769,11 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
             <div id="pnlSaveCancelButtons" className="pt-4 flex space-x-4">
                 <button
                     onClick={() => navigate('MyHumidor', { humidorId })}
-                    className={`w-full ${theme.button} ${theme.text} font-bold py-3 rounded-lg transition-colors`}>
+                    className="btn btn-soft btn-secondary">
                     Cancel</button>
                 <button
                     onClick={handleSave}
-                    className={`w-full ${theme.primaryBg} ${theme.text === 'text-white' ? 'text-white' : 'text-black'} font-bold py-3 rounded-lg ${theme.hoverPrimaryBg} transition-colors`}>
+                    className="btn btn-soft btn-primary">
                     Save Cigar</button>
             </div>
         </div>

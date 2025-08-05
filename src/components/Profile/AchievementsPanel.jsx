@@ -58,26 +58,20 @@ const AchievementsPanel = ({ cigars, humidors, showTitleIcon = true }) => {
     );
 
     return (
-        <div id="pnlAchievements" className="bg-gray-800/50 rounded-md overflow-hidden">
-            <button
-                onClick={() => setIsAchievementsCollapsed(!isAchievementsCollapsed)}
-                className="w-full p-4 flex justify-between items-center"
-            >
-                <h3 className="font-bold text-amber-300 text-lg flex items-center">
-                    {showTitleIcon && <Star className="w-5 h-5 mr-2" />}
-                    Achievements
-                </h3>
-                <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${isAchievementsCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            {!isAchievementsCollapsed && (
-                <div className="px-4 pb-4">
-                    <div className="grid grid-cols-4 gap-4">
-                        {earnedAchievements.map(ach => (
-                            <BadgeIcon key={ach.id} achievement={ach} />
-                        ))}
-                    </div>
+        <div id="pnlAchievements" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
+            <input type="checkbox" className="peer" checked={!isAchievementsCollapsed} onChange={() => setIsAchievementsCollapsed(!isAchievementsCollapsed)} />
+            <div className="collapse-title font-semibold">
+                {showTitleIcon && <Star className="w-5 h-5 mr-2" />}
+                Achievements
+            </div>
+            <div className="collapse-content text-sm">
+                <div className="grid grid-cols-4 gap-4">
+                    {earnedAchievements.map(ach => (
+                        <BadgeIcon key={ach.id} achievement={ach} />
+                    ))}
                 </div>
-            )}
+            </div>
+
         </div>
     );
 };
