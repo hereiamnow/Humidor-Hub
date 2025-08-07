@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: #1e2024; /* This is gray-800 */
+}
+
+
+
