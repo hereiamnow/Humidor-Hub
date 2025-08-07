@@ -73,6 +73,7 @@ import { strengthOptions } from '../../../constants/cigarOptions.js';
 import FilterSortModal from '../../UI/FilterSortModal.jsx';
 import GridCigarCard from '../../Cigar/GridCigarCard.jsx';
 import ListCigarCard from '../../Cigar/ListCigarCard.jsx';
+import BottomDrawer from '../../UI/BottomDrawer.jsx';
 
 // Menu Component imports
 import HumidorActionMenu from '../../Menus/HumidorActionMenu.jsx';
@@ -763,19 +764,26 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 )}
 
                 {isFilterActive && (
-                    <div className="flex justify-between items-center mb-4 bg-base-200 p-3 rounded-md">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm text-base-content/80">Filtering by:</span>
-                            {filters.brand && <span className="badge badge-primary">{filters.brand}</span>}
-                            {filters.country && <span className="badge badge-primary">{filters.country}</span>}
-                            {filters.strength && <span className="badge badge-primary">{filters.strength}</span>}
-                            {filters.flavorNotes.map(note => <span key={note} className="badge badge-secondary">{note}</span>)}
+                        <div role="alert" className="alert alert-vertical sm:alert-horizontal">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info h-6 w-6 shrink-0">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 className="font-bold">Filtering by:</h3>
+                                <div className="flex items-center gap-2 flex-wrap text-xs">
+                                {filters.brand && <span className="badge badge-sm rounded-sm badge-primary">{filters.brand}</span>}
+                                {filters.country && <span className="badge badge-sm rounded-sm badge-primary">{filters.country}</span>}
+                                {filters.strength && <span className="badge badge-sm rounded-sm badge-primary">{filters.strength}</span>}
+                                {filters.flavorNotes.map(note => <span key={note} className="badge badge-sm rounded-sm badge-accent">{note}</span>)}
+                                </div>
+                            </div>
+                            <button onClick={handleClearFilters} className="btn btn-accent btn-xs">
+                                Clear
+                            </button>
                         </div>
-                        <button onClick={handleClearFilters} className="btn btn-ghost btn-xs"><X className="w-4 h-4" /></button>
-                    </div>
                 )}
 
-                {/* change the grid layout columns */}
+                {/* Change the grid layout columns via toggle */}
                 <div className={viewMode === 'grid' ? "grid grid-cols-1 gap-4" : "flex flex-col gap-4"}>
                     {filteredAndSortedCigars.map(cigar => (viewMode === 'grid' ? <GridCigarCard key={cigar.id} cigar={cigar} navigate={navigate} isSelectMode={isSelectMode} isSelected={selectedCigarIds.includes(cigar.id)} onSelect={handleSelectCigar} /> : <ListCigarCard key={cigar.id} cigar={cigar} navigate={navigate} isSelectMode={isSelectMode} isSelected={selectedCigarIds.includes(cigar.id)} onSelect={handleSelectCigar} />))}
                     {filteredAndSortedCigars.length === 0 && (
@@ -785,105 +793,91 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     )}
                 </div>
 
-                {/* Panel for Select Mode */}
+                {/* Bottom Drawer for Select Mode */}
                 {isSelectMode && (
-                    <div id="pnlSelectMode" className="fixed bottom-20 left-0 right-0 bg-base-100/80 backdrop-blur-sm p-4 z-20 border-t border-base-content/10">
-                        <div className="max-w-md mx-auto">
-                            <div className="flex justify-between items-center mb-2">
-                                <h3 className="text-lg font-bold text-base-content">{selectedCigarIds.length} Selected</h3>
-                                <button onClick={handleToggleSelectMode} className="btn btn-ghost">Done</button>
-                            </div>
-                            {selectedCigarIds.length > 0 && (
-                                <div className="flex gap-2">
-                                    <button onClick={() => setIsMoveModalOpen(true)} className="btn btn-primary flex-1"><Move className="w-5 h-5" />Move</button>
-                                    <button onClick={() => setIsDeleteCigarsModalOpen(true)} className="btn btn-error flex-1"><Trash2 className="w-5 h-5" />Delete</button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                )}{/* End Panel for Select Mode */}
+                    <BottomDrawer
+                        title={<span>{selectedCigarIds.length} Selected</span>}
+                        onClose={handleToggleSelectMode}
+                        actions={selectedCigarIds.length > 0 ? [
+                            <button key="move" onClick={() => setIsMoveModalOpen(true)} className="btn btn-primary flex-1"><Move className="w-5 h-5" />Move</button>,
+                            <button key="delete" onClick={() => setIsDeleteCigarsModalOpen(true)} className="btn btn-error flex-1"><Trash2 className="w-5 h-5" />Delete</button>
+                        ] : null}
+                        className=""
+                        bgColor="bg-base-100/80"
+                    >
+                        {/* No additional content needed, header and actions cover all UI */}
+                    </BottomDrawer>
+                )}
 
-                {/* Panel for Filter Mode */}
+                {/* Bottom Drawer for Filter Mode */}
                 {isFilterPanelOpen && (
-                    // This panel will slide up from the bottom when opened
-                    <div id="pnlFilterMode" className="fixed bottom-20 left-0 right-0 bg-base-100/80 backdrop-blur-sm p-4 z-20 border-t border-base-content/10">
-                        <div className="max-w-md mx-auto">
-
-                            {/* Panel Header */}
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold text-primary flex items-center">Filter & Sort</h3>
-                                <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-ghost">Done</button>
-                            </div>
-
-                            {/* Panel Content */}
-                            <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                                {/* Sorting Section */}
-                                <div>
-                                    <h4 className="font-bold text-base-content text-base mb-2">Sort By</h4>
-                                    <div className="flex flex-wrap gap-2 justify-start">
-                                        {['name', 'brand', 'rating', 'quantity', 'price', 'dateAdded'].map(criteria => (
-                                            <button
-                                                key={criteria}
-                                                onClick={() => handleSortChange(criteria)}
-                                                className={`btn btn-xs rounded-xs ${sortBy === criteria ? 'btn-primary' : 'btn-outline'}`}
-                                            >
-                                                {criteria === 'dateAdded' ? 'Date' : criteria.charAt(0).toUpperCase() + criteria.slice(1)}
-                                                {sortBy === criteria && (sortOrder === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Filtering Section */}
-                                <div className="border-t border-base-content/10 pt-4 mt-4">
-                                    <h4 className="font-bold text-base-content text-base mb-2">Filter By</h4>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        {/* Brand Filter */}
-                                        <div>
-                                            <label className="label-text text-sm mb-1 block">Brand</label>
-                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="select select-accent text-sm w-full">
-                                                <option value="">All Brands</option>
-                                                {uniqueBrands.map(brand => <option key={brand} value={brand}>{brand}</option>)}
-                                            </select>
-                                        </div>
-                                        {/* Country Filter */}
-                                        <div>
-                                            <label className="label-text text-sm mb-1 block">Country</label>
-                                            <select value={filters.country} onChange={(e) => handleFilterChange('country', e.target.value)} className="select select-bordered w-full">
-                                                <option value="">All Countries</option>
-                                                {uniqueCountries.map(country => <option key={country} value={country}>{country}</option>)}
-                                            </select>
-                                        </div>
-                                        {/* Strength Filter */}
-                                        <div className="col-span-2">
-                                            <label className="label-text text-sm mb-1 block">Strength</label>
-                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="select select-accent text-sm w-full">
-                                                <option value="">All Strengths</option>
-                                                {strengthOptions.map(strength => <option key={strength} value={strength}>{strength}</option>)}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    {/* Flavor Notes Filter */}
-                                    <div className="mt-4">
-                                        <label className="label-text text-sm mb-1 block">Flavor Notes</label>
-                                        <div className="flex flex-wrap gap-2">
-                                            {availableFlavorNotes.map(note => (
-                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`btn btn-xs ${filters.flavorNotes.includes(note) ? 'btn-accent' : 'btn-outline'}`}>
-                                                    {note}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Panel Actions */}
-                            <div className="flex gap-3 pt-4 mt-4 border-t border-base-content/10">
-                                <button onClick={handleClearFilters} className="btn btn-md btn-secondary flex-grow">Clear Filters</button>
-                                <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-md btn-primary flex-grow">View Filter</button>
+                    <BottomDrawer
+                        title="Filter & Sort"
+                        onClose={() => setIsFilterPanelOpen(false)}
+                        actions={[
+                            <button key="clear" onClick={handleClearFilters} className="btn btn-md btn-secondary flex-grow">Clear Filters</button>,
+                            <button key="view" onClick={() => setIsFilterPanelOpen(false)} className="btn btn-md btn-primary flex-grow">View Filter</button>
+                        ]}
+                    >
+                        {/* Sorting Section */}
+                        <div>
+                            <h4 className="font-bold text-base-content text-base mb-2">Sort By</h4>
+                            <div className="flex flex-wrap gap-2 justify-start">
+                                {["name", "brand", "rating", "quantity", "price", "dateAdded"].map(criteria => (
+                                    <button
+                                        key={criteria}
+                                        onClick={() => handleSortChange(criteria)}
+                                        className={`btn btn-xs rounded-xs ${sortBy === criteria ? "btn-primary" : "btn-outline"}`}
+                                    >
+                                        {criteria === "dateAdded" ? "Date" : criteria.charAt(0).toUpperCase() + criteria.slice(1)}
+                                        {sortBy === criteria && (sortOrder === "asc" ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
+                                    </button>
+                                ))}
                             </div>
                         </div>
-                    </div>
+
+                        {/* Filtering Section */}
+                        <div className="border-t border-base-content/10 pt-4 mt-4">
+                            <h4 className="font-bold text-base-content text-base mb-2">Filter By</h4>
+                            <div className="grid grid-cols-2 gap-4">
+                                {/* Brand Filter */}
+                                <div>
+                                    <label className="label-text text-sm mb-1 block">Brand</label>
+                                    <select value={filters.brand} onChange={e => handleFilterChange("brand", e.target.value)} className="select select-accent text-sm w-full">
+                                        <option value="">All Brands</option>
+                                        {uniqueBrands.map(brand => <option key={brand} value={brand}>{brand}</option>)}
+                                    </select>
+                                </div>
+                                {/* Country Filter */}
+                                <div>
+                                    <label className="label-text text-sm mb-1 block">Country</label>
+                                    <select value={filters.country} onChange={e => handleFilterChange("country", e.target.value)} className="select select-bordered w-full">
+                                        <option value="">All Countries</option>
+                                        {uniqueCountries.map(country => <option key={country} value={country}>{country}</option>)}
+                                    </select>
+                                </div>
+                                {/* Strength Filter */}
+                                <div className="col-span-2">
+                                    <label className="label-text text-sm mb-1 block">Strength</label>
+                                    <select value={filters.strength} onChange={e => handleFilterChange("strength", e.target.value)} className="select select-accent text-sm w-full">
+                                        <option value="">All Strengths</option>
+                                        {strengthOptions.map(strength => <option key={strength} value={strength}>{strength}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                            {/* Flavor Notes Filter */}
+                            <div className="mt-4">
+                                <label className="label-text text-sm mb-1 block">Flavor Notes</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {availableFlavorNotes.map(note => (
+                                        <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`btn btn-xs ${filters.flavorNotes.includes(note) ? "btn-accent" : "btn-outline"}`}>
+                                            {note}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </BottomDrawer>
                 )}
 
             </div>

@@ -15,13 +15,12 @@ const BottomDrawer = ({
   icon,
   title,
   bgColor = 'bg-base-100/80',
-  borderRadius = 'rounded-md',
   children,
   actions,
   className = '',
   onClose
 }) => (
-  <div className={`fixed bottom-20 left-0 right-0 ${bgColor} backdrop-blur-sm p-4 z-20 border-t border-base-content/10 ${borderRadius} ${className}`}>
+  <div className={`fixed bottom-20 left-0 right-0 ${bgColor} backdrop-blur-sm p-4 z-20 border-t border-base-content/10  ${className}`}>
     <div className="max-w-md mx-auto">
       {/* Panel Header */}
       <div className="flex justify-between items-center mb-4">
