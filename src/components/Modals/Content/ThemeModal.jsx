@@ -113,9 +113,23 @@ const ThemeModal = ({ onClose }) => {
         setIsDarkMode(!isDarkMode);
     };
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                handleCancel();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
         // Modal backdrop and container
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-[100]" onClick={handleCancel}>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
             {/* Modal panel */}
             <div
                 className="bg-base-200 rounded-md p-0 w-full max-w-4xl max-h-[90vh] shadow-2xl border border-base-300 relative flex flex-col"
@@ -161,12 +175,12 @@ const ThemeModal = ({ onClose }) => {
                 {/* Scrollable content area for theme cards */}
                 <div
                     id="theme-modal-content"
-                    className="flex-1 overflow-y-auto p-8"
+                    className="flex-1 overflow-y-auto px-4 py-3"
                 >
                     {/* Themes Section */}
                     <div id="daisy-themes">
                         {/* Grid layout for theme cards */}
-                        <div className="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                             {Object.values(daisyUIThemes)
                                 // Filter themes based on the dark/light mode toggle
                                 .filter((theme) => isDarkMode ? theme.isDark : !theme.isDark)
@@ -180,7 +194,7 @@ const ThemeModal = ({ onClose }) => {
                                             data-theme={theme.daisyUI}
                                             onClick={() => handleThemeSelection(theme.daisyUI)}
                                             className={`group relative p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 bg-base-100 text-base-content ${isSelected
-                                                ? `border-primary bg-primary/10 shadow-lg`
+                                                ? `border-primary bg-primary/10 shadow-sm`
                                                 : `border-base-300 hover:border-primary/50 hover:bg-base-200/60`
                                                 }`}
                                         >

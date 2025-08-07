@@ -16,7 +16,7 @@ import { ChevronDown } from 'lucide-react';
 const CollapsiblePanel = ({ title, description, children, icon: Icon }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     return (
-        <div tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
+        <div tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
             <button onClick={() => setIsCollapsed(!isCollapsed)} className="w-full p-4 flex justify-between items-center">
                 <div className="collapse-title font-semibold">
                     {Icon && <Icon className="w-5 h-5 mr-2" />} {title}

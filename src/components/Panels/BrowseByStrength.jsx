@@ -48,7 +48,7 @@ const BrowseByStrength = ({ cigars, navigate, theme, isCollapsed, onToggle }) =>
     }, [cigars, strengthCategories]);
 
     return (
-        <div id="pnlBrowseByStrength" tabIndex={0} className="collapse  collapse-plus bg-base-100 border-base-300 border">
+        <div id="pnlBrowseByStrength" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
           
             <div className="collapse-title font-semibold">
                 Browse by Profile

@@ -38,7 +38,7 @@ const BrowseByWrapper = ({ cigars, navigate, theme, isCollapsed, onToggle }) => 
     }, [cigars]);
 
     return (
-        <div id="pnlBrowseByWrapper" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
+        <div id="pnlBrowseByWrapper" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
            
             <div className="collapse-title font-semibold">
                     Browse by Wrapper

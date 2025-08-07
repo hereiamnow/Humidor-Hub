@@ -94,7 +94,7 @@ const InventoryAnalysisPanel = ({ cigars, isCollapsed, onToggle }) => {
 
     return (
 
-        <div id="pnlInventoryAnalysisPanel" tabIndex={0} className="collapse collapse-plus bg-base-200 border-base-300 border">
+        <div id="pnlInventoryAnalysisPanel" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
 
             <div className="collapse-title font-semibold">
                 Inventory Analysis

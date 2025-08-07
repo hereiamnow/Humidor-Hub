@@ -42,7 +42,7 @@ const AgingWellPanel = ({ cigars, navigate, isCollapsed, onToggle }) => {
     };
 
     return (
-        <div id="pnlAgingWell" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
+        <div id="pnlAgingWell" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
 
             <div className="collapse-title font-semibold">
                 Aging Well / From the Cellar

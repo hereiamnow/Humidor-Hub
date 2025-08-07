@@ -55,7 +55,7 @@ const BrowseByCountry = ({ cigars, navigate, isCollapsed, onToggle }) => {
     }, [cigars, countryCategories]);
 
     return (
-        <div id="pnlBrowseByCountry" tabIndex={0} className="collapse  collapse-plus bg-base-100 border-base-300 border">
+        <div id="pnlBrowseByCountry" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
           
             <div className="collapse-title font-semibold">
                 Browse by Country of Origin
