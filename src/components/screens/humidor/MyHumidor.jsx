@@ -84,7 +84,7 @@ import DeleteHumidorModal from '../../Modals/Actions/DeleteHumidorModal.jsx';
 import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal.jsx';
 import ExportModal from '../../Modals/Data/ExportModal.jsx';
 import HumidorStatsCards from "../../UI/HumidorStatsCards.jsx";
-const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, theme, setCigars, setHumidors }) => {
+const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, setCigars, setHumidors }) => {
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {
         humidorId: humidor?.id,
@@ -531,9 +531,9 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
     };
 
     return (
-        <div id="pnlContainerWrapper" className={`${theme.bg} min-h-screen pb-24`}>
-            {isManualReadingModalOpen && <ManualReadingModal humidor={humidor} onClose={() => setIsManualReadingModalOpen(false)} onSave={handleSaveManualReading} theme={theme} />}
-            {isMoveModalOpen && <MoveCigarsModal onClose={() => setIsMoveModalOpen(false)} onMove={handleMoveCigars} destinationHumidors={humidors.filter(h => h.id !== humidor.id)} theme={theme} />}
+        <div id="pnlContainerWrapper" className="bg-base-100 min-h-screen pb-24">
+            {isManualReadingModalOpen && <ManualReadingModal humidor={humidor} onClose={() => setIsManualReadingModalOpen(false)} onSave={handleSaveManualReading} />}
+            {isMoveModalOpen && <MoveCigarsModal onClose={() => setIsMoveModalOpen(false)} onMove={handleMoveCigars} destinationHumidors={humidors.filter(h => h.id !== humidor.id)} />}
             <DeleteHumidorModal isOpen={isDeleteHumidorModalOpen} onClose={() => setIsDeleteHumidorModalOpen(false)} onConfirm={handleConfirmDeleteHumidor} humidor={humidor} cigarsInHumidor={filteredAndSortedCigars} otherHumidors={humidors.filter(h => h.id !== humidor.id)} />
             <DeleteCigarsModal isOpen={isDeleteCigarsModalOpen} onClose={() => setIsDeleteCigarsModalOpen(false)} onConfirm={handleConfirmDeleteCigars} count={selectedCigarIds.length} />
             {isExportModalOpen && <ExportModal data={filteredAndSortedCigars} dataType="cigar" onClose={() => setIsExportModalOpen(false)} />}
@@ -602,32 +602,31 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 <div id="pnlHumidorToolbar" className="flex justify-between items-center mb-6 px-0">
 
                     <div id="pnlHumidorStatsNum" className="relative group">
-                        <div className="bg-gray-800/60 border border-gray-700/50 rounded-md px-3 py-2 backdrop-blur-sm">
+                        <div className="bg-base-200/60 border border-base-content/10 rounded-md px-3 py-2 backdrop-blur-sm">
                             <div className="flex items-center justify-center gap-1">
                                 <span
-                                    className="font-bold text-amber-400 text-lg hover:text-amber-300 transition-colors cursor-help"
+                                    className="font-bold text-primary text-lg hover:text-primary-focus transition-colors cursor-help"
                                     title="Unique cigars"
                                 >
                                     {filteredAndSortedCigars.length}
                                 </span>
-                                <span className="text-gray-500 font-medium">/</span>
+                                <span className="text-base-content/50 font-medium">/</span>
                                 <span
-                                    className="font-bold text-blue-400 text-lg hover:text-blue-300 transition-colors cursor-help"
+                                    className="font-bold text-info text-lg hover:text-info-focus transition-colors cursor-help"
                                     title="Total cigars"
                                 >
                                     {totalQuantity}
                                 </span>
                             </div>
-                            {/* <div className="text-xs text-gray-500 text-center mt-0.5">cigars</div> */}
                         </div>
 
                         {/* Tooltip */}
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-base-300 text-base-content text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                             <div className="text-center">
-                                <div className="text-amber-300">{filteredAndSortedCigars.length} unique cigars</div>
-                                <div className="text-blue-300">{totalQuantity} total cigars</div>
+                                <div className="text-primary">{filteredAndSortedCigars.length} unique cigars</div>
+                                <div className="text-info">{totalQuantity} total cigars</div>
                             </div>
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-base-300"></div>
                         </div>
                     </div>
 
@@ -636,52 +635,52 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                             <button
                                 id="btnFilter"
                                 onClick={() => setIsFilterPanelOpen(prev => !prev)}
-                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                className="btn btn-ghost btn-circle"
                             >
                                 <Filter className="w-5 h-5" />
                             </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 Filter & Sort
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                             </div>
                         </div>
 
                         <div className="relative group">
                             <button
                                 onClick={() => setViewMode('grid')}
-                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid' ? 'bg-amber-500 text-white border-amber-400' : `${theme.primary} hover:bg-gray-700`}`}
+                                className={`btn btn-ghost btn-circle ${viewMode === 'grid' ? 'btn-active' : ''}`}
                             >
                                 <LayoutGrid className="w-5 h-5" />
                             </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 Grid View
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                             </div>
                         </div>
 
                         <div className="relative group">
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list' ? 'bg-amber-500 text-white border-amber-400' : `${theme.primary} hover:bg-gray-700`}`}
+                                className={`btn btn-ghost btn-circle ${viewMode === 'list' ? 'btn-active' : ''}`}
                             >
                                 <List className="w-5 h-5" />
                             </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 List View
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                             </div>
                         </div>
 
                         <div className="relative group">
                             <button
                                 onClick={handleToggleSelectMode}
-                                className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${isSelectMode ? 'bg-amber-500 text-white border-amber-400' : `${theme.primary} hover:bg-gray-700`}`}
+                                className={`btn btn-ghost btn-circle ${isSelectMode ? 'btn-active' : ''}`}
                             >
                                 <CheckSquare className="w-5 h-5" />
                             </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 Select Mode
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                             </div>
                         </div>
 
@@ -689,118 +688,91 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                             <button
                                 id="btnAddCigar"
                                 onClick={() => navigate('AddCigar', { humidorId: humidor.id })}
-                                className="p-3 bg-amber-500 border border-amber-400 rounded-full text-white hover:bg-amber-600 transition-colors"
+                                className="btn btn-primary btn-circle"
                                 aria-label="Add Cigar"
                             >
                                 <Plus className="w-5 h-5" />
                             </button>
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 Add Cigar
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
-
-
 
                 {/* Roxy's Corner: Show the autofill banner if enabled, there are cigars with missing 
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div
                         id="pnlRoxysCorner"
-                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden mb-4">
+                        className="bg-secondary/20 border border-secondary rounded-md overflow-hidden mb-4">
                         <button
                             onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
                             className="w-full p-4 flex justify-between items-center"
                         >
-                            <h3 className="font-bold text-amber-300 text-lg flex items-center">
-                                <Wind className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
+                            <h3 className="font-bold text-secondary-content text-lg flex items-center">
+                                <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                             </h3>
 
-                            <ChevronDown className={`w-5 h-5 text-amber-200 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-5 h-5 text-secondary-content/80 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
                         </button>
                         {!isRoxyPanelCollapsed && (
                             <div className="px-4 pb-4">
-
-
-
-                                <span className="text-amber-100 text-sm mb-3 block">
+                                <span className="text-secondary-content/80 text-sm mb-3 block">
                                     Some imported cigars are missing many details. Let Roxy auto-fill them for you!
                                 </span>
-
-
-
                                 <button
                                     id="btnAutofillMissingDetails"
                                     onClick={handleAutofillMissingDetails}
                                     disabled={isAutofilling}
-                                    className="bg-amber-500 text-white font-bold px-4 py-2 rounded-md hover:bg-amber-600 transition-colors w-full"
+                                    className="btn btn-secondary w-full"
                                 >
                                     {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
                                 </button>
                                 {autofillStatus && (
-                                    <div className="mt-2 text-amber-200 text-xs">{autofillStatus}</div>
+                                    <div className="mt-2 text-secondary-content/80 text-xs">{autofillStatus}</div>
                                 )}
                             </div>
                         )}
                     </div>
                 )}
 
-
-
-
-
-
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div
                         id="pnlRoxysCorner"
-                        className="bg-amber-900/20 border border-amber-800 rounded-md overflow-hidden mb-4">
+                        className="bg-secondary/20 border border-secondary rounded-md overflow-hidden mb-4">
 
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center mx-4 my-2">
-                            <Wind className="w-5 h-5 mr-2 text-amber-300" /> Roxy's Corner
+                        <h3 className="font-bold text-secondary-content text-lg flex items-center mx-4 my-2">
+                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>
 
-
                         <div className="px-4 pb-4">
-
-                            <span className="text-amber-100 text-sm mb-3 block">
+                            <span className="text-secondary-content/80 text-sm mb-3 block">
                                 Some cigars are missing details and can be auto-filled,
                                 but you need a Gemini API key to use auto-fill!
                             </span>
-
-                            <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-md">
-                                <p className="text-purple-200 text-sm text-center">
+                            <div className="w-full p-3 bg-primary/10 border border-primary/20 rounded-md">
+                                <p className="text-primary text-sm text-center">
                                     💡 Add your Gemini API key in Settings to
                                     enable AI-powered auto-fill for missing cigar details!
                                 </p>
                             </div>
-
                         </div>
-
                     </div>
                 )}
 
-
-
-
-
-
-
                 {isFilterActive && (
-                    <div className="flex justify-between items-center mb-4 bg-gray-800 p-3 rounded-md">
+                    <div className="flex justify-between items-center mb-4 bg-base-200 p-3 rounded-md">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm text-gray-300">Filtering by:</span>
-                            {filters.brand && <span className="text-xs font-semibold px-2 py-1 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.brand}</span>}
-                            {filters.country && <span className="text-xs font-semibold px-2 py-1 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.country}</span>}
-                            {filters.strength && <span className="text-xs font-semibold px-2 py-1 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/50">{filters.strength}</span>}
-                            {filters.flavorNotes.map(note => <span key={note} className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50">{note}</span>)}
+                            <span className="text-sm text-base-content/80">Filtering by:</span>
+                            {filters.brand && <span className="badge badge-primary">{filters.brand}</span>}
+                            {filters.country && <span className="badge badge-primary">{filters.country}</span>}
+                            {filters.strength && <span className="badge badge-primary">{filters.strength}</span>}
+                            {filters.flavorNotes.map(note => <span key={note} className="badge badge-secondary">{note}</span>)}
                         </div>
-                        <button onClick={handleClearFilters} className="p-1 rounded-md hover:bg-amber-800 transition-colors text-amber-400"><X className="w-4 h-4" /></button>
+                        <button onClick={handleClearFilters} className="btn btn-ghost btn-xs"><X className="w-4 h-4" /></button>
                     </div>
                 )}
 
@@ -809,23 +781,23 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     {filteredAndSortedCigars.map(cigar => (viewMode === 'grid' ? <GridCigarCard key={cigar.id} cigar={cigar} navigate={navigate} isSelectMode={isSelectMode} isSelected={selectedCigarIds.includes(cigar.id)} onSelect={handleSelectCigar} /> : <ListCigarCard key={cigar.id} cigar={cigar} navigate={navigate} isSelectMode={isSelectMode} isSelected={selectedCigarIds.includes(cigar.id)} onSelect={handleSelectCigar} />))}
                     {filteredAndSortedCigars.length === 0 && (
                         <div className="col-span-full text-center py-10">
-                            <p className="text-gray-400">No cigars match your search.</p>
+                            <p className="text-base-content/70">No cigars match your search.</p>
                         </div>
                     )}
                 </div>
 
                 {/* Panel for Select Mode */}
                 {isSelectMode && (
-                    <div id="pnlSelectMode" className="fixed bottom-20 left-0 right-0 bg-gray-900/80 backdrop-blur-sm p-4 z-20 border-t border-gray-700">
+                    <div id="pnlSelectMode" className="fixed bottom-20 left-0 right-0 bg-base-100/80 backdrop-blur-sm p-4 z-20 border-t border-base-content/10">
                         <div className="max-w-md mx-auto">
                             <div className="flex justify-between items-center mb-2">
-                                <h3 className="text-lg font-bold text-white">{selectedCigarIds.length} Selected</h3>
-                                <button onClick={handleToggleSelectMode} className="text-amber-400 font-semibold">Done</button>
+                                <h3 className="text-lg font-bold text-base-content">{selectedCigarIds.length} Selected</h3>
+                                <button onClick={handleToggleSelectMode} className="btn btn-ghost">Done</button>
                             </div>
                             {selectedCigarIds.length > 0 && (
                                 <div className="flex gap-2">
-                                    <button onClick={() => setIsMoveModalOpen(true)} className="flex-1 flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-3 rounded-full hover:bg-amber-600 transition-colors shadow-lg"><Move className="w-5 h-5" />Move</button>
-                                    <button onClick={() => setIsDeleteCigarsModalOpen(true)} className="flex-1 flex items-center justify-center gap-2 bg-red-600 text-white font-bold py-3 rounded-full hover:bg-red-700 transition-colors shadow-lg"><Trash2 className="w-5 h-5" />Delete</button>
+                                    <button onClick={() => setIsMoveModalOpen(true)} className="btn btn-primary flex-1"><Move className="w-5 h-5" />Move</button>
+                                    <button onClick={() => setIsDeleteCigarsModalOpen(true)} className="btn btn-error flex-1"><Trash2 className="w-5 h-5" />Delete</button>
                                 </div>
                             )}
                         </div>
@@ -834,24 +806,23 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
 
                 {/* Panel for Filter Mode */}
                 {isFilterPanelOpen && (
-                    <div id="pnlFilterMode" className="fixed bottom-20 left-0 right-0 bg-gray-900/80 backdrop-blur-sm p-4 z-20 border-t border-gray-700">
+                    <div id="pnlFilterMode" className="fixed bottom-20 left-0 right-0 bg-base-100/80 backdrop-blur-sm p-4 z-20 border-t border-base-content/10">
                         <div className="max-w-md mx-auto">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold text-amber-400 flex items-center">
-                                    {/* <Filter className="w-5 h-5 mr-2" />  */}
+                                <h3 className="text-xl font-bold text-primary flex items-center">
                                     Filter & Sort</h3>
-                                <button onClick={() => setIsFilterPanelOpen(false)} className="text-amber-400 font-semibold">Done</button>
+                                <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-ghost">Done</button>
                             </div>
                             <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
                                 {/* Sorting Section */}
                                 <div>
-                                    <h4 className="font-bold text-white text-base mb-2">Sort By</h4>
+                                    <h4 className="font-bold text-base-content text-base mb-2">Sort By</h4>
                                     <div className="flex flex-wrap gap-2">
                                         {['name', 'brand', 'rating', 'quantity', 'price', 'dateAdded'].map(criteria => (
                                             <button
                                                 key={criteria}
                                                 onClick={() => handleSortChange(criteria)}
-                                                className={`px-3 py-1.5 rounded-sm text-sm font-semibold flex items-center gap-1 transition-colors ${sortBy === criteria ? 'bg-amber-500 text-white' : 'bg-gray-700 text-gray-300'}`}
+                                                className={`btn btn-sm ${sortBy === criteria ? 'btn-primary' : 'btn-outline'}`}
                                             >
                                                 {criteria === 'dateAdded' ? 'Date' : criteria.charAt(0).toUpperCase() + criteria.slice(1)}
                                                 {sortBy === criteria && (sortOrder === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
@@ -861,36 +832,36 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 </div>
 
                                 {/* Filtering Section */}
-                                <div className="border-t border-gray-700 pt-4 mt-4">
-                                    <h4 className="font-bold text-white text-base mb-2">Filter By</h4>
+                                <div className="border-t border-base-content/10 pt-4 mt-4">
+                                    <h4 className="font-bold text-base-content text-base mb-2">Filter By</h4>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className={`${theme.subtleText} text-sm mb-1 block`}>Brand</label>
-                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-sm py-2 px-3 text-white">
+                                            <label className="label-text text-sm mb-1 block">Brand</label>
+                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="select select-bordered w-full">
                                                 <option value="">All Brands</option>
                                                 {uniqueBrands.map(brand => <option key={brand} value={brand}>{brand}</option>)}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className={`${theme.subtleText} text-sm mb-1 block`}>Country</label>
-                                            <select value={filters.country} onChange={(e) => handleFilterChange('country', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-sm py-2 px-3 text-white">
+                                            <label className="label-text text-sm mb-1 block">Country</label>
+                                            <select value={filters.country} onChange={(e) => handleFilterChange('country', e.target.value)} className="select select-bordered w-full">
                                                 <option value="">All Countries</option>
                                                 {uniqueCountries.map(country => <option key={country} value={country}>{country}</option>)}
                                             </select>
                                         </div>
                                         <div className="col-span-2">
-                                            <label className={`${theme.subtleText} text-sm mb-1 block`}>Strength</label>
-                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-sm py-2 px-3 text-white">
+                                            <label className="label-text text-sm mb-1 block">Strength</label>
+                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="select select-bordered w-full">
                                                 <option value="">All Strengths</option>
                                                 {strengthOptions.map(strength => <option key={strength} value={strength}>{strength}</option>)}
                                             </select>
                                         </div>
                                     </div>
                                     <div className="mt-4">
-                                        <label className={`${theme.subtleText} text-sm mb-1 block`}>Flavor Notes</label>
+                                        <label className="label-text text-sm mb-1 block">Flavor Notes</label>
                                         <div className="flex flex-wrap gap-2">
                                             {availableFlavorNotes.map(note => (
-                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`text-xs font-semibold px-1.5 py-1.5 rounded-sm transition-all duration-200 ${filters.flavorNotes.includes(note) ? 'bg-amber-500 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}>
+                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`btn btn-sm ${filters.flavorNotes.includes(note) ? 'btn-primary' : 'btn-outline'}`}>
                                                     {note}
                                                 </button>
                                             ))}
@@ -899,9 +870,9 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 </div>
                             </div>
                             {/* Panel Actions */}
-                            <div className="flex gap-3 pt-4 mt-4 border-t border-gray-700">
-                                <button onClick={handleClearFilters} className="bg-gray-600 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-500 transition-colors flex-grow">Clear Filters</button>
-                                <button onClick={() => setIsFilterPanelOpen(false)} className="bg-amber-500 text-white font-bold py-2 px-4 rounded-md hover:bg-amber-600 transition-colors flex-grow">Done</button>
+                            <div className="flex gap-3 pt-4 mt-4 border-t border-base-content/10">
+                                <button onClick={handleClearFilters} className="btn flex-grow">Clear Filters</button>
+                                <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-primary flex-grow">Done</button>
                             </div>
                         </div>
                     </div>
@@ -924,7 +895,6 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     uniqueBrands={uniqueBrands}
                     uniqueCountries={uniqueCountries}
                     availableFlavorNotes={availableFlavorNotes}
-                    theme={theme}
                 />
             )}
 

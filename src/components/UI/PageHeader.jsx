@@ -10,15 +10,15 @@
 
 import React from 'react';
 
-const PageHeader = ({ icon: Icon, title, subtitle, theme, className = "" }) => {
+const PageHeader = ({ icon: Icon, title, subtitle, className = "" }) => {
     return (
         <div id="pnlHeader" className={className}>
             <div id="pnlTitle" className="flex items-center mb-1">
-                {Icon && <Icon className={`w-8 h-8 mr-3 ${theme.primary}`} />}
-                <h1 className={`text-3xl font-bold ${theme.text}`}>{title}</h1>
+                {Icon && <Icon className="w-8 h-8 mr-3 text-primary" />}
+                <h1 className="text-3xl font-bold text-base-content">{title}</h1>
             </div>
             {subtitle && (
-                <p id="pOverview" className={`${theme.subtleText} mb-6`}>
+                <p id="pOverview" className="text-base-content/70 mb-6">
                     {subtitle}
                 </p>
             )}

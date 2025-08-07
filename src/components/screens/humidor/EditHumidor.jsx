@@ -34,7 +34,7 @@ import InputField from '../../UI/InputField';
 import TextAreaField from '../../UI/TextAreaField';
 import SmartImageModal from '../../Modals/Composite/SmartImageModal';
 
-const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeDevices, theme }) => {
+const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeDevices }) => {
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
     const [formData, setFormData] = useState({
         ...humidor,
@@ -68,19 +68,18 @@ const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeD
     };
 
     return (
-        <div 
-        id="pnlContentWrapper_EditHumidor" 
-        className="p-4 pb-24">
-            
+        <div
+            id="pnlContentWrapper_EditHumidor"
+            className="p-4 pb-24">
+
             <div className="relative">
                 {/* Circular image container */}
                 <div className="flex justify-center items-center pt-6 pb-2">
-                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-700 shadow-lg bg-gray-800">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-base-300">
                         <SmartImageModal
                             itemName={formData.name}
                             itemCategory="humidor"
                             itemType={formData.type}
-                            theme={theme}
                             currentImage={formData.image || `https://placehold.co/600x400/EEE/31343C?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'My Humidor'}`}
                             currentPosition={formData.imagePosition || { x: 50, y: 50 }}
                             onImageAccept={(img, pos) => setFormData(prev => ({
@@ -91,65 +90,65 @@ const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeD
                         />
                     </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent pointer-events-none"></div>
                 <div className="absolute top-4 left-4 z-10">
-                    <button onClick={() => navigate('HumidorsScreen')} className="p-2 -ml-2 mr-2 bg-black/50 rounded-full">
-                        <ChevronLeft className={`w-7 h-7 ${theme.text}`} />
+                    <button onClick={() => navigate('HumidorsScreen')} className="btn btn-ghost btn-circle">
+                        <ChevronLeft className="w-7 h-7" />
                     </button>
                 </div>
                 <div className="absolute bottom-0 p-4 z-10 pointer-events-none">
-                    <h1 className={`text-3xl font-bold ${theme.text}`}>Edit  Humidor</h1>
+                    <h1 className="text-3xl font-bold text-base-content">Edit Humidor</h1>
                 </div>
             </div>
 
             <div className="p-4 space-y-6">
                 {/* Humidor Name */}
-                <InputField name="name" label="Humidor Name" placeholder="e.g., The Big One" value={formData.name} onChange={handleInputChange} theme={theme} />
+                <InputField name="name" label="Humidor Name" placeholder="e.g., The Big One" value={formData.name} onChange={handleInputChange} />
                 {/* Short Description */}
-                <InputField name="shortDescription" label="Short Description" placeholder="e.g., Main aging unit" value={formData.shortDescription} onChange={handleInputChange} theme={theme} />
+                <InputField name="shortDescription" label="Short Description" placeholder="e.g., Main aging unit" value={formData.shortDescription} onChange={handleInputChange} />
                 {/* Long Description */}
-                <TextAreaField name="longDescription" label="Long Description" placeholder="e.g., A 150-count mahogany humidor..." value={formData.longDescription} onChange={handleInputChange} theme={theme} />
+                <TextAreaField name="longDescription" label="Long Description" placeholder="e.g., A 150-count mahogany humidor..." value={formData.longDescription} onChange={handleInputChange} />
 
                 {/* Type of Humidor */}
                 <div>
-                    <label className={`text-sm font-medium ${theme.subtleText} mb-1 block`}>Type of Humidor</label>
-                    <select name="type" value={formData.type} onChange={handleInputChange} className={`w-full ${theme.inputBg} border ${theme.borderColor} rounded-lg py-2 px-3 ${theme.text} focus:outline-none focus:ring-2 ${theme.ring}`}>
+                    <label className="label-text mb-1 block">Type of Humidor</label>
+                    <select name="type" value={formData.type} onChange={handleInputChange} className="select select-bordered w-full">
                         {humidorTypes.map(type => <option key={type} value={type}>{type}</option>)}
                     </select>
                 </div>
                 {/* Size and location */}
                 <div id="pnlSizeAndLocation" className="grid grid-cols-2 gap-4">
-                    <InputField name="size" label="Size" placeholder="e.g., 150-count" value={formData.size} onChange={handleInputChange} theme={theme} />
-                    <InputField name="location" label="Location" placeholder="e.g., Office" value={formData.location} onChange={handleInputChange} theme={theme} />
+                    <InputField name="size" label="Size" placeholder="e.g., 150-count" value={formData.size} onChange={handleInputChange} />
+                    <InputField name="location" label="Location" placeholder="e.g., Office" value={formData.location} onChange={handleInputChange} />
                 </div>
                 {/* Environment Tracking */}
-                <div pnl="pnlEnvironmentTracking" className={`${theme.card} p-4 rounded-md`}>
-                    <h3 className="font-bold text-xl text-amber-300 mb-4 flex items-center"><MapPin className="w-5 h-5 mr-2" /> Environment Tracking</h3>
+                <div pnl="pnlEnvironmentTracking" className="card bg-base-200 p-4 rounded-md">
+                    <h3 className="font-bold text-xl text-primary mb-4 flex items-center"><MapPin className="w-5 h-5 mr-2" /> Environment Tracking</h3>
                     <div className="space-y-4">
                         <div>
-                            <label className={`text-sm font-medium ${theme.subtleText} mb-2 block`}>Tracking Method</label>
+                            <label className="label-text mb-2 block">Tracking Method</label>
                             <div className="flex space-x-4">
-                                <label className="inline-flex items-center"><input type="radio" name="trackingMethod" value="manual" checked={formData.trackingMethod === 'manual'} onChange={handleInputChange} className="form-radio text-amber-500 h-4 w-4" /><span className={`ml-2 ${theme.text}`}>Manual Input</span></label>
-                                <label className="inline-flex items-center"><input type="radio" name="trackingMethod" value="govee" checked={formData.trackingMethod === 'govee'} onChange={handleInputChange} className="form-radio text-amber-500 h-4 w-4" /><span className={`ml-2 ${theme.text}`}>Govee Sensor</span></label>
+                                <label className="inline-flex items-center"><input type="radio" name="trackingMethod" value="manual" checked={formData.trackingMethod === 'manual'} onChange={handleInputChange} className="radio radio-primary" /><span className="ml-2">Manual Input</span></label>
+                                <label className="inline-flex items-center"><input type="radio" name="trackingMethod" value="govee" checked={formData.trackingMethod === 'govee'} onChange={handleInputChange} className="radio radio-primary" /><span className="ml-2">Govee Sensor</span></label>
                             </div>
                         </div>
                         {formData.trackingMethod === 'manual' ? (
                             <div className="grid grid-cols-2 gap-4">
-                                <InputField name="temp" label="Temperature (°F)" placeholder="e.g., 68" type="number" value={formData.temp} onChange={handleInputChange} theme={theme} />
-                                <InputField name="humidity" label="Humidity (%)" placeholder="e.g., 70" type="number" value={formData.humidity} onChange={handleInputChange} theme={theme} />
+                                <InputField name="temp" label="Temperature (°F)" placeholder="e.g., 68" type="number" value={formData.temp} onChange={handleInputChange} />
+                                <InputField name="humidity" label="Humidity (%)" placeholder="e.g., 70" type="number" value={formData.humidity} onChange={handleInputChange} />
                             </div>
                         ) : (
                             <div>
-                                <label className={`text-sm font-medium ${theme.subtleText} mb-1 block`}>Govee Sensor</label>
-                                <select value={formData.goveeDeviceId || ''} onChange={handleGoveeDeviceChange} disabled={!goveeApiKey || goveeDevices.length === 0} className={`w-full ${theme.inputBg} border ${theme.borderColor} rounded-lg py-2 px-3 ${theme.text} disabled:bg-gray-800 disabled:cursor-not-allowed`}>
+                                <label className="label-text mb-1 block">Govee Sensor</label>
+                                <select value={formData.goveeDeviceId || ''} onChange={handleGoveeDeviceChange} disabled={!goveeApiKey || goveeDevices.length === 0} className="select select-bordered w-full">
                                     <option value="">{!goveeApiKey ? "Connect Govee first" : (goveeDevices.length === 0 ? "No sensors found" : "Select a sensor")}</option>
                                     {goveeDevices.map(device => (<option key={device.device} value={device.device}>{device.deviceName} ({device.model})</option>))}
                                 </select>
-                                {!goveeApiKey && (<p className="text-xs text-red-300 mt-1">Please connect your Govee API key in Integrations settings.</p>)}
-                                {goveeApiKey && goveeDevices.length === 0 && (<p className="text-xs text-yellow-300 mt-1">No Govee sensors found. Check your key and Govee app.</p>)}
+                                {!goveeApiKey && (<p className="text-xs text-error mt-1">Please connect your Govee API key in Integrations settings.</p>)}
+                                {goveeApiKey && goveeDevices.length === 0 && (<p className="text-xs text-warning mt-1">No Govee sensors found. Check your key and Govee app.</p>)}
                                 <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <InputField name="temp" label="Current Temp (°F)" value={humidor.temp} type="number" onChange={() => { }} theme={theme} disabled={true} />
-                                    <InputField name="humidity" label="Current Humidity (%)" value={humidor.humidity} type="number" onChange={() => { }} theme={theme} disabled={true} />
+                                    <InputField name="temp" label="Current Temp (°F)" value={humidor.temp} type="number" onChange={() => { }} disabled={true} />
+                                    <InputField name="humidity" label="Current Humidity (%)" value={humidor.humidity} type="number" onChange={() => { }} disabled={true} />
                                 </div>
                             </div>
                         )}
@@ -157,14 +156,14 @@ const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeD
                 </div>
                 {/* Save and Cancel buttons */}
                 <div pnl="pnlSaveCancelButtons" className="pt-4 flex space-x-4">
-                    
+
                     <button
                         onClick={() => navigate('MyHumidor', { humidorId: humidor.id })}
-                        className="btn btn-soft btn-secondary">
+                        className="btn btn-secondary flex-grow">
                         Cancel</button>
                     <button
                         onClick={handleSave}
-                        className="btn btn-soft btn-primary">
+                        className="btn btn-primary flex-grow">
                         Save Changes</button>
                 </div>
             </div>

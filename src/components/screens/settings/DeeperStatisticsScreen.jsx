@@ -16,7 +16,7 @@ import { getFlavorTagColor } from '../../../utils/colorUtils';
 import { formatDate } from '../../../utils/formatUtils';
 import { calculateAge } from '../../utils/calculateAge';
 
-const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
+const DeeperStatisticsScreen = ({ navigate, cigars }) => {
     // 1. Collection Value
     const totalValue = cigars.reduce((sum, c) => sum + ((c.price || 0) * (c.quantity || 0)), 0);
 
@@ -78,109 +78,91 @@ const DeeperStatisticsScreen = ({ navigate, cigars, theme }) => {
             id="pnlContentWrapper_DeeperStatisticsScreen"
             className="p-4 pb-24">
 
-
-
-
             <div className="flex items-center mb-6">
-                <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2">
-                    <ChevronLeft className={`w-7 h-7 ${theme.text}`} />
+                <button onClick={() => navigate('Settings')} className="btn btn-ghost btn-square -ml-2 mr-2">
+                    <ChevronLeft className="w-7 h-7" />
                 </button>
-                <h1 className="text-3xl font-bold text-white">Deeper Statistics & Insights</h1>
+                <h1 className="text-3xl font-bold text-base-content">Deeper Statistics & Insights</h1>
             </div>
 
-            <p className="text-gray-400 mb-6 leading-relaxed">
-                This screen is for testing components. Explore comprehensive analytics about your cigar collection. View collection value, 
-                rating patterns, favorite brands and countries, aging insights, and detailed tasting 
+            <p className="text-base-content/70 mb-6 leading-relaxed">
+                This screen is for testing components. Explore comprehensive analytics about your cigar collection. View collection value,
+                rating patterns, favorite brands and countries, aging insights, and detailed tasting
                 preferences to better understand your smoking habits.
             </p>
 
             <div className="space-y-6">
 
-
-
                 {/* 1. Collection Value */}
-                <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
-                    <DollarSign className="w-8 h-8 text-green-400" />
+                <div className="card bg-base-200 p-4 flex flex-row items-center gap-4">
+                    <DollarSign className="w-8 h-8 text-success" />
                     <div>
-                        <p className="text-lg font-bold text-white">Collection Value</p>
-                        <p className="text-2xl text-green-300 font-bold">${totalValue.toFixed(2)}</p>
+                        <p className="text-lg font-bold text-base-content">Collection Value</p>
+                        <p className="text-2xl text-success font-bold">${totalValue.toFixed(2)}</p>
                     </div>
                 </div>
                 {/* 2. Average User Rating */}
-                <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
-                    <Star className="w-8 h-8 text-yellow-400" />
+                <div className="card bg-base-200 p-4 flex flex-row items-center gap-4">
+                    <Star className="w-8 h-8 text-warning" />
                     <div>
-                        <p className="text-lg font-bold text-white">Average My Rating</p>
-                        <p className="text-2xl text-yellow-300 font-bold">{avgUserRating}</p>
-                        <p className="text-xs text-gray-400">{ratedCigars.length} cigars rated</p>
+                        <p className="text-lg font-bold text-base-content">Average My Rating</p>
+                        <p className="text-2xl text-warning font-bold">{avgUserRating}</p>
+                        <p className="text-xs text-base-content/70">{ratedCigars.length} cigars rated</p>
                     </div>
                 </div>
                 {/* 3. Favorite Brand/Country */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
-                        <Box className="w-8 h-8 text-amber-400" />
+                    <div className="card bg-base-200 p-4 flex flex-row items-center gap-4">
+                        <Box className="w-8 h-8 text-primary" />
                         <div>
-                            <p className="text-lg font-bold text-white">Favorite Brand</p>
-                            <p className="text-xl text-amber-300 font-bold">{favoriteBrand ? favoriteBrand.name : 'N/A'}</p>
-                            {favoriteBrand && <p className="text-xs text-gray-400">{favoriteBrand.count} cigars</p>}
+                            <p className="text-lg font-bold text-base-content">Favorite Brand</p>
+                            <p className="text-xl text-primary font-bold">{favoriteBrand ? favoriteBrand.name : 'N/A'}</p>
+                            {favoriteBrand && <p className="text-xs text-base-content/70">{favoriteBrand.count} cigars</p>}
                         </div>
                     </div>
-                    <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
-                        <MapPin className="w-8 h-8 text-blue-400" />
+                    <div className="card bg-base-200 p-4 flex flex-row items-center gap-4">
+                        <MapPin className="w-8 h-8 text-info" />
                         <div>
-                            <p className="text-lg font-bold text-white">Favorite Country</p>
-                            <p className="text-xl text-blue-300 font-bold">{favoriteCountry ? favoriteCountry.name : 'N/A'}</p>
-                            {favoriteCountry && <p className="text-xs text-gray-400">{favoriteCountry.count} cigars</p>}
+                            <p className="text-lg font-bold text-base-content">Favorite Country</p>
+                            <p className="text-xl text-info font-bold">{favoriteCountry ? favoriteCountry.name : 'N/A'}</p>
+                            {favoriteCountry && <p className="text-xs text-base-content/70">{favoriteCountry.count} cigars</p>}
                         </div>
                     </div>
                 </div>
                 {/* 4. Oldest Cigar */}
-                <div className={`${theme.card} p-4 rounded-md flex items-center gap-4`}>
-                    <CalendarIcon className="w-8 h-8 text-purple-400" />
+                <div className="card bg-base-200 p-4 flex flex-row items-center gap-4">
+                    <CalendarIcon className="w-8 h-8 text-secondary" />
                     <div>
-                        <p className="text-lg font-bold text-white">Oldest Cigar</p>
+                        <p className="text-lg font-bold text-base-content">Oldest Cigar</p>
                         {oldestCigar ? (
                             <>
-                                <p className="text-xl text-purple-300 font-bold">{oldestCigar.brand} {oldestCigar.name}</p>
-                                <p className="text-xs text-gray-400">Aging since {formatDate(oldestCigar.dateAdded)} ({calculateAge(oldestCigar.dateAdded)})</p>
+                                <p className="text-xl text-secondary font-bold">{oldestCigar.brand} {oldestCigar.name}</p>
+                                <p className="text-xs text-base-content/70">Aging since {formatDate(oldestCigar.dateAdded)} ({calculateAge(oldestCigar.dateAdded)})</p>
                             </>
                         ) : (
-                            <p className="text-gray-400">No cigars with a date added.</p>
+                            <p className="text-base-content/70">No cigars with a date added.</p>
                         )}
                     </div>
                 </div>
                 {/* --- Tasting Preferences Panel --- */}
-                <div id="pnlTastingPreferences" className="bg-gray-800/50 p-4 rounded-md">
-                    <h3 className="font-bold text-amber-300 text-lg mb-3">Tasting Preferences</h3>
+                <div id="pnlTastingPreferences" className="card bg-base-200 p-4">
+                    <h3 className="font-bold text-primary text-lg mb-3">Tasting Preferences</h3>
                     <div>
-                        <h4 className="font-semibold text-white mb-2">Preferred Strength</h4>
+                        <h4 className="font-semibold text-base-content mb-2">Preferred Strength</h4>
                         <div className="flex items-center gap-2 mb-2">
-                            <span className="text-xs text-gray-400">Most Common:</span>
-                            <span className="font-bold text-amber-400">{preferredStrength}</span>
+                            <span className="text-xs text-base-content/70">Most Common:</span>
+                            <span className="font-bold text-primary">{preferredStrength}</span>
                         </div>
-                        <div className="flex gap-1 w-full mb-1">
-                            {strengthOptions.map(strength => {
-                                const count = strengthCounts[strength] || 0;
-                                const percent = totalStrengthCigars > 0 ? (count / totalStrengthCigars) * 100 : 0;
-                                return (
-                                    <div
-                                        key={strength}
-                                        className={`h-3 rounded-full transition-all duration-300 ${count > 0 ? 'bg-amber-500' : 'bg-gray-700'}`}
-                                        style={{ width: `${percent}%`, minWidth: count > 0 ? '8%' : '2px' }}
-                                        title={`${strength}: ${count}`}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <progress className="progress progress-primary w-full" value={totalStrengthCigars > 0 ? (strengthCounts[preferredStrength] || 0) : 0} max={totalStrengthCigars}></progress>
+                        <div className="flex justify-between text-xs text-base-content/70 mt-1">
                             {strengthOptions.map(strength => (
                                 <span key={strength} className="w-1/5 text-center">{strength}</span>
                             ))}
                         </div>
                     </div>
                     <div className="mt-4">
-                        <h4 className="font-semibold text-white mb-2">Top Flavors</h4>
-                        <div className="flex flex-wrap gap-2">{topFlavors.map(note => (<span key={note} className={`text-xs font-semibold px-3 py-1 rounded-full ${getFlavorTagColor(note)}`}>{note}</span>))}</div>
+                        <h4 className="font-semibold text-base-content mb-2">Top Flavors</h4>
+                        <div className="flex flex-wrap gap-2">{topFlavors.map(note => (<div key={note} className="badge badge-neutral">{note}</div>))}</div>
                     </div>
                 </div>
             </div>

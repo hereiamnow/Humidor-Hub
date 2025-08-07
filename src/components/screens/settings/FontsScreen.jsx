@@ -14,7 +14,7 @@ import React, { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import FontPicker from './FontPicker';
 
-const FontsScreen = ({ navigate, selectedFont, setSelectedFont, theme }) => {
+const FontsScreen = ({ navigate, selectedFont, setSelectedFont }) => {
     // Local state for the font preview. Initialized with the currently active app font.
     const [previewFont, setPreviewFont] = useState(selectedFont);
 
@@ -25,33 +25,33 @@ const FontsScreen = ({ navigate, selectedFont, setSelectedFont, theme }) => {
     };
 
     return (
-        <div 
-        id="pnlContentWrapper_FontsScreen" 
-        className="p-4 pb-24">
+        <div
+            id="pnlContentWrapper_FontsScreen"
+            className="p-4 pb-24">
             <div className="flex items-center mb-6">
                 <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2">
-                    <ChevronLeft className={`w-7 h-7 ${theme.text}`} />
+                    <ChevronLeft className="w-7 h-7 text-base-content" />
                 </button>
-                <h1 className="text-3xl font-bold text-white">Fonts</h1>
+                <h1 className="text-3xl font-bold text-base-content">Fonts</h1>
             </div>
-            <div className="bg-gray-800/50 rounded-lg p-4">
+            <div className="bg-base-200 rounded-lg p-4">
                 {/* Pass the local preview state and its setter to the FontPicker */}
-                <FontPicker selectedFont={previewFont} setSelectedFont={setPreviewFont} theme={theme} />
+                <FontPicker selectedFont={previewFont} setSelectedFont={setPreviewFont} />
             </div>
-            <p className="mt-6 text-gray-400 text-sm">
+            <p className="mt-6 text-base-content/70 text-sm">
                 Choose your preferred font combination for the app. This will change the look and feel of all text throughout Humidor Hub.
             </p>
             {/* Save Changes Button */}
             <div className="mt-6 flex gap-4">
                 <button
                     onClick={handleSaveChanges}
-                    className={`w-full ${theme.primaryBg} ${theme.text === 'text-white' ? 'text-white' : 'text-black'} font-bold py-3 rounded-lg ${theme.hoverPrimaryBg} transition-colors`}
+                    className="btn btn-primary w-full"
                 >
                     Save Changes
                 </button>
                 <button
                     onClick={() => navigate('Settings')}
-                    className={`w-full ${theme.button} ${theme.text} font-bold py-3 rounded-lg transition-colors`}
+                    className="btn btn-ghost w-full"
                 >
                     Cancel
                 </button>

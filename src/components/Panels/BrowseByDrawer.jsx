@@ -20,7 +20,6 @@
  * @param {React.Component} props.icon - Icon component to display next to title
  * @param {Array} props.data - Array of items to display in the panel
  * @param {Function} props.onItemClick - Callback when an item is clicked, receives the item data
- * @param {Object} props.theme - Theme object for styling
  * @param {string} [props.itemLabelKey='label'] - Key to use for item label
  * @param {string} [props.itemQuantityKey='quantity'] - Key to use for item quantity
  *
@@ -34,7 +33,6 @@ const BrowseByPanel = ({
     icon: IconComponent,
     data = [],
     onItemClick,
-    theme,
     itemLabelKey = 'label',
     itemQuantityKey = 'quantity'
 }) => {
@@ -50,18 +48,18 @@ const BrowseByPanel = ({
     return (
         <div
             id="pnlBrowseByDrawer"
-            className={`fixed bottom-20 left-0 right-0 ${theme.drawerBg} backdrop-blur-sm p-4 z-40 border-t ${theme.drawerBorderColor}`}
+            className="fixed bottom-20 left-0 right-0 bg-base-200/90 backdrop-blur-sm p-4 z-40 border-t border-base-300 shadow-lg rounded-t-lg"
         >
             <div className="max-w-md mx-auto">
                 {/* Panel Header */}
                 <div id="pnlBrowseByTitle" className="flex justify-between items-center mb-4">
-                    <h3 id="browseByMode" className="text-xl font-bold text-amber-400 flex items-center">
+                    <h3 id="browseByMode" className="text-xl font-bold text-primary flex items-center">
                         {IconComponent && <IconComponent className="w-5 h-5 mr-2" />}
                         {title}
                     </h3>
                     <button
                         onClick={onClose}
-                        className="text-amber-400 font-semibold hover:text-amber-300 transition-colors"
+                        className="btn btn-ghost btn-sm btn-circle"
                         aria-label="Close panel"
                     >
                         <XCircle className="w-5 h-5" />
@@ -72,7 +70,7 @@ const BrowseByPanel = ({
                 <div id="pnlBrowseByDrawerContent" className="mb-4 max-h-64 overflow-y-auto space-y-2">
                     {data.length === 0 ? (
                         <div className="text-center py-4">
-                            <p className="text-gray-400">No items found</p>
+                            <p className="text-base-content/70">No items found</p>
                         </div>
                     ) : (
                         data.map((item, index) => {
@@ -85,11 +83,11 @@ const BrowseByPanel = ({
                                 <button
                                     key={key}
                                     onClick={() => handleItemClick(item)}
-                                    className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
+                                    className="w-full text-left py-3 px-4 rounded-lg hover:bg-base-300 transition-colors flex justify-between items-center"
                                 >
-                                    <span className="text-gray-300">{label}</span>
+                                    <span className="text-base-content">{label}</span>
                                     {quantity !== null && quantity !== undefined && (
-                                        <span className="text-gray-400">({quantity})</span>
+                                        <span className="badge badge-ghost">{quantity}</span>
                                     )}
                                 </button>
                             );

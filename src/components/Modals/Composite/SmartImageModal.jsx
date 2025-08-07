@@ -26,7 +26,7 @@ import React, { useState } from 'react';
 import ImagePreview from '../../UI/ImagePreview';
 import ImageUploadModal from '../Forms/ImageUploadModal';
 
-const SmartImageModal = ({ itemName, currentImage, currentPosition, onImageAccept, theme, itemCategory, itemType }) => {
+const SmartImageModal = ({ itemName, currentImage, currentPosition, onImageAccept, itemCategory, itemType }) => {
     // State to control whether the modal dialog is visible.
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -44,7 +44,6 @@ const SmartImageModal = ({ itemName, currentImage, currentPosition, onImageAccep
                 itemName={itemName}
                 initialImage={currentImage}
                 initialPosition={currentPosition}
-                theme={theme}
                 itemCategory={itemCategory}
                 itemType={itemType}
             />

@@ -13,6 +13,7 @@
  * tracking, cigar limits, and CSV import permissions based on subscription tier.
  *
  */
+import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
 
 export const SUBSCRIPTION_TIERS = {
   FREE: 'free',
@@ -47,9 +48,10 @@ export class SubscriptionService {
   async getUserSubscription() {
     console.log('[SubscriptionService] Getting user subscription for userId:', this.userId);
     try {
-      const userDoc = await this.db.collection('artifacts', this.appId, 'users', this.userId, 'subscription').doc('current').get();
+      const userDocRef = doc(this.db, 'artifacts', this.appId, 'users', this.userId, 'subscription', 'current');
+      const userDoc = await getDoc(userDocRef);
 
-      if (userDoc.exists) {
+      if (userDoc.exists()) {
         const subscriptionData = userDoc.data();
         console.log('[SubscriptionService] Found existing subscription:', subscriptionData);
         return subscriptionData;
@@ -70,6 +72,18 @@ export class SubscriptionService {
       const fallbackSubscription = { tier: SUBSCRIPTION_TIERS.FREE, status: 'active', aiLookupsUsed: 0 };
       console.log('[SubscriptionService] Returning fallback subscription:', fallbackSubscription);
       return fallbackSubscription;
+    }
+  }
+
+  async updateUserSubscription(subscriptionData) {
+    console.log('[SubscriptionService] Updating user subscription for userId:', this.userId);
+    try {
+      const subDocRef = doc(this.db, 'artifacts', this.appId, 'users', this.userId, 'subscription', 'current');
+      await setDoc(subDocRef, subscriptionData, { merge: true });
+      console.log('[SubscriptionService] Subscription updated successfully.');
+    } catch (error) {
+      console.error('[SubscriptionService] Error updating subscription:', error);
+      throw error; // Re-throw the error to be handled by the caller
     }
   }
 
@@ -130,9 +144,8 @@ export class SubscriptionService {
       tier: subscription.tier
     });
 
-    await this.db.collection('artifacts', this.appId, 'users', this.userId, 'subscription')
-      .doc('current')
-      .set({ ...subscription, aiLookupsUsed: newUsage }, { merge: true });
+    const subDocRef = doc(this.db, 'artifacts', this.appId, 'users', this.userId, 'subscription', 'current');
+    await setDoc(subDocRef, { ...subscription, aiLookupsUsed: newUsage }, { merge: true });
 
     console.log('[SubscriptionService] AI usage updated in database');
   }

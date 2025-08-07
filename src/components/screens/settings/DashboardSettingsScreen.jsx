@@ -17,13 +17,19 @@
 import React from 'react';
 import { ChevronLeft } from 'lucide-react';
 
-const DashboardSettingsScreen = ({ navigate, theme, dashboardPanelVisibility, setDashboardPanelVisibility }) => {
-    const ToggleSwitch = ({ label, isChecked, onToggle }) => (
-        <div className="flex justify-between items-center py-2">
-            <span className="text-gray-300">{label}</span>
-            <button onClick={onToggle} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${isChecked ? 'bg-amber-500' : 'bg-gray-600'}`}>
-                <span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${isChecked ? 'translate-x-6' : 'translate-x-1'}`} />
-            </button>
+const DashboardSettingsScreen = ({ navigate, dashboardPanelVisibility, setDashboardPanelVisibility }) => {
+    const ToggleSwitch = ({ id, label, isChecked, onToggle }) => (
+        <div className="form-control">
+            <label htmlFor={id} className="label cursor-pointer">
+                <span className="label-text">{label}</span>
+                <input
+                    id={id}
+                    type="checkbox"
+                    className="toggle toggle-primary"
+                    checked={isChecked}
+                    onChange={onToggle}
+                />
+            </label>
         </div>
     );
 
@@ -32,14 +38,16 @@ const DashboardSettingsScreen = ({ navigate, theme, dashboardPanelVisibility, se
             id="pnlContentWrapper_DashboardSettingsScreen"
             className="p-4 pb-24">
             <div className="flex items-center mb-6">
-                <button onClick={() => navigate('Settings')} className="p-2 -ml-2 mr-2"><ChevronLeft className={`w-7 h-7 ${theme.text}`} /></button>
-                <h1 className={`text-3xl font-bold ${theme.text}`}>Dashboard Components</h1>
+                <button onClick={() => navigate('Settings')} className="btn btn-ghost btn-square -ml-2 mr-2">
+                    <ChevronLeft className="w-7 h-7" />
+                </button>
+                <h1 className="text-3xl font-bold text-base-content">Dashboard Components</h1>
             </div>
-            <p className={`text-gray-400 mb-4 leading-relaxed`}>
+            <p className="text-base-content/70 mb-4 leading-relaxed">
                 Customize your dashboard by choosing which components to display. Toggle any component on or off to
                 personalize your Humidor-Hub experience.
             </p>
-            <div className="bg-gray-800/50 p-4 rounded-md space-y-2">
+            <div className="bg-base-200 p-4 rounded-box space-y-2">
                 <ToggleSwitch
                     id="tsAchievements"
                     label="Achievements"
@@ -47,31 +55,37 @@ const DashboardSettingsScreen = ({ navigate, theme, dashboardPanelVisibility, se
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showAchievements: !prev.showAchievements }))}
                 />
                 <ToggleSwitch
+                    id="tsAgingWell"
                     label="Aging Well / From the Cellar"
                     isChecked={dashboardPanelVisibility.showAgingWellPanel}
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showAgingWellPanel: !prev.showAgingWellPanel }))}
                 />
                 <ToggleSwitch
+                    id="tsInventoryAnalysis"
                     label="Inventory Analysis"
                     isChecked={dashboardPanelVisibility.showInventoryAnalysis}
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showInventoryAnalysis: !prev.showInventoryAnalysis }))}
                 />
                 <ToggleSwitch
+                    id="tsWorldMap"
                     label="Interactive World Map"
                     isChecked={dashboardPanelVisibility.showWorldMap}
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showWorldMap: !prev.showWorldMap }))}
                 />
                 <ToggleSwitch
+                    id="tsCountryPanel"
                     label="Browse by Country"
                     isChecked={dashboardPanelVisibility.showCountryPanel}
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showCountryPanel: !prev.showCountryPanel }))}
                 />
                 <ToggleSwitch
+                    id="tsWrapperPanel"
                     label="Browse by Wrapper"
                     isChecked={dashboardPanelVisibility.showWrapperPanel}
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showWrapperPanel: !prev.showWrapperPanel }))}
                 />
                 <ToggleSwitch
+                    id="tsStrengthPanel"
                     label="Browse by Strength"
                     isChecked={dashboardPanelVisibility.showStrengthPanel}
                     onToggle={() => setDashboardPanelVisibility(prev => ({ ...prev, showStrengthPanel: !prev.showStrengthPanel }))}

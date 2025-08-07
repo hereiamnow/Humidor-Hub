@@ -26,7 +26,7 @@ import InputField from '../../UI/InputField';
 import TextAreaField from '../../UI/TextAreaField';
 import SmartImageModal from '../../Modals/Composite/SmartImageModal';
 
-const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
+const AddHumidor = ({ navigate, db, appId, userId }) => {
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
     const [formData, setFormData] = useState({
         name: '',
@@ -74,16 +74,12 @@ const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
             id="pnlContentWrapper_AddHumidor"
             className="pb-24">
             <div className="relative">
-
-
-
                 <div className="flex justify-center items-center pt-6 pb-2">
-                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-700 shadow-lg bg-gray-800">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-base-300">
                         <SmartImageModal
                             itemName={formData.name}
                             itemCategory="humidor"
                             itemType={formData.type}
-                            theme={theme}
                             currentImage={formData.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'Humidor'}`}
                             currentPosition={formData.imagePosition || { x: 50, y: 50 }}
                             onImageAccept={(img, pos) => setFormData(prev => ({
@@ -95,65 +91,62 @@ const AddHumidor = ({ navigate, db, appId, userId, theme }) => {
                     </div>
                 </div>
 
-
-
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent pointer-events-none"></div>
                 <div className="absolute top-4 left-4 z-10">
-                    <button onClick={() => navigate('HumidorsScreen')} className="p-2 -ml-2 mr-2 bg-black/50 rounded-full">
-                        <ChevronLeft className={`w-7 h-7 ${theme.text}`} />
+                    <button onClick={() => navigate('HumidorsScreen')} className="btn btn-circle btn-ghost">
+                        <ChevronLeft className="w-7 h-7" />
                     </button>
                 </div>
                 <div className="absolute bottom-0 p-4 z-10 pointer-events-none">
-                    <h1 className={`text-3xl font-bold ${theme.text}`}>Add Humidor</h1>
+                    <h1 className="text-3xl font-bold">Add Humidor</h1>
                 </div>
             </div>
             <div className="p-4 space-y-6">
-                <InputField name="name" label="Humidor Name" placeholder="e.g., The Big One" value={formData.name} onChange={handleInputChange} theme={theme} />
-                <InputField name="shortDescription" label="Short Description" placeholder="e.g., Main aging unit" value={formData.shortDescription} onChange={handleInputChange} theme={theme} />
-                <TextAreaField name="longDescription" label="Long Description" placeholder="e.g., A 150-count mahogany humidor with a Spanish cedar interior..." value={formData.longDescription} onChange={handleInputChange} theme={theme} />
+                <InputField name="name" label="Humidor Name" placeholder="e.g., The Big One" value={formData.name} onChange={handleInputChange} />
+                <InputField name="shortDescription" label="Short Description" placeholder="e.g., Main aging unit" value={formData.shortDescription} onChange={handleInputChange} />
+                <TextAreaField name="longDescription" label="Long Description" placeholder="e.g., A 150-count mahogany humidor with a Spanish cedar interior..." value={formData.longDescription} onChange={handleInputChange} />
 
-                <div>
-                    <label className={`text-sm font-medium ${theme.subtleText} mb-1 block`}>Type of Humidor</label>
-                    <select name="type" value={formData.type} onChange={handleInputChange} className={`w-full ${theme.inputBg} border ${theme.borderColor} rounded-lg py-2 px-3 ${theme.text} focus:outline-none focus:ring-2 ${theme.ring}`}>
+                <div className="form-control w-full">
+                    <label className="label">
+                        <span className="label-text">Type of Humidor</span>
+                    </label>
+                    <select name="type" value={formData.type} onChange={handleInputChange} className="select select-bordered w-full">
                         {humidorTypes.map(type => <option key={type} value={type}>{type}</option>)}
                     </select>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                    <InputField name="size" label="Size" placeholder="e.g., 150-count" value={formData.size} onChange={handleInputChange} theme={theme} />
-                    <InputField name="location" label="Location" placeholder="e.g., Office" value={formData.location} onChange={handleInputChange} theme={theme} />
+                    <InputField name="size" label="Size" placeholder="e.g., 150-count" value={formData.size} onChange={handleInputChange} />
+                    <InputField name="location" label="Location" placeholder="e.g., Office" value={formData.location} onChange={handleInputChange} />
                 </div>
 
-                <div className={`${theme.card} p-4 rounded-md`}>
-                    <div className="flex justify-between items-center">
-                        <h3 className="font-bold text-lg text-amber-300 flex items-center"><Thermometer className="w-5 h-5 mr-2" /> Environment Tracking</h3>
-                        <button onClick={() => setTrackEnvironment(!trackEnvironment)} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${trackEnvironment ? 'bg-amber-500' : 'bg-gray-600'}`}>
-                            <span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${trackEnvironment ? 'translate-x-6' : 'translate-x-1'}`} />
-                        </button>
+                <div className="card bg-base-200 p-4">
+                    <div className="form-control">
+                        <label className="label cursor-pointer">
+                            <h3 className="label-text font-bold text-lg flex items-center"><Thermometer className="w-5 h-5 mr-2" /> Environment Tracking</h3>
+                            <input type="checkbox" className="toggle toggle-primary" checked={trackEnvironment} onChange={() => setTrackEnvironment(!trackEnvironment)} />
+                        </label>
                     </div>
                     {trackEnvironment && (
-                        <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-700">
-                            <InputField name="temp" label="Temperature (°F)" type="number" value={formData.temp} onChange={handleInputChange} theme={theme} />
-                            <InputField name="humidity" label="Humidity (%)" type="number" value={formData.humidity} onChange={handleInputChange} theme={theme} />
+                        <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-base-300">
+                            <InputField name="temp" label="Temperature (°F)" type="number" value={formData.temp} onChange={handleInputChange} />
+                            <InputField name="humidity" label="Humidity (%)" type="number" value={formData.humidity} onChange={handleInputChange} />
                         </div>
                     )}
                 </div>
 
                 <div className="pt-4 flex space-x-4">
-
                     <button
                         onClick={() => navigate('HumidorsScreen')}
-                        className="btn btn-soft btn-secondary">
+                        className="btn btn-secondary w-1/2">
                         Cancel
                     </button>
                     <button
                         onClick={handleSave}
-                        className="btn btn-soft btn-primary">
+                        className="btn btn-primary w-1/2">
                         Save Humidor
                     </button>
                 </div>
-
-
             </div>
         </div>
     );

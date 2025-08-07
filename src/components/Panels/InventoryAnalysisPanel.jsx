@@ -12,7 +12,6 @@
  *
  * @param {Object} props - Component props
  * @param {Array} props.cigars - Array of cigar objects
- * @param {Object} props.theme - Theme object for styling
  * @param {boolean} props.isCollapsed - Whether the panel is collapsed
  * @param {Function} props.onToggle - Callback to toggle collapse state
  *
@@ -22,7 +21,7 @@ import { BarChart2, ChevronDown, PieChart as PieChartIcon } from 'lucide-react';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ChartCard from '../UI/ChartCard';
 
-const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
+const InventoryAnalysisPanel = ({ cigars, isCollapsed, onToggle }) => {
     const [chartViews, setChartViews] = useState({ brands: 'bar', countries: 'bar', strength: 'bar' });
 
     const {
@@ -80,7 +79,7 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
         return (
-            <text {...props} x={x} y={y} fill="#d1d5db" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize={12}>
+            <text {...props} x={x} y={y} fill="hsl(var(--bc) / var(--tw-text-opacity, 1))" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize={12}>
                 {`${(percent * 100).toFixed(0)}%`}
             </text>
         );
@@ -95,7 +94,7 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
 
     return (
 
-        <div id="pnlInventoryAnalysisPanel" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
+        <div id="pnlInventoryAnalysisPanel" tabIndex={0} className="collapse collapse-plus bg-base-200 border-base-300 border">
 
             <div className="collapse-title font-semibold">
                 Inventory Analysis
@@ -104,11 +103,10 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
             <div className="collapse-content text-sm">
                 <ChartCard
                     title="Top 5 Brands"
-                    theme={theme}
                     action={
                         <button
                             onClick={() => handleChartViewToggle('brands')}
-                            className={`p-1 rounded-full ${theme.button}`}
+                            className="btn btn-ghost btn-circle btn-sm"
                         >
                             {chartViews.brands === 'bar' ? <PieChartIcon className="w-5 h-5" /> : <BarChart2 className="w-5 h-5" />}
                         </button>
@@ -118,9 +116,9 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={topBrandsData} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
                                 <XAxis type="number" hide />
-                                <YAxis dataKey="name" type="category" width={80} tick={{ fill: '#d1d5db' }} tickLine={false} axisLine={false} />
-                                <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }} contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }} />
-                                <Bar dataKey="quantity" fill="#f59e0b" barSize={20} />
+                                <YAxis dataKey="name" type="category" width={80} tick={{ fill: 'hsl(var(--bc))' }} tickLine={false} axisLine={false} />
+                                <Tooltip cursor={{ fill: 'hsl(var(--b3))' }} contentStyle={{ backgroundColor: 'hsl(var(--b1))', border: '1px solid hsl(var(--b3))' }} />
+                                <Bar dataKey="quantity" fill="hsl(var(--p))" barSize={20} />
                             </BarChart>
                         </ResponsiveContainer>
                     ) : (
@@ -140,7 +138,7 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
                                 >
                                     {topBrandsData.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />)}
                                 </Pie>
-                                <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }} />
+                                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--b1))', border: '1px solid hsl(var(--b3))' }} />
                                 <Legend formatter={(value, entry) => legendFormatter(value, entry, totalBrandQuantity)} wrapperStyle={{ fontSize: '12px' }} />
                             </PieChart>
                         </ResponsiveContainer>
@@ -149,11 +147,10 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
 
                 <ChartCard
                     title="Top 5 Countries"
-                    theme={theme}
                     action={
                         <button
                             onClick={() => handleChartViewToggle('countries')}
-                            className={`p-1 rounded-full ${theme.button}`}
+                            className="btn btn-ghost btn-circle btn-sm"
                         >
                             {chartViews.countries === 'bar' ? <PieChartIcon className="w-5 h-5" /> : <BarChart2 className="w-5 h-5" />}
                         </button>
@@ -163,9 +160,9 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={topCountriesData} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
                                 <XAxis type="number" hide />
-                                <YAxis dataKey="name" type="category" width={80} tick={{ fill: '#d1d5db' }} tickLine={false} axisLine={false} />
-                                <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }} contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }} />
-                                <Bar dataKey="quantity" fill="#3b82f6" barSize={20} />
+                                <YAxis dataKey="name" type="category" width={80} tick={{ fill: 'hsl(var(--bc))' }} tickLine={false} axisLine={false} />
+                                <Tooltip cursor={{ fill: 'hsl(var(--b3))' }} contentStyle={{ backgroundColor: 'hsl(var(--b1))', border: '1px solid hsl(var(--b3))' }} />
+                                <Bar dataKey="quantity" fill="hsl(var(--s))" barSize={20} />
                             </BarChart>
                         </ResponsiveContainer>
                     ) : (
@@ -185,7 +182,7 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
                                 >
                                     {topCountriesData.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />)}
                                 </Pie>
-                                <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }} />
+                                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--b1))', border: '1px solid hsl(var(--b3))' }} />
                                 <Legend formatter={(value, entry) => legendFormatter(value, entry, totalCountryQuantity)} wrapperStyle={{ fontSize: '12px' }} />
                             </PieChart>
                         </ResponsiveContainer>
@@ -194,11 +191,10 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
 
                 <ChartCard
                     title="Flavor Profile"
-                    theme={theme}
                     action={
                         <button
                             onClick={() => handleChartViewToggle('strength')}
-                            className={`p-1 rounded-full ${theme.button}`}
+                            className="btn btn-ghost btn-circle btn-sm"
                         >
                             {chartViews.strength === 'bar' ? <PieChartIcon className="w-5 h-5" /> : <BarChart2 className="w-5 h-5" />}
                         </button>
@@ -207,10 +203,10 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
                     {chartViews.strength === 'bar' ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={strengthDistributionData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                                <XAxis dataKey="name" tick={{ fill: '#d1d5db' }} tickLine={false} axisLine={false} angle={-45} textAnchor="end" height={60} />
-                                <YAxis tick={{ fill: '#d1d5db' }} tickLine={false} axisLine={false} />
-                                <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }} contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }} />
-                                <Bar dataKey="quantity" fill="#84cc16" />
+                                <XAxis dataKey="name" tick={{ fill: 'hsl(var(--bc))' }} tickLine={false} axisLine={false} angle={-45} textAnchor="end" height={60} />
+                                <YAxis tick={{ fill: 'hsl(var(--bc))' }} tickLine={false} axisLine={false} />
+                                <Tooltip cursor={{ fill: 'hsl(var(--b3))' }} contentStyle={{ backgroundColor: 'hsl(var(--b1))', border: '1px solid hsl(var(--b3))' }} />
+                                <Bar dataKey="quantity" fill="hsl(var(--a))" />
                             </BarChart>
                         </ResponsiveContainer>
                     ) : (
@@ -230,7 +226,7 @@ const InventoryAnalysisPanel = ({ cigars, theme, isCollapsed, onToggle }) => {
                                 >
                                     {strengthDistributionData.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />)}
                                 </Pie>
-                                <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }} />
+                                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--b1))', border: '1px solid hsl(var(--b3))' }} />
                                 <Legend formatter={(value, entry) => legendFormatter(value, entry, totalStrengthQuantity)} wrapperStyle={{ fontSize: '12px' }} />
                             </PieChart>
                         </ResponsiveContainer>

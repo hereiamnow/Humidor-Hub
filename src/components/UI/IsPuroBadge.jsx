@@ -2,9 +2,9 @@ import React from 'react';
 import { Award } from 'lucide-react';
 
 // Reusable IsPuroBadge component
-const IsPuroBadge = ({ isPuro, theme, size }) => {
+const IsPuroBadge = ({ isPuro, size }) => {
     if (!isPuro) return null;
-    const roxyBg = theme && theme.roxyBg ? theme.roxyBg : 'bg-green-700';
+
     // Support sm, md (default), and lg (default) sizes
     let badgeSize, iconSize, textSize, marginRight, showText;
     switch (size) {
@@ -31,13 +31,13 @@ const IsPuroBadge = ({ isPuro, theme, size }) => {
     }
     return (
         <div
-            className={`flex flex-col items-center justify-center ${badgeSize} rounded-full border-2 aspect-square ${roxyBg} bg-gray-900/50 backdrop-blur-sm ${marginRight}`}
+            className={`flex flex-col items-center justify-center ${badgeSize} rounded-full border-2 aspect-square bg-success/20 border-success/50 backdrop-blur-sm ${marginRight}`}
             style={{ aspectRatio: '1 / 1' }}
             title="Wrapper, binder, and filler are all from the same country"
         >
-            <Award id="is-puro-icon" className={`${iconSize} text-amber-400`} />
+            <Award id="is-puro-icon" className={`${iconSize} text-success`} />
             {showText && (
-                <span id="is-puro-text" className={`font-bold text-white ${textSize}`}>PURO</span>
+                <span id="is-puro-text" className={`font-bold text-success-content ${textSize}`}>PURO</span>
             )}
         </div>
     );

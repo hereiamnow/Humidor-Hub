@@ -30,17 +30,14 @@ import {
 import ThemeModal from '../Modals/Content/ThemeModal';
 import PageHeader from '../UI/PageHeader';
 
-const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, setDashboardPanelVisibility, selectedFont, setSelectedFont }) => {
+const SettingsScreen = ({ navigate, dashboardPanelVisibility, setDashboardPanelVisibility, selectedFont, setSelectedFont }) => {
     // Debug: Log component props on render
     console.log('SettingsScreen: Component rendered with props:', {
-        theme: theme?.name || 'undefined',
         dashboardPanelVisibility,
         selectedFont,
         hasNavigate: typeof navigate === 'function',
-        hasSetTheme: typeof setTheme === 'function'
     });
 
-    console.log('SettingsScreen: Full theme object:', theme);
     console.log('SettingsScreen: Dashboard panel visibility settings:', dashboardPanelVisibility);
 
     const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
@@ -63,27 +60,26 @@ const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, s
         };
 
         return (
-            <button onClick={handleClick} className="w-full flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors text-left">
-                <div className="p-2 bg-gray-700 rounded-full"><Icon className={`w-6 h-6 ${theme.primary}`} /></div>
+            <button onClick={handleClick} className="w-full flex items-center gap-4 p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors text-left">
+                <div className="p-2 bg-base-100 rounded-full"><Icon className="w-6 h-6 text-primary" /></div>
                 <div>
-                    <p className={`font-bold ${theme.text}`}>{title}</p>
-                    <p className={`text-xs ${theme.subtleText}`}>{subtitle}</p>
+                    <p className="font-bold text-base-content">{title}</p>
+                    <p className="text-xs text-base-content/70">{subtitle}</p>
                 </div>
             </button>
         );
     };
 
     return (
-        <div id="pnlContainerWrapper" className="bg-gray-900 min-h-screen pb-24 px-4 pt-4">
+        <div id="pnlContainerWrapper" className="min-h-screen pb-24 px-4 pt-4">
 
 
-            {isThemeModalOpen && <ThemeModal currentTheme={theme} setTheme={setTheme} onClose={() => setIsThemeModalOpen(false)} />}
+            {isThemeModalOpen && <ThemeModal onClose={() => setIsThemeModalOpen(false)} />}
 
             <PageHeader
                 icon={SettingsIcon}
                 title="Settings"
                 subtitle="Text Here"
-                theme={theme}
             />
 
             <div className="space-y-4">
@@ -93,8 +89,8 @@ const SettingsScreen = ({ navigate, theme, setTheme, dashboardPanelVisibility, s
                 <SettingItem icon={LayoutGrid} title="Dashboard Components" subtitle="Customize what appears on your dashboard" onClick={() => navigate('DashboardSettings')} />
                 {/* <SettingItem icon={Bell} title="Notifications" subtitle="Set up alerts for humidity and temp" onClick={() => navigate('Notifications')} /> */}
                 {/* <SettingItem icon={Zap} title="Integrations" subtitle="Connect to Govee and other services" onClick={() => navigate('Integrations')} /> */}
-                <SettingItem icon={Palette} title="Theme" subtitle={`Current: ${theme.name}`} onClick={() => {
-                    console.log('SettingsScreen: Opening theme modal, current theme:', theme.name);
+                <SettingItem icon={Palette} title="Theme" subtitle="Customize the look and feel" onClick={() => {
+                    console.log('SettingsScreen: Opening theme modal');
                     setIsThemeModalOpen(true);
                 }} />
                 <SettingItem icon={Info} title="Fonts" subtitle="Choose your preferred font combination" onClick={() => navigate('Fonts')} disabled={true} />

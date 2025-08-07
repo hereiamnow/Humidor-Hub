@@ -36,39 +36,38 @@ import FirebaseAuthUI from './components/Screens/FirebaseAuthUI';
 
 // Constants
 import { fontOptions } from './constants/fontOptions';
-import { themes } from './constants/themes';
 
 // Components - Journal0
-import AddEditJournalEntry from './components/Screens/journal/AddEditJournalEntry';
+import AddEditJournalEntry from './components/Screens/Journal/AddEditJournalEntry';
 import CigarJournalScreen from './components/Screens/JournalScreen';
 
 // Components - Navigation
 import BottomNav from './components/Navigation/BottomNav';
 
 // Components - Settings
-import AboutScreen from './components/Screens/settings/AboutScreen';
-import NotificationsScreen from './components/Screens/settings/NotificationsScreen';
+import AboutScreen from './components/Screens/Settings/AboutScreen';
+import NotificationsScreen from './components/Screens/Settings/NotificationsScreen';
 import ProfileScreen from './components/Screens/Settings/ProfileScreen';
-import SubscriptionScreen from './components/Screens/settings/SubscriptionScreen';
+import SubscriptionScreen from './components/Screens/Settings/SubscriptionScreen';
 
 // Subscription Context
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
 
 // Screens
-import AddCigar from './components/Screens/cigar/AddCigar';
-import AddHumidor from './components/Screens/humidor/AddHumidor';
+import AddCigar from './components/Screens/Cigar/AddCigar';
+import AddHumidor from './components/Screens/Humidor/AddHumidor';
 import AlertsScreen from './components/Screens/AlertsScreen';
-import CigarDetail from './components/Screens/cigar/CigarDetail';
+import CigarDetail from './components/Screens/Cigar/CigarDetail';
 import Dashboard from './components/Screens/Dashboard';
-import DashboardSettingsScreen from './components/Screens/settings/DashboardSettingsScreen';
-import DataSyncScreen from './components/Screens/settings/DataSyncScreen';
-import DeeperStatisticsScreen from './components/Screens/settings/DeeperStatisticsScreen';
-import EditCigar from './components/Screens/cigar/EditCigar';
-import EditHumidor from './components/Screens/humidor/EditHumidor';
-import FontsScreen from './components/Screens/settings/FontsScreen';
+import DashboardSettingsScreen from './components/Screens/Settings/DashboardSettingsScreen';
+import DataSyncScreen from './components/Screens/Settings/DataSyncScreen';
+import DeeperStatisticsScreen from './components/Screens/Settings/DeeperStatisticsScreen';
+import EditCigar from './components/Screens/Cigar/EditCigar';
+import EditHumidor from './components/Screens/Humidor/EditHumidor';
+import FontsScreen from './components/Screens/Settings/FontsScreen';
 import HumidorsScreen from './components/Screens/MyHumidors';
-import IntegrationsScreen from './components/Screens/settings/IntegrationsScreen';
-import MyHumidor from './components/Screens/humidor/MyHumidor';
+import IntegrationsScreen from './components/Screens/Settings/IntegrationsScreen';
+import MyHumidor from './components/Screens/Humidor/MyHumidor';
 import SettingsScreen from './components/Screens/SettingsScreen';
 //import RegisterUser from './components/Screens/RegisterUser';
 
@@ -86,25 +85,6 @@ export default function App() {
     const [cigars, setCigars] = useState([]);
     const [humidors, setHumidors] = useState([]);
     const [journalEntries, setJournalEntries] = useState([]);
-    // Initialize theme from localStorage or default to "Humidor Hub"
-    const [theme, setTheme] = useState(() => {
-        try {
-            const savedTheme = localStorage.getItem('humidor-hub-theme');
-            if (savedTheme) {
-                const parsedTheme = JSON.parse(savedTheme);
-                // Verify the saved theme still exists in our themes object
-                const themeExists = Object.values(themes).find(t => t.name === parsedTheme.name);
-                if (themeExists) {
-                    log('🎨 Restored theme from localStorage:', parsedTheme.name);
-                    return parsedTheme;
-                }
-            }
-        } catch (error) {
-            console.warn('Failed to load saved theme:', error);
-        }
-        log('🎨 Using default theme: Humidor Hub');
-        return themes["Humidor Hub"];
-    });
     const [goveeApiKey, setGoveeApiKey] = useState('');
     const [goveeDevices, setGoveeDevices] = useState([]);
 
@@ -326,9 +306,9 @@ export default function App() {
         if (isLoading) {
             log('⏳ Showing loading screen');
             return (
-                <div className={`w-full h-screen flex flex-col items-center justify-center ${theme.bg}`}>
-                    <LoaderCircle className={`w-12 h-12 ${theme.primary} animate-spin`} />
-                    <p className={`mt-4 ${theme.text}`}>Loading Your Collection...</p>
+                <div className="w-full h-screen flex flex-col items-center justify-center bg-base-100">
+                    <LoaderCircle className="w-12 h-12 text-primary animate-spin" />
+                    <p className="mt-4 text-base-content">Loading Your Collection...</p>
                 </div>
             );
         }
@@ -344,7 +324,7 @@ export default function App() {
         switch (screen) {
             case 'Dashboard':
                 return <Dashboard navigate={navigate} cigars={cigars}
-                    humidors={humidors} theme={theme}
+                    humidors={humidors}
                     showWrapperPanel={dashboardPanelVisibility.showWrapperPanel}
                     showStrengthPanel={dashboardPanelVisibility.showStrengthPanel}
                     showCountryPanel={dashboardPanelVisibility.showCountryPanel}
@@ -353,7 +333,7 @@ export default function App() {
                     setPanelStates={setDashboardPanelStates}
                     dashboardPanelVisibility={dashboardPanelVisibility} />;
             case 'HumidorsScreen':
-                return <HumidorsScreen navigate={navigate} cigars={cigars} humidors={humidors} db={db} appId={appId} userId={userId} theme={theme} {...params} />;
+                return <HumidorsScreen navigate={navigate} cigars={cigars} humidors={humidors} db={db} appId={appId} userId={userId} {...params} />;
             case 'MyHumidor':
                 const humidor = humidors.find(h => h.id === params.humidorId);
                 log('🏠 MyHumidor lookup:', {
@@ -361,7 +341,7 @@ export default function App() {
                     found: !!humidor,
                     availableIds: humidors.map(h => h.id)
                 });
-                return humidor ? <MyHumidor humidor={humidor} navigate={navigate} cigars={cigars} humidors={humidors} db={db} appId={appId} userId={userId} theme={theme} /> : <div>Humidor not found</div>;
+                return humidor ? <MyHumidor humidor={humidor} navigate={navigate} cigars={cigars} humidors={humidors} db={db} appId={appId} userId={userId} /> : <div>Humidor not found</div>;
             case 'CigarDetail':
                 const cigar = cigars.find(c => c.id === params.cigarId);
                 log('🚬 CigarDetail lookup:', {
@@ -369,35 +349,35 @@ export default function App() {
                     found: !!cigar,
                     availableIds: cigars.map(c => c.id).slice(0, 5)
                 });
-                return cigar ? <CigarDetail cigar={cigar} navigate={navigate} db={db} appId={appId} userId={userId} journalEntries={journalEntries} theme={theme} /> : <div>Cigar not found</div>;
+                return cigar ? <CigarDetail cigar={cigar} navigate={navigate} db={db} appId={appId} userId={userId} journalEntries={journalEntries} /> : <div>Cigar not found</div>;
             case 'AddCigar':
-                return <AddCigar navigate={navigate} db={db} appId={appId} userId={userId} humidorId={params.humidorId} theme={theme} cigars={cigars} />;
+                return <AddCigar navigate={navigate} db={db} appId={appId} userId={userId} humidorId={params.humidorId} cigars={cigars} />;
             case 'EditCigar':
                 const cigarToEdit = cigars.find(c => c.id === params.cigarId);
-                return cigarToEdit ? <EditCigar navigate={navigate} db={db} appId={appId} userId={userId} cigar={cigarToEdit} theme={theme} /> : <div>Cigar not found</div>;
+                return cigarToEdit ? <EditCigar navigate={navigate} db={db} appId={appId} userId={userId} cigar={cigarToEdit} /> : <div>Cigar not found</div>;
             case 'Alerts':
                 return <AlertsScreen navigate={navigate} humidors={humidors} />;
             case 'Fonts':
-                return <FontsScreen navigate={navigate} selectedFont={selectedFont} setSelectedFont={setSelectedFont} theme={theme} />;
+                return <FontsScreen navigate={navigate} selectedFont={selectedFont} setSelectedFont={setSelectedFont} />;
             case 'Settings':
-                return <SettingsScreen navigate={navigate} theme={theme} setTheme={handleSetTheme} dashboardPanelVisibility={dashboardPanelVisibility} setDashboardPanelVisibility={setDashboardPanelVisibility} selectedFont={selectedFont} setSelectedFont={setSelectedFont} />;
+                return <SettingsScreen navigate={navigate} dashboardPanelVisibility={dashboardPanelVisibility} setDashboardPanelVisibility={setDashboardPanelVisibility} selectedFont={selectedFont} setSelectedFont={setSelectedFont} />;
             case 'AddHumidor':
-                return <AddHumidor navigate={navigate} db={db} appId={appId} userId={userId} theme={theme} />;
+                return <AddHumidor navigate={navigate} db={db} appId={appId} userId={userId} />;
             case 'EditHumidor':
                 const humidorToEdit = humidors.find(h => h.id === params.humidorId);
-                return humidorToEdit ? <EditHumidor navigate={navigate} db={db} appId={appId} userId={userId} humidor={humidorToEdit} goveeApiKey={goveeApiKey} goveeDevices={goveeDevices} theme={theme} /> : <div>Humidor not found</div>;
+                return humidorToEdit ? <EditHumidor navigate={navigate} db={db} appId={appId} userId={userId} humidor={humidorToEdit} goveeApiKey={goveeApiKey} goveeDevices={goveeDevices} /> : <div>Humidor not found</div>;
             case 'CigarJournal':
-                return <CigarJournalScreen navigate={navigate} journalEntries={journalEntries} theme={theme} db={db} appId={appId} userId={userId} />;
+                return <CigarJournalScreen navigate={navigate} journalEntries={journalEntries} db={db} appId={appId} userId={userId} />;
             case 'AddEditJournalEntry':
                 const cigarForJournal = cigars.find(c => c.id === params.cigarId);
                 const entryToEdit = journalEntries.find(e => e.id === params.entryId);
-                return cigarForJournal ? <AddEditJournalEntry navigate={navigate} db={db} appId={appId} userId={userId} cigar={cigarForJournal} existingEntry={entryToEdit} theme={theme} /> : <div>Cigar not found for journal entry.</div>;
+                return cigarForJournal ? <AddEditJournalEntry navigate={navigate} db={db} appId={appId} userId={userId} cigar={cigarForJournal} existingEntry={entryToEdit} /> : <div>Cigar not found for journal entry.</div>;
             case 'DashboardSettings':
-                return <DashboardSettingsScreen navigate={navigate} theme={theme} dashboardPanelVisibility={dashboardPanelVisibility} setDashboardPanelVisibility={setDashboardPanelVisibility} />;
+                return <DashboardSettingsScreen navigate={navigate} dashboardPanelVisibility={dashboardPanelVisibility} setDashboardPanelVisibility={setDashboardPanelVisibility} />;
             case 'DeeperStatistics':
-                return <DeeperStatisticsScreen navigate={navigate} cigars={cigars} theme={theme} />;
+                return <DeeperStatisticsScreen navigate={navigate} cigars={cigars} />;
             case 'Integrations':
-                return <IntegrationsScreen navigate={navigate} goveeApiKey={goveeApiKey} setGoveeApiKey={setGoveeApiKey} goveeDevices={goveeDevices} setGoveeDevices={setGoveeDevices} theme={theme} />;
+                return <IntegrationsScreen navigate={navigate} goveeApiKey={goveeApiKey} setGoveeApiKey={setGoveeApiKey} goveeDevices={goveeDevices} setGoveeDevices={setGoveeDevices} />;
             case 'DataSync':
                 return <DataSyncScreen navigate={navigate} db={db} appId={appId} userId={userId} cigars={cigars} humidors={humidors} />;
             case 'Notifications':
@@ -405,11 +385,11 @@ export default function App() {
             case 'About':
                 return <AboutScreen navigate={navigate} />;
             case 'Profile':
-                return <ProfileScreen navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} userId={userId} auth={auth} />;
+                return <ProfileScreen navigate={navigate} cigars={cigars} humidors={humidors} userId={userId} auth={auth} />;
             case 'Subscription':
-                return <SubscriptionScreen navigate={navigate} theme={theme} />;
+                return <SubscriptionScreen navigate={navigate} />;
             default:
-                return <Dashboard navigate={navigate} cigars={cigars} humidors={humidors} theme={theme} showWrapperPanel={dashboardPanelVisibility.showWrapperPanel} showStrengthPanel={dashboardPanelVisibility.showStrengthPanel} showCountryPanel={dashboardPanelVisibility.showCountryPanel} showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis} panelStates={dashboardPanelStates} setPanelStates={setDashboardPanelStates} />;
+                return <Dashboard navigate={navigate} cigars={cigars} humidors={humidors} showWrapperPanel={dashboardPanelVisibility.showWrapperPanel} showStrengthPanel={dashboardPanelVisibility.showStrengthPanel} showCountryPanel={dashboardPanelVisibility.showCountryPanel} showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis} panelStates={dashboardPanelStates} setPanelStates={setDashboardPanelStates} />;
         }
     }; //end of renderScreen function
 
@@ -422,23 +402,6 @@ export default function App() {
         log('🏠 State update - Humidors:', humidors.length);
     }, [humidors]);
 
-    // Save theme to localStorage whenever it changes
-    useEffect(() => {
-        log('🎨 Theme changed:', theme.name || 'Unknown theme');
-        try {
-            localStorage.setItem('humidor-hub-theme', JSON.stringify(theme));
-            log('💾 Theme saved to localStorage:', theme.name);
-        } catch (error) {
-            console.warn('Failed to save theme to localStorage:', error);
-        }
-    }, [theme]);
-
-    // Create a wrapper function for setTheme that handles persistence
-    const handleSetTheme = (newTheme) => {
-        log('🎨 Setting new theme:', newTheme.name);
-        setTheme(newTheme);
-    };
-
     // If the user is not signed in and Firebase auth is available, show the Firebase Auth UI.
     // This component handles user authentication.
     if (!userId && auth) {
@@ -450,14 +413,13 @@ export default function App() {
     log('🎯 Final render with:', {
         userId,
         authAvailable: !!auth,
-        currentScreen: navigation.screen,
-        themeLoaded: !!theme
+        currentScreen: navigation.screen
     });
 
     return (
         <SubscriptionProvider db={db} appId={appId} userId={userId}>
             <div
-                className={`min-h-screen bg-gray-900 text-white`}
+                className="min-h-screen bg-base-100 text-base-content"
                 style={{
                     fontFamily: selectedFont.body,
                 }}
@@ -465,7 +427,7 @@ export default function App() {
                 <div className="max-w-md mx-auto">
                     {renderScreen()}
                 </div>
-                <BottomNav activeScreen={navigation.screen} navigate={navigate} theme={theme} />
+                <BottomNav activeScreen={navigation.screen} navigate={navigate} />
             </div>
         </SubscriptionProvider>
     );

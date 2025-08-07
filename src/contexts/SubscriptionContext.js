@@ -71,10 +71,10 @@ export const SubscriptionProvider = ({ children, db, appId, userId }) => {
   };
 
   const setDevelopmentTier = (tier) => {
-    const isDevelopment = process.env.NODE_ENV === 'development' || 
-                         window.location.hostname === 'localhost' || 
-                         window.location.hostname === '127.0.0.1';
-    
+    const isDevelopment = process.env.NODE_ENV === 'development' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
     if (isDevelopment) {
       console.log('[SubscriptionProvider] Setting development tier to:', tier);
       // Update the subscription state for development
@@ -95,6 +95,32 @@ export const SubscriptionProvider = ({ children, db, appId, userId }) => {
   const isPremium = subscription?.tier === SUBSCRIPTION_TIERS.PREMIUM;
   const isFree = subscription?.tier === SUBSCRIPTION_TIERS.FREE;
 
+  const saveDevelopmentTier = async (tier) => {
+    const isDevelopment = process.env.NODE_ENV === 'development' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
+    if (isDevelopment && subscriptionService) {
+      console.log('[SubscriptionProvider] Saving development tier to:', tier);
+      try {
+        const newSubData = {
+          ...subscription,
+          tier: tier,
+          status: 'active',
+          aiLookupsUsed: 0,
+          renewsOn: tier === SUBSCRIPTION_TIERS.PREMIUM ?
+            new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString() :
+            null
+        };
+        await subscriptionService.updateUserSubscription(newSubData);
+        setSubscription(newSubData);
+        console.log('[SubscriptionProvider] Development tier saved and local state updated.');
+      } catch (error) {
+        console.error('[SubscriptionProvider] Error saving development tier:', error);
+      }
+    }
+  };
+
   const value = {
     subscription,
     subscriptionService,
@@ -102,7 +128,8 @@ export const SubscriptionProvider = ({ children, db, appId, userId }) => {
     isFree,
     loading,
     refreshSubscription,
-    setDevelopmentTier
+    setDevelopmentTier,
+    saveDevelopmentTier
   };
 
   console.log('[SubscriptionProvider] Context value updated:', {

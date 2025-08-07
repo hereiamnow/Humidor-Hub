@@ -17,6 +17,9 @@
 export const applyDaisyUITheme = (themeName) => {
     if (themeName) {
         document.documentElement.setAttribute('data-theme', themeName);
+    } else {
+        // Fallback to a default theme if none is provided
+        document.documentElement.setAttribute('data-theme', 'dark');
     }
 };
 
@@ -29,10 +32,10 @@ export const removeDaisyUITheme = () => {
 
 /**
  * Get current DaisyUI theme
- * @returns {string|null} Current theme name or null
+ * @returns {string|null} Current theme name or 'dark' if not set
  */
 export const getCurrentDaisyUITheme = () => {
-    return document.documentElement.getAttribute('data-theme');
+    return document.documentElement.getAttribute('data-theme') || 'dark';
 };
 
 /**
@@ -51,7 +54,12 @@ export const isDaisyUITheme = (theme) => {
 export const applyTheme = (theme) => {
     if (isDaisyUITheme(theme)) {
         applyDaisyUITheme(theme.daisyUI);
-    } else {
+        localStorage.setItem('humidor-hub-theme', theme.daisyUI);
+    } else if (typeof theme === 'string') {
+        applyDaisyUITheme(theme);
+        localStorage.setItem('humidor-hub-theme', theme);
+    }
+    else {
         removeDaisyUITheme();
     }
 };

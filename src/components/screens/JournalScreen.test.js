@@ -23,7 +23,6 @@ jest.mock('../UI/PageHeader', () => {
 
 describe('CigarJournalScreen - Add Journal Entry Navigation', () => {
     const mockNavigate = jest.fn();
-    const mockTheme = { primary: 'text-white' };
     const mockDb = {};
     const mockAppId = 'test-app';
     const mockUserId = 'test-user';
@@ -46,7 +45,6 @@ describe('CigarJournalScreen - Add Journal Entry Navigation', () => {
             <CigarJournalScreen
                 navigate={mockNavigate}
                 journalEntries={mockJournalEntries}
-                theme={mockTheme}
                 db={mockDb}
                 appId={mockAppId}
                 userId={mockUserId}
@@ -62,7 +60,6 @@ describe('CigarJournalScreen - Add Journal Entry Navigation', () => {
             <CigarJournalScreen
                 navigate={mockNavigate}
                 journalEntries={mockJournalEntries}
-                theme={mockTheme}
                 db={mockDb}
                 appId={mockAppId}
                 userId={mockUserId}
@@ -81,7 +78,6 @@ describe('CigarJournalScreen - Add Journal Entry Navigation', () => {
             <CigarJournalScreen
                 navigate={mockNavigate}
                 journalEntries={mockJournalEntries}
-                theme={mockTheme}
                 db={mockDb}
                 appId={mockAppId}
                 userId={mockUserId}

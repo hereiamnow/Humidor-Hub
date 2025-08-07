@@ -62,7 +62,7 @@ import IsPuroBadge from '../../UI/IsPuroBadge';
 import RatingBadge from '../../UI/RatingBadge';
 
 // Main CigarDetail component
-const CigarDetail = ({ cigar, navigate, db, appId, userId, journalEntries, theme }) => {
+const CigarDetail = ({ cigar, navigate, db, appId, userId, journalEntries }) => {
     // Auth state
     const [user] = useAuthState(auth);
 
@@ -201,9 +201,9 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
     // Main render
     return (
-        <div 
-        id="pnlContentWrapper_CigarDetail" 
-        className="pb-24">
+        <div
+            id="pnlContentWrapper_CigarDetail"
+            className="pb-24">
             {/* Modals for Gemini, flavor notes, delete, and export */}
             {modalState.isOpen && <GeminiModal title={modalState.type === 'pairings' ? "Pairing Suggestions" : modalState.type === 'notes' ? "Tasting Note Idea" : modalState.type === 'aging' ? "Aging Potential" : "Similar Smokes"} content={modalState.content} isLoading={modalState.isLoading} onClose={closeModal} />}
             {isFlavorModalOpen && <FlavorNotesModal cigar={cigar} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} />}
@@ -212,22 +212,19 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
             {/* Cigar image and header */}
             <div className="relative">
-
-
                 <div className="flex justify-center items-center pt-6 pb-2">
                     <img
                         src={cigar.image || `https://placehold.co/400x400/5a3825/ffffff?font=playfair-display&text=${cigar.brand.replace(/\s/g, '+')}`}
                         alt={cigar.name}
-                        className="w-40 h-40 object-cover rounded-full border-4 border-amber-700 shadow-lg"
+                        className="w-40 h-40 object-cover rounded-full border-4 border-primary shadow-lg"
                     />
                 </div>
-                
 
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent"></div>
 
                 {/* Page Header Action Buttons */}
                 <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
-                    <button onClick={() => navigate('MyHumidor', { humidorId: cigar.humidorId })} className="p-2 bg-black/50 rounded-full text-white"><ChevronLeft className="w-7 h-7" /></button>
+                    <button onClick={() => navigate('MyHumidor', { humidorId: cigar.humidorId })} className="btn btn-circle btn-ghost"><ChevronLeft className="w-7 h-7" /></button>
                     <CigarActionMenu
                         onEdit={() => navigate('EditCigar', { cigarId: cigar.id })}
                         onExport={() => setIsExportModalOpen(true)}
@@ -240,15 +237,15 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                 <div id="titleRatingBadge" className="absolute bottom-0 p-4 w-full flex justify-between items-end">
                     <div className="flex items-center gap-2">
                         <div>
-                            <p className="text-gray-300 text-sm font-semibold uppercase">{cigar.brand}</p>
+                            <p className="text-base-content/80 text-sm font-semibold uppercase">{cigar.brand}</p>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-3xl font-bold text-white">{cigar.name}</h1>
+                                <h1 className="text-3xl font-bold">{cigar.name}</h1>
                             </div>
                         </div>
                     </div>
                     {/* Badges: isPuro and rating */}
                     <div className="flex items-center">
-                        <IsPuroBadge isPuro={isPuro} theme={theme} />
+                        <IsPuroBadge isPuro={isPuro} />
                         <RatingBadge rating={cigar.rating} />
                     </div>
                 </div>
@@ -260,128 +257,87 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                 <button
                     onClick={handleSmokeCigar}
                     disabled={cigar.quantity === 0}
-                    className="w-full flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-3 rounded-lg hover:bg-amber-600 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed">
+                    className="btn btn-primary w-full">
                     <Cigarette className="w-5 h-5" /> Smoke This! ({cigar.quantity} in stock)
                 </button>
                 {/* Smoke confirmation toast */}
                 {showSmokeConfirmation && (
-                    <div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
-                        <Check className="w-5 h-5" />
-                        <span>Enjoy your smoke!</span>
+                    <div className="toast toast-center">
+                        <div className="alert alert-success">
+                            <Check className="w-5 h-5" />
+                            <span>Enjoy your smoke!</span>
+                        </div>
                     </div>
                 )}
 
                 {/* Cigar Profile Panel */}
-                <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
-
-                    {/* Profile header */}
-                    <div className="flex justify-between items-center">
-                        <h3 className="font-bold text-amber-300 text-lg">Profile</h3>
-                    </div>
-
-                    {/* Profile grid */}
+                <div className="card bg-base-200 p-4 space-y-4">
+                    <h3 className="card-title text-primary">Profile</h3>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                        {/* Overview */}
                         <div className="col-span-2">
-                            <p className="text-xs text-gray-400">Overview</p>
-                            <p className="font-light text-white text-sm break-words">{cigar.shortDescription || 'No short description provided.'}</p>
+                            <p className="text-xs text-base-content/70">Overview</p>
+                            <p className="font-light text-sm break-words">{cigar.shortDescription || 'No short description provided.'}</p>
                         </div>
-
-                        {/* Shape, Size, Strength, Wrapper, Binder, Filler */}
                         <DetailItem label="Shape" value={cigar.shape} />
-                        {/* Updated Size display to combine length_inches and ring_gauge */}
                         <DetailItem label="Size" value={cigar.length_inches && cigar.ring_gauge ? `${cigar.length_inches} x ${cigar.ring_gauge}` : cigar.size} />
                         <DetailItem label="Strength" value={cigar.strength} />
                         <DetailItem label="Wrapper" value={cigar.wrapper} />
                         <DetailItem label="Binder" value={cigar.binder} />
                         <DetailItem label="Filler" value={cigar.filler} />
-
-                        {/* Origin + Puro Badge (inline) */}
                         <div id="isPuroBadge">
-                            <p className="text-xs text-gray-400">Origin</p>
+                            <p className="text-xs text-base-content/70">Origin</p>
                             <div className="flex items-center gap-2">
-                                <span className="font-bold text-white text-sm">{cigar.country || 'N/A'}</span>
-                                {/* Inline puro badge for grid */}
+                                <span className="font-bold text-sm">{cigar.country || 'N/A'}</span>
                                 {isPuro && (
-                                    <span
-                                        className="inline-flex items-center px-2 py-0.5 rounded-full bg-green-700 text-xs font-semibold text-white ml-1"
-                                        title="Wrapper, binder, and filler are all from the same country">
-                                        PURO
-                                    </span>
+                                    <div className="badge badge-success badge-sm">PURO</div>
                                 )}
                             </div>
                         </div>
-
-                       
                     </div>
-
-                    {/* Description section */}
-                    <div className="border-t border-gray-700 pt-4">
-                        <p className="text-xs text-gray-400">Description</p>
-                        <p className="font-light text-white text-sm">{cigar.description || 'No description provided.'}</p>
+                    <div className="divider"></div>
+                    <div>
+                        <p className="text-xs text-base-content/70">Description</p>
+                        <p className="font-light text-sm">{cigar.description || 'No description provided.'}</p>
                     </div>
-
-                    {/* Flavor notes section */}
-                    <div className="border-t border-gray-700 pt-4">
-                        <h4 className="font-light text-white flex items-center mb-3">
-                            {/* <Tag className="w-4 h-4 mr-2 text-amber-400" /> */}
-                            Flavor Notes</h4>
-                        
+                    <div className="divider"></div>
+                    <div>
+                        <h4 className="font-light flex items-center mb-3">Flavor Notes</h4>
                         <div className="flex flex-wrap gap-2">
                             {cigar.flavorNotes && cigar.flavorNotes.length > 0 ?
-                                cigar.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-3 py-1 rounded-sm ${getFlavorTagColor(note)}`}>{note}</span>))
-                                : <p className="text-sm text-gray-500">No flavor notes added.</p>
+                                cigar.flavorNotes.map(note => (<div key={note} className={`badge ${getFlavorTagColor(note)}`}>{note}</div>))
+                                : <p className="text-sm text-base-content/70">No flavor notes added.</p>
                             }
                         </div>
                     </div>
                 </div>
 
-                
-                {/* New: Another Panel */}
-                <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
-
-                    {/* Profile header */}
-                    <div className="flex justify-between items-center">
-                        <h3 className="font-bold text-amber-300 text-lg">Purchase, Aging & Rating</h3>
-                    </div>
-
+                {/* Purchase, Aging & Rating Panel */}
+                <div className="card bg-base-200 p-4 space-y-4">
+                    <h3 className="card-title text-primary">Purchase, Aging & Rating</h3>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-
-                        {/* Date Added: Shows formatted date */}
                         <DetailItem label="Date Added" value={formatDate(cigar.dateAdded)} />
-                        {/* Time in Humidor: Shows calculated age */}
                         <DetailItem label="Time in Humidor" value={calculateAge(cigar.dateAdded)} />
-
-                        {/* Price Paid: Shows formatted price or N/A */}
                         <DetailItem label="Price Paid" value={cigar.price ? `${Number(cigar.price).toFixed(2)}` : 'N/A'} />
-                        
-                        {/* My Rating (stars), shows 0 when empty */}
                         <div>
-                            <p className="text-xs text-gray-400">My Rating</p>
+                            <p className="text-xs text-base-content/70">My Rating</p>
                             <StarRating
                                 rating={cigar.userRating || 0}
                                 readonly={true}
                                 size="w-4 h-4"
                             />
                         </div>
-
-                        {/* User Rating: 1-5 Stars, shows N/A when empty */}
-                        {/* <DetailItem label="My Rating" value={cigar.userRating || 'N/A'} /> */}
                     </div>
                 </div>
 
                 {/* Journal History Panel */}
-                <div className="bg-gray-800/50 p-4 rounded-md space-y-4">
-                    <h3 className="font-bold text-amber-300 text-lg flex items-center">
-                        {/* <BookText className="w-5 h-5 mr-2" /> */}
-                        Journal History</h3>
+                <div className="card bg-base-200 p-4 space-y-4">
+                    <h3 className="card-title text-primary">Journal History</h3>
                     {journalEntriesForCigar.length > 0 ? (
                         <div className="space-y-4">
                             {journalEntriesForCigar.map(entry => (
                                 <JournalEntryCard
                                     key={entry.id}
                                     entry={entry}
-                                    theme={{ card: 'bg-gray-800' }}
                                     onEdit={() => navigate('AddEditJournalEntry', { cigarId: cigar.id, entryId: entry.id })}
                                     onDelete={async (entryId) => {
                                         if (window.confirm("Delete this entry?")) {
@@ -393,27 +349,26 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
                             ))}
                         </div>
                     ) : (
-                        <p className="text-sm text-gray-500">No journal entries for this cigar yet. Smoke one to add an entry!</p>
+                        <p className="text-sm text-base-content/70">No journal entries for this cigar yet. Smoke one to add an entry!</p>
                     )}
                 </div>
 
-                {/* Roxy's Corner Collapsible Panel - Only show when user has valid Gemini API key */}
+                {/* Roxy's Corner Collapsible Panel */}
                 {hasGeminiKey && !keyCheckLoading && (
-                    <div id="pnlRoxysCorner"
-                        className={`${theme.roxyBg} border ${theme.roxyBorder} rounded-md overflow-hidden`}>
-                        <button onClick={() => setIsRoxyOpen(!isRoxyOpen)} className="w-full p-4 flex justify-between items-center">
-                            <h3 className="font-bold text-amber-300 text-lg flex items-center"><Wind className="w-5 h-5 mr-2" /> Roxy's Corner</h3>
-                            <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${isRoxyOpen ? 'rotate-180' : ''}`} />
-                        </button>
-                        {isRoxyOpen && (
-                            <div id="pnlGeminiButtons" className="px-4 pb-4 space-y-4">
-                                <p className="text-amber-200 text-sm pt-2">Let Roxy help you get the most out of your smoke. What would you like to know?</p>
-                                <button onClick={handleSuggestPairings} className="w-full flex items-center justify-center bg-amber-500/20 border border-amber-500 text-amber-300 font-bold py-3 rounded-lg hover:bg-amber-500/30 transition-colors"><Sparkles className="w-5 h-5 mr-2" /> Suggest Pairings</button>
-                                <button onClick={handleGenerateNote} className="w-full flex items-center justify-center bg-sky-500/20 border border-sky-500 text-sky-300 font-bold py-3 rounded-lg hover:bg-sky-500/30 transition-colors"><Sparkles className="w-5 h-5 mr-2" /> Generate Note Idea</button>
-                                <button onClick={handleFindSimilar} className="w-full flex items-center justify-center bg-green-500/20 border border-green-500 text-green-300 font-bold py-3 rounded-lg hover:bg-green-500/30 transition-colors"><Sparkles className="w-5 h-5 mr-2" /> Find Similar Smokes</button>
-                                <button onClick={handleAgingPotential} className="w-full flex items-center justify-center bg-purple-500/20 border border-purple-500 text-purple-300 font-bold py-3 rounded-lg hover:bg-purple-500/30 transition-colors"><CalendarIcon className="w-5 h-5 mr-2" /> Aging Potential</button>
+                    <div tabIndex={0} className="collapse collapse-plus bg-primary/10 border border-primary/20">
+                        <input type="checkbox" checked={isRoxyOpen} onChange={() => setIsRoxyOpen(!isRoxyOpen)} />
+                        <div className="collapse-title font-bold text-lg flex items-center">
+                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
+                        </div>
+                        <div className="collapse-content">
+                            <p className="text-sm pt-2">Let Roxy help you get the most out of your smoke. What would you like to know?</p>
+                            <div className="pt-4 space-y-4">
+                                <button onClick={handleSuggestPairings} className="btn btn-primary btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Suggest Pairings</button>
+                                <button onClick={handleGenerateNote} className="btn btn-info btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Generate Note Idea</button>
+                                <button onClick={handleFindSimilar} className="btn btn-success btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Find Similar Smokes</button>
+                                <button onClick={handleAgingPotential} className="btn btn-accent btn-outline w-full"><CalendarIcon className="w-5 h-5 mr-2" /> Aging Potential</button>
                             </div>
-                        )}
+                        </div>
                     </div>
                 )}
             </div>

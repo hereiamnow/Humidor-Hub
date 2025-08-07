@@ -17,27 +17,13 @@
 
 import React, { useState } from 'react';
 import { Wind, Plus, Bell } from 'lucide-react';
-import PageHeader from '../UI/PageHeader'; 
-const AlertsScreen = ({ navigate, humidors, theme }) => {
+import PageHeader from '../UI/PageHeader';
+const AlertsScreen = ({ navigate, humidors }) => {
     // Debug: Log component props on render
     console.log('AlertsScreen: Component rendered with props:', {
         hasNavigate: typeof navigate === 'function',
         humidorsCount: humidors?.length || 0,
-        theme: theme?.name || 'undefined',
-        themeObject: theme
     });
-
-    // Provide fallback theme if undefined
-    const safeTheme = theme || {
-        primary: 'text-amber-400',
-        text: 'text-white',
-        subtleText: 'text-gray-400',
-        roxyBg: 'bg-amber-900/20',
-        roxyBorder: 'border-amber-600/50',
-        name: 'fallback'
-    };
-
-    console.log('AlertsScreen: Using theme:', safeTheme);
 
     const [alertSettings, setAlertSettings] = useState(
         (humidors || []).map(h => ({ humidorId: h.id, name: h.name, humidityAlert: false, minHumidity: 68, maxHumidity: 72, tempAlert: false, minTemp: 65, maxTemp: 70 }))
@@ -52,68 +38,69 @@ const AlertsScreen = ({ navigate, humidors, theme }) => {
     };
 
     return (
-        <div 
-        id="pnlContentWrapper_AlertsScreen" 
-        className="p-4 pb-24">
+        <div
+            id="pnlContentWrapper_AlertsScreen"
+            className="p-4 pb-24">
 
             <PageHeader
                 icon={Bell}
                 title="Alerts"
                 subtitle="Configure temperature and humidity notifications"
-                theme={safeTheme}
             />
-
-
 
             <div className="space-y-6">
                 {humidors && humidors.length > 0 ? (
                     alertSettings.map(setting => (
-                        <div key={setting.humidorId} className="bg-gray-800/50 p-4 rounded-md">
-                            <h3 className="font-bold text-xl text-amber-300 mb-4">{setting.name}</h3>
+                        <div key={setting.humidorId} className="card bg-base-200 p-4">
+                            <h3 className="card-title text-primary mb-4">{setting.name}</h3>
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-300">Humidity Alert</span>
-                                    <button onClick={() => handleToggle(setting.humidorId, 'humidityAlert')} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${setting.humidityAlert ? 'bg-amber-500' : 'bg-gray-600'}`}><span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${setting.humidityAlert ? 'translate-x-6' : 'translate-x-1'}`} /></button>
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text">Humidity Alert</span>
+                                        <input type="checkbox" className="toggle toggle-primary" checked={setting.humidityAlert} onChange={() => handleToggle(setting.humidorId, 'humidityAlert')} />
+                                    </label>
                                 </div>
                                 {setting.humidityAlert && (
-                                    <div className="grid grid-cols-2 gap-4 pl-4 border-l-2 border-gray-700 ml-2">
-                                        <div className="flex items-center space-x-2"><label className="text-sm text-gray-400">Min:</label><input type="number" value={setting.minHumidity} onChange={(e) => handleValueChange(setting.humidorId, 'minHumidity', e.target.value)} className="w-16 bg-gray-700 text-white text-center rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-500" /><span className="text-gray-400">%</span></div>
-                                        {/* FIX: Changed unit from °F to % for max humidity */}
-                                        <div className="flex items-center space-x-2"><label className="text-sm text-gray-400">Max:</label><input type="number" value={setting.maxHumidity} onChange={(e) => handleValueChange(setting.humidorId, 'maxHumidity', e.target.value)} className="w-16 bg-gray-700 text-white text-center rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-500" /><span className="text-gray-400">%</span></div>
+                                    <div className="grid grid-cols-2 gap-4 pl-4 border-l-2 border-base-300 ml-2">
+                                        <div className="form-control"><label className="label"><span className="label-text">Min:</span></label><div className="input-group"><span>%</span><input type="number" value={setting.minHumidity} onChange={(e) => handleValueChange(setting.humidorId, 'minHumidity', e.target.value)} className="input input-bordered w-full" /></div></div>
+                                        <div className="form-control"><label className="label"><span className="label-text">Max:</span></label><div className="input-group"><span>%</span><input type="number" value={setting.maxHumidity} onChange={(e) => handleValueChange(setting.humidorId, 'maxHumidity', e.target.value)} className="input input-bordered w-full" /></div></div>
                                     </div>
                                 )}
-                                <div className="border-t border-gray-700"></div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-300">Temperature Alert</span>
-                                    <button onClick={() => handleToggle(setting.humidorId, 'tempAlert')} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${setting.tempAlert ? 'bg-amber-500' : 'bg-gray-600'}`}><span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${setting.tempAlert ? 'translate-x-6' : 'translate-x-1'}`} /></button>
+                                <div className="divider"></div>
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text">Temperature Alert</span>
+                                        <input type="checkbox" className="toggle toggle-primary" checked={setting.tempAlert} onChange={() => handleToggle(setting.humidorId, 'tempAlert')} />
+                                    </label>
                                 </div>
                                 {setting.tempAlert && (
-                                    <div className="grid grid-cols-2 gap-4 pl-4 border-l-2 border-gray-700 ml-2">
-                                        <div className="flex items-center space-x-2"><label className="text-sm text-gray-400">Min:</label><input type="number" value={setting.minTemp} onChange={(e) => handleValueChange(setting.humidorId, 'minTemp', e.target.value)} className="w-16 bg-gray-700 text-white text-center rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-500" /><span className="text-gray-400">°F</span></div>
-                                        <div className="flex items-center space-x-2"><label className="text-sm text-gray-400">Max:</label><input type="number" value={setting.maxTemp} onChange={(e) => handleValueChange(setting.humidorId, 'maxTemp', e.target.value)} className="w-16 bg-gray-700 text-white text-center rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-500" /><span className="text-gray-400">°F</span></div>
+                                    <div className="grid grid-cols-2 gap-4 pl-4 border-l-2 border-base-300 ml-2">
+                                        <div className="form-control"><label className="label"><span className="label-text">Min:</span></label><div className="input-group"><span>°F</span><input type="number" value={setting.minTemp} onChange={(e) => handleValueChange(setting.humidorId, 'minTemp', e.target.value)} className="input input-bordered w-full" /></div></div>
+                                        <div className="form-control"><label className="label"><span className="label-text">Max:</span></label><div className="input-group"><span>°F</span><input type="number" value={setting.maxTemp} onChange={(e) => handleValueChange(setting.humidorId, 'maxTemp', e.target.value)} className="input input-bordered w-full" /></div></div>
                                     </div>
                                 )}
                             </div>
                         </div>
                     ))
                 ) : (
-                    
-                        <div
-                            id="pnlRoxysCorner_NoHumidors"
-                            className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
-                                                <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
+                    <div
+                        id="pnlRoxysCorner_NoHumidors"
+                        className="card bg-primary/10 border border-primary/20 text-primary-content p-6 text-left">
+                        <h3 className="card-title flex items-center justify-left mb-3">
+                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>
-                            <p id="roxyMessage"
-                                className="text-amber-200 text-sm mb-4">
+                        <p id="roxyMessage"
+                            className="text-sm mb-4">
                             Ruff! You need to add a humidor before you can set up any alerts. Let's get your first one set up!
                         </p>
-                        <button
-                            onClick={() => navigate('AddHumidor')}
-                            className="flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors w-full"
-                        >
-                            <Plus className="w-4 h-4" /> Add a Humidor
-                        </button>
+                        <div className="card-actions">
+                            <button
+                                onClick={() => navigate('AddHumidor')}
+                                className="btn btn-primary w-full"
+                            >
+                                <Plus className="w-4 h-4" /> Add a Humidor
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>

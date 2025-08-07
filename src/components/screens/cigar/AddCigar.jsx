@@ -63,7 +63,7 @@
  * @param {Object} props.theme - Theme object containing styling classes and colors
  * 
  * @returns {JSX.Element} Rendered AddCigar form component
- * 
+ *
  * @example
  * <AddCigar 
  *   navigate={navigate}
@@ -71,7 +71,6 @@
  *   appId="myApp"
  *   userId="user123"
  *   humidorId="humidor456"
- *   theme={darkTheme}
  * />
  * 
  * @author Shawn Miller
@@ -181,8 +180,8 @@ const detectPuro = (wrapper, binder, filler) => {
     return { isPuro: false, country: null };
 };
 
-const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }) => {
-    console.log('AddCigar component initialized with props:', { appId, userId, humidorId, theme: theme?.name || 'unknown' });
+const AddCigar = ({ navigate, db, appId, userId, humidorId, cigars = [] }) => {
+    console.log('AddCigar component initialized with props:', { appId, userId, humidorId });
 
     const { subscriptionService } = useSubscription();
     const { canAddCigar, isAtLimit, remainingSlots } = useCigarLimits(cigars);
@@ -501,14 +500,10 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 
             <div id="pnlSmartImageModal" className="relative">
-
-
-
                 <div className="flex justify-center items-center pt-6 pb-2">
-                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-700 shadow-lg bg-gray-800">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-base-300">
                         <SmartImageModal
                             itemName={formData.name}
-                            theme={theme}
                             currentImage={formData.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'Cigar+Image'}`}
                             currentPosition={formData.imagePosition || { x: 50, y: 50 }}
                             onImageAccept={(img, pos) => setFormData(prev => ({
@@ -520,16 +515,13 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                     </div>
                 </div>
 
-
-
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div> */}
                 <div className="absolute top-4 left-4">
-                    <button onClick={() => navigate('MyHumidor', { humidorId })} className="p-2 -ml-2 mr-2 bg-black/50 rounded-full">
-                        <ChevronLeft className={`w-7 h-7 ${theme.text}`} />
+                    <button onClick={() => navigate('MyHumidor', { humidorId })} className="btn btn-circle btn-ghost">
+                        <ChevronLeft className="w-7 h-7" />
                     </button>
                 </div>
                 <div className="absolute bottom-0 p-4">
-                    <h2 className={`text-3xl font-bold ${theme.text}`}>Add Cigar</h2>
+                    <h2 className="text-3xl font-bold">Add Cigar</h2>
                 </div>
             </div>
 
@@ -542,24 +534,24 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                     onUpgrade={() => window.open('https://play.google.com/store/account/subscriptions', '_blank')}
                 />
 
-                <div id="pnlGeminiAutoFill" className={`${theme.roxyBg} p-4 rounded-md space-y-4`}>
+                <div id="pnlGeminiAutoFill" className="card bg-base-200 p-4 space-y-4">
                     {/* Name / Line */}
-                    <InputField name="name" label="Name / Line" placeholder="e.g., 1964 Anniversary" value={formData.name} onChange={handleInputChange} theme={theme} />
+                    <InputField name="name" label="Name / Line" placeholder="e.g., 1964 Anniversary" value={formData.name} onChange={handleInputChange} />
                     {/* Auto-fill Button */}
-                    <button onClick={handleAutofill} disabled={isAutofilling} className="w-full flex items-center justify-center gap-2 bg-purple-600/20 border border-purple-500 text-purple-300 font-bold py-2 rounded-lg hover:bg-purple-600/30 transition-colors disabled:opacity-50">
+                    <button onClick={handleAutofill} disabled={isAutofilling} className="btn btn-accent btn-outline w-full">
                         {isAutofilling ? <LoaderCircle className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                         {isAutofilling ? 'Thinking...' : '✨ Auto-fill Details'}
                     </button>
                 </div>
 
                 {/* Brand */}
-                <InputField name="brand" label="Brand" placeholder="e.g., Padrón" value={formData.brand} onChange={handleInputChange} theme={theme} />
+                <InputField name="brand" label="Brand" placeholder="e.g., Padrón" value={formData.brand} onChange={handleInputChange} />
 
                 {/* Overview / Short Description */}
-                <InputField name="shortDescription" label="Overview" placeholder="Brief overview of the cigar..." value={formData.shortDescription} onChange={handleInputChange} theme={theme} />
+                <InputField name="shortDescription" label="Overview" placeholder="Brief overview of the cigar..." value={formData.shortDescription} onChange={handleInputChange} />
 
                 {/* Description */}
-                <TextAreaField name="description" label="Description" placeholder="Notes on this cigar..." value={formData.description} onChange={handleInputChange} theme={theme} />
+                <TextAreaField name="description" label="Description" placeholder="Notes on this cigar..." value={formData.description} onChange={handleInputChange} />
 
 
 
@@ -571,7 +563,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         value={formData.shape}
                         onChange={handleInputChange}
                         suggestions={Object.keys(commonCigarDimensions)}
-                        theme={theme}
                     />
                     <InputField
                         name="size"
@@ -579,8 +570,7 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         placeholder="e.g., 5.5x50"
                         value={formData.size}
                         onChange={handleInputChange}
-                        theme={theme}
-                        className={isSizeFlashing ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={isSizeFlashing ? 'ring-2 ring-primary animate-pulse' : ''}
                         inputRef={sizeInputRef}
                     />
                 </div>
@@ -593,8 +583,7 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         type="number"
                         value={formData.length_inches}
                         onChange={handleInputChange}
-                        theme={theme}
-                        className={isLengthFlashing ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={isLengthFlashing ? 'ring-2 ring-primary animate-pulse' : ''}
                         inputRef={lengthInputRef}
                         suggestions={cigarLengths}
                     />
@@ -605,8 +594,7 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         type="number"
                         value={formData.ring_gauge}
                         onChange={handleInputChange}
-                        theme={theme}
-                        className={isGaugeFlashing ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={isGaugeFlashing ? 'ring-2 ring-primary animate-pulse' : ''}
                         inputRef={gaugeInputRef}
                         suggestions={cigarRingGauges}
                     />
@@ -621,7 +609,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         value={formData.wrapper}
                         onChange={handleInputChange}
                         suggestions={cigarWrapperColors}
-                        theme={theme}
                     />
                     <AutoCompleteInputField
                         name="binder"
@@ -630,7 +617,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         value={formData.binder}
                         onChange={handleInputChange}
                         suggestions={cigarBinderTypes}
-                        theme={theme}
                     />
                 </div>
 
@@ -643,7 +629,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         value={formData.filler}
                         onChange={handleInputChange}
                         suggestions={cigarFillerTypes}
-                        theme={theme}
                     />
                     <AutoCompleteInputField
                         name="country"
@@ -652,7 +637,6 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         value={formData.country}
                         onChange={handleInputChange}
                         suggestions={cigarCountryOfOrigin}
-                        theme={theme}
                     />
                 </div>
 
@@ -664,54 +648,39 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
 
                 {/* Puro Detection Section */}
                 {(formData.wrapper && formData.binder && formData.filler) && (
-                    <div className={`p-3 rounded-lg border ${formData.isPuro
-                        ? 'bg-green-900/20 border-green-800'
-                        : `${theme.roxyBg} ${theme.roxyBorder}`
-                        }`}>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
+                    <div className={`card p-3 ${formData.isPuro ? 'bg-success/20 border-success/50' : 'bg-base-200'}`}>
+                        <div className="form-control">
+                            <label className="label cursor-pointer">
+                                <span className={`label-text font-medium flex items-center space-x-2 ${formData.isPuro ? 'text-success' : ''}`}>
+                                    <Award className="w-4 h-4" />
+                                    <span>This is a Puro</span>
+                                </span>
                                 <input
                                     type="checkbox"
                                     id="isPuro"
                                     checked={formData.isPuro || false}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, isPuro: e.target.checked }))}
-                                    className="w-4 h-4 text-amber-600 bg-gray-700 border-gray-600 rounded focus:ring-amber-500"
+                                    onChange={(e) => setFormData(prev => ({ ...prev, isPuro: e.target.checked }))
+                                    }
+                                    className="toggle toggle-success"
                                 />
-                                <label htmlFor="isPuro" className={`text-sm font-medium flex items-center space-x-2 ${formData.isPuro ? 'text-green-300' : 'text-amber-300'
-                                    }`}>
-                                    <Award className="w-4 h-4" />
-                                    <span>This is a Puro</span>
-                                </label>
-                            </div>
-                            {formData.isPuro && puroDetected && (
-                                <span className="text-xs bg-green-600/20 text-green-300 px-2 py-1 rounded capitalize">
-                                    {puroDetected} Puro
-                                </span>
-                            )}
+                            </label>
                         </div>
                         {formData.isPuro && puroDetected && (
-                            <p className="text-xs text-green-400 mt-2">
-                                All tobacco components from {puroDetected.charAt(0).toUpperCase() + puroDetected.slice(1)}
-                            </p>
-                        )}
-                        {!formData.isPuro && (formData.wrapper || formData.binder || formData.filler) && (
-                            <p className="text-xs text-amber-400 mt-2">
-                                Mixed origin tobacco blend
-                            </p>
+                            <div className="badge badge-success badge-outline mt-2">
+                                {puroDetected} Puro
+                            </div>
                         )}
                     </div>
                 )}
 
                 {/* Puro Detection Notification */}
                 {showPuroNotification && (
-                    <div className="bg-green-900/30 border border-green-700 rounded-lg p-3 animate-pulse">
-                        <div className="flex items-center space-x-2">
-                            <Award className="w-5 h-5 text-green-400" />
-                            <span className="text-green-300 font-medium">Puro Detected!</span>
+                    <div className="alert alert-success animate-pulse">
+                        <Award className="w-5 h-5" />
+                        <div>
+                            <h3 className="font-bold">Puro Detected!</h3>
+                            <div className="text-xs">All tobacco from {puroDetected} - automatically marked as puro</div>
                         </div>
-                        <p className="text-xs text-green-400 mt-1">
-                            All tobacco from {puroDetected} - automatically marked as puro
-                        </p>
                     </div>
                 )}
 
@@ -724,21 +693,21 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                         value={formData.strength}
                         onChange={handleInputChange}
                         suggestions={strengthOptions}
-                        theme={theme}
                     />
-                    {/* TODO: Add to Gimini lookup as MSRP price */}
-                    <InputField name="price" label="Price" placeholder="e.g., 23.50" type="number" value={formData.price} onChange={handleInputChange} theme={theme} />
+                    <InputField name="price" label="Price" placeholder="e.g., 23.50" type="number" value={formData.price} onChange={handleInputChange} />
                 </div>
 
                 {/* Rating and Date Added */}
                 <div id="pnlRatingAndDate" className="grid grid-cols-2 gap-3">
-                    <InputField name="rating" label="Rating" placeholder="e.g., 94" type="number" value={formData.rating} onChange={handleInputChange} theme={theme} />
-                    <InputField name="dateAdded" Tooltip="Date Added to Humidor" label="Date Added" type="date" value={formData.dateAdded} onChange={handleInputChange} theme={theme} />
+                    <InputField name="rating" label="Rating" placeholder="e.g., 94" type="number" value={formData.rating} onChange={handleInputChange} />
+                    <InputField name="dateAdded" Tooltip="Date Added to Humidor" label="Date Added" type="date" value={formData.dateAdded} onChange={handleInputChange} />
                 </div>
 
                 {/* New User Rating section: */}
-                <div id="pnlUserRating" className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">My Rating</label>
+                <div id="pnlUserRating" className="form-control">
+                    <label className="label">
+                        <span className="label-text">My Rating</span>
+                    </label>
                     <StarRating
                         rating={formData.userRating || 0}
                         onRatingChange={(rating) => setFormData(prev => ({ ...prev, userRating: rating }))}
@@ -746,34 +715,34 @@ const AddCigar = ({ navigate, db, appId, userId, humidorId, theme, cigars = [] }
                 </div>
 
                 {/* Flavor Notes */}
-                <div id="pnlFlavorNotes" className="bg-gray-800/50 p-4 rounded-md">
+                <div id="pnlFlavorNotes" className="card bg-base-200 p-4">
                     <div className="flex justify-between items-center mb-3">
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center"><Tag className="w-5 h-5 mr-3 text-amber-400" /> Flavor Notes</h3>
-                        <button type="button" onClick={() => setIsFlavorModalOpen(true)} className="text-gray-400 hover:text-amber-400 p-1"><Edit className="w-4 h-4" /></button>
+                        <h3 className="card-title text-primary flex items-center"><Tag className="w-5 h-5 mr-3" /> Flavor Notes</h3>
+                        <button type="button" onClick={() => setIsFlavorModalOpen(true)} className="btn btn-ghost btn-circle btn-sm"><Edit className="w-4 h-4" /></button>
                     </div>
                     <div className="flex flex-wrap gap-2">
                         {formData.flavorNotes.length > 0 ? (
-                            formData.flavorNotes.map(note => (<span key={note} className={`text-xs font-semibold px-3 py-1 rounded-full ${getFlavorTagColor(note)}`}>{note}</span>))
+                            formData.flavorNotes.map(note => (<div key={note} className={`badge ${getFlavorTagColor(note)}`}>{note}</div>))
                         ) : (
-                            <p className="text-sm text-gray-500">No notes selected. Click the edit icon to add some!</p>
+                            <p className="text-sm text-base-content/70">No notes selected. Click the edit icon to add some!</p>
                         )}
                     </div>
                 </div>
-                {/* QuantityControl Component */}
                 <div id="pnlQuantity" className="flex flex-col items-center py-4">
-                    <label className={`text-sm font-medium ${theme.subtleText} mb-2`}>Quantity</label>
-                    <QuantityControl quantity={formData.quantity} onChange={handleQuantityChange} theme={theme} />
+                    <label className="label">
+                        <span className="label-text">Quantity</span>
+                    </label>
+                    <QuantityControl quantity={formData.quantity} onChange={handleQuantityChange} />
                 </div>
             </div>
-            {/* Save/Cancel Buttons */}
             <div id="pnlSaveCancelButtons" className="pt-4 flex space-x-4">
                 <button
                     onClick={() => navigate('MyHumidor', { humidorId })}
-                    className="btn btn-soft btn-secondary">
+                    className="btn btn-secondary w-1/2">
                     Cancel</button>
                 <button
                     onClick={handleSave}
-                    className="btn btn-soft btn-primary">
+                    className="btn btn-primary w-1/2">
                     Save Cigar</button>
             </div>
         </div>

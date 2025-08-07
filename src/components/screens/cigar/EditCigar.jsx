@@ -51,11 +51,10 @@ import { getFlavorTagColor } from '../../../utils/colorUtils';
 import { callGeminiAPI } from '../../../services/geminiService';
 import StarRating from '../../UI/StarRating';
 
-
 // Utils
 import { hasValidGeminiKey } from '../../../utils/geminiKeyUtils';
 
-const EditCigar = ({ navigate, db, appId, userId, cigar, theme }) => {
+const EditCigar = ({ navigate, db, appId, userId, cigar }) => {
     // Firebase auth state
     const [user, authLoading] = useAuthState(auth);
 
@@ -290,14 +289,10 @@ Do not include any text or markdown formatting outside of the JSON object.`;
             {isFlavorModalOpen && <FlavorNotesModal cigar={{ flavorNotes: formData.flavorNotes }} db={db} appId={appId} userId={userId} onClose={() => setIsFlavorModalOpen(false)} setSelectedNotes={handleFlavorNotesUpdate} />}
 
             <div className="relative">
-
-
-
                 <div className="flex justify-center items-center pt-6 pb-2">
-                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-700 shadow-lg bg-gray-800">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-base-300">
                         <SmartImageModal
                             itemName={formData.name}
-                            theme={theme}
                             currentImage={formData.image || `https://placehold.co/400x600/5a3825/ffffff?font=playfair-display&text=${formData.name.replace(/\s/g, '+') || 'Cigar+Image'}`}
                             currentPosition={formData.imagePosition || { x: 50, y: 50 }}
                             onImageAccept={(img, pos) => setFormData(prev => ({
@@ -309,38 +304,34 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                     </div>
                 </div>
 
-
-
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent pointer-events-none"></div>
                 <div className="absolute top-4 left-4">
-                    <button onClick={() => navigate('CigarDetail', { cigarId: cigar.id })} className="p-2 -ml-2 mr-2 bg-black/50 rounded-full">
-                        <ChevronLeft className="w-7 h-7 text-white" />
+                    <button onClick={() => navigate('CigarDetail', { cigarId: cigar.id })} className="btn btn-circle btn-ghost">
+                        <ChevronLeft className="w-7 h-7" />
                     </button>
                 </div>
                 <div id="pnlEditCigarTitle" className="absolute bottom-0 p-4">
-                    <h1 className="text-3xl font-bold text-white">Edit Cigar</h1>
+                    <h1 className="text-3xl font-bold">Edit Cigar</h1>
                 </div>
             </div>
 
             {/* Cigar Name and Details */}
             <div id="pnlCigarNameAndDetails" className="p-4 space-y-4">
                 {/* Brand */}
-                <InputField name="brand" label="Brand" placeholder="e.g., Padrón" value={formData.brand} onChange={handleInputChange} theme={theme} className={flashingFields.brand ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+                <InputField name="brand" label="Brand" placeholder="e.g., Padrón" value={formData.brand} onChange={handleInputChange} className={flashingFields.brand ? 'ring-2 ring-primary animate-pulse' : ''} />
                 {/* Name / Line */}
-                <InputField name="name" label="Name / Line" placeholder="e.g., 1964 Anniversary" value={formData.name} onChange={handleInputChange} theme={theme} className={flashingFields.name ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
-                {/* Auto-fill Button - Only show when user has valid Gemini API key */}
+                <InputField name="name" label="Name / Line" placeholder="e.g., 1964 Anniversary" value={formData.name} onChange={handleInputChange} className={flashingFields.name ? 'ring-2 ring-primary animate-pulse' : ''} />
+                {/* Auto-fill Button */}
                 {hasGeminiKey && !keyCheckLoading && (
-                    <button onClick={handleAutofill} disabled={isAutofilling} className="w-full flex items-center justify-center gap-2 bg-purple-600/20 border border-purple-500 text-purple-300 font-bold py-2 rounded-lg hover:bg-purple-600/30 transition-colors disabled:opacity-50">
-                        {isAutofilling ? <LoaderCircle className="w-5 h-5 animate-pulse" /> : <Sparkles className="w-5 h-5" />}
+                    <button onClick={handleAutofill} disabled={isAutofilling} className="btn btn-accent btn-outline w-full">
+                        {isAutofilling ? <LoaderCircle className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                         {isAutofilling ? 'Thinking...' : '✨ Auto-fill Details'}
                     </button>
                 )}
-                {/* Show message when user doesn't have API key */}
                 {!hasGeminiKey && !keyCheckLoading && user && (
-                    <div className="w-full p-3 bg-purple-900/20 border border-purple-600/50 rounded-lg">
-                        <p className="text-purple-200 text-sm text-center">
-                            💡 Add your Gemini API key in Settings to enable AI-powered auto-fill!
-                        </p>
+                    <div className="alert alert-info">
+                        <Sparkles className="w-5 h-5" />
+                        <span>Add your Gemini API key in Settings to enable AI-powered auto-fill!</span>
                     </div>
                 )}
 
@@ -352,9 +343,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                     value={formData.shortDescription}
                     onChange={handleInputChange}
                     rows={4}
-                    className={flashingFields.shortDescription ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
-
-
+                    className={flashingFields.shortDescription ? 'ring-2 ring-primary animate-pulse' : ''} />
 
                 {/* Description */}
                 <TextAreaField
@@ -364,9 +353,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                     value={formData.description}
                     onChange={handleInputChange}
                     rows={5}
-                    className={flashingFields.description ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
-
-
+                    className={flashingFields.description ? 'ring-2 ring-primary animate-pulse' : ''} />
 
                 {/* Shape and Size */}
                 <div id="pnlShapeAndSize" className="grid grid-cols-2 gap-3">
@@ -378,11 +365,10 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         value={formData.shape}
                         onChange={handleInputChange}
                         suggestions={cigarShapes}
-                        className={flashingFields.shape ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={flashingFields.shape ? 'ring-2 ring-primary animate-pulse' : ''}
                     />
-                    <InputField name="size" label="Size" placeholder="e.g., 5.5x50" value={formData.size} onChange={handleInputChange} theme={theme} className={flashingFields.size ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+                    <InputField name="size" label="Size" placeholder="e.g., 5.5x50" value={formData.size} onChange={handleInputChange} className={flashingFields.size ? 'ring-2 ring-primary animate-pulse' : ''} />
                 </div>
-
 
                 {/* Length and Ring Gauge */}
                 <div id="pnlLengthAndRing" className="grid grid-cols-2 gap-3">
@@ -393,8 +379,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         type="number"
                         value={formData.length_inches}
                         onChange={handleInputChange}
-                        theme={theme}
-                        className={`${isLengthFlashing ? 'ring-2 ring-amber-400 animate-pulse' : ''} ${flashingFields.length_inches ? 'ring-2 ring-amber-400 animate-pulse' : ''}`}
+                        className={`${isLengthFlashing ? 'ring-2 ring-primary animate-pulse' : ''} ${flashingFields.length_inches ? 'ring-2 ring-primary animate-pulse' : ''}`}
                         inputRef={lengthInputRef}
                         suggestions={cigarLengths}
                     />
@@ -405,8 +390,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         type="number"
                         value={formData.ring_gauge}
                         onChange={handleInputChange}
-                        theme={theme}
-                        className={`${isGaugeFlashing ? 'ring-2 ring-amber-400 animate-pulse' : ''} ${flashingFields.ring_gauge ? 'ring-2 ring-amber-400 animate-pulse' : ''}`}
+                        className={`${isGaugeFlashing ? 'ring-2 ring-primary animate-pulse' : ''} ${flashingFields.ring_gauge ? 'ring-2 ring-primary animate-pulse' : ''}`}
                         inputRef={gaugeInputRef}
                         suggestions={cigarRingGauges}
                     />
@@ -420,8 +404,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         value={formData.wrapper}
                         onChange={handleInputChange}
                         suggestions={cigarWrapperColors}
-                        theme={theme}
-                        className={flashingFields.wrapper ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={flashingFields.wrapper ? 'ring-2 ring-primary animate-pulse' : ''}
                     />
                     <AutoCompleteInputField
                         name="binder"
@@ -430,8 +413,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         value={formData.binder}
                         onChange={handleInputChange}
                         suggestions={cigarBinderTypes}
-                        theme={theme}
-                        className={flashingFields.binder ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={flashingFields.binder ? 'ring-2 ring-primary animate-pulse' : ''}
                     />
                 </div>
                 {/* Filler and Country */}
@@ -443,8 +425,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         value={formData.filler}
                         onChange={handleInputChange}
                         suggestions={cigarFillerTypes}
-                        theme={theme}
-                        className={flashingFields.filler ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={flashingFields.filler ? 'ring-2 ring-primary animate-pulse' : ''}
                     />
                     <AutoCompleteInputField
                         name="country"
@@ -453,28 +434,26 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         value={formData.country}
                         onChange={handleInputChange}
                         suggestions={cigarCountryOfOrigin}
-                        theme={theme}
-                        className={flashingFields.country ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={flashingFields.country ? 'ring-2 ring-primary animate-pulse' : ''}
                     />
                 </div>
 
                 <div id="pnlContinent" className="grid grid-cols-1 gap-3">
                     {/* continent */}
                     <InputField name="continent" label="Continent" placeholder="e.g., North America" value={formData.continent} onChange={handleInputChange} />
-
                 </div>
 
                 {/* Profile and Price */}
                 <div id="pnlProfileAndPrice" className="grid grid-cols-2 gap-3">
                     <div className="relative">
-                        <InputField name="strength" label="Strength" placeholder="e.g., Full" value={formData.strength} onChange={handleInputChange} theme={theme} className={flashingFields.strength ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+                        <InputField name="strength" label="Strength" placeholder="e.g., Full" value={formData.strength} onChange={handleInputChange} className={flashingFields.strength ? 'ring-2 ring-primary animate-pulse' : ''} />
                         {strengthSuggestions.length > 0 && (
-                            <div className="absolute top-full left-0 right-0 bg-gray-700 border border-gray-600 rounded-b-xl mt-1 z-20 overflow-hidden">
-                                {strengthSuggestions.map(suggestion => (<div key={suggestion} onMouseDown={() => handleSuggestionClick(suggestion)} className="w-full text-left px-4 py-3 hover:bg-gray-600 transition-colors cursor-pointer">{suggestion}</div>))}
-                            </div>
+                            <ul className="absolute menu bg-base-200 rounded-box mt-1 z-20 w-full">
+                                {strengthSuggestions.map(suggestion => (<li key={suggestion} onMouseDown={() => handleSuggestionClick(suggestion)}><a>{suggestion}</a></li>))}
+                            </ul>
                         )}
                     </div>
-                    <InputField name="price" label="Price Paid" placeholder="e.g., 15.50" type="number" value={formData.price} onChange={handleInputChange} onBlur={handlePriceBlur} theme={theme} className={flashingFields.price ? 'ring-2 ring-amber-400 animate-pulse' : ''} />
+                    <InputField name="price" label="Price Paid" placeholder="e.g., 15.50" type="number" value={formData.price} onChange={handleInputChange} onBlur={handlePriceBlur} className={flashingFields.price ? 'ring-2 ring-primary animate-pulse' : ''} />
                 </div>
                 {/* Rating and Date Added */}
                 <div id="pnlRatingAndDate" className="grid grid-cols-2 gap-3">
@@ -485,8 +464,7 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         type="number"
                         value={formData.rating}
                         onChange={handleInputChange}
-                        theme={theme}
-                        className={flashingFields.rating ? 'ring-2 ring-amber-400 animate-pulse' : ''}
+                        className={flashingFields.rating ? 'ring-2 ring-primary animate-pulse' : ''}
                     />
                     <InputField
                         name="dateAdded"
@@ -494,12 +472,13 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                         type="date"
                         value={formData.dateAdded}
                         onChange={handleInputChange}
-                        theme={theme}
                     />
                 </div>
                 {/* User Rating */}
-                <div id="pnlUserRating" className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">My Rating</label>
+                <div id="pnlUserRating" className="form-control">
+                    <label className="label">
+                        <span className="label-text">My Rating</span>
+                    </label>
                     <StarRating
                         rating={formData.userRating || 0}
                         onRatingChange={(rating) => setFormData(prev => ({ ...prev, userRating: rating }))}
@@ -510,22 +489,23 @@ Do not include any text or markdown formatting outside of the JSON object.`;
                 <FlavorNotesPanel
                     flavorNotes={formData.flavorNotes}
                     onEditClick={() => setIsFlavorModalOpen(true)}
-                    theme={theme}
                 />
                 {/* QuantityControl Component */}
                 <div id="pnlQuantity" className="flex flex-col items-center py-4">
-                    <label className={`text-sm font-medium ${theme.subtleText} mb-2`}>Quantity</label>
-                    <QuantityControl quantity={formData.quantity} onChange={handleQuantityChange} theme={theme} />
+                    <label className="label">
+                        <span className="label-text">Quantity</span>
+                    </label>
+                    <QuantityControl quantity={formData.quantity} onChange={handleQuantityChange} />
                 </div>
                 {/* Save/Cancel Buttons */}
                 <div id="pnlSaveCancelButtons" className="pt-4 flex space-x-4">
                     <button
                         onClick={() => navigate('CigarDetail', { cigarId: cigar.id })}
-                        className="btn btn-soft btn-secondary">
+                        className="btn btn-secondary w-1/2">
                         Cancel</button>
                     <button
                         onClick={handleSave}
-                        className="btn btn-soft btn-primary">
+                        className="btn btn-primary w-1/2">
                         Save Changes</button>
                 </div>
             </div>

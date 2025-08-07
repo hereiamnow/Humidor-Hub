@@ -28,7 +28,7 @@ import GridJournalEntryCard from '../Journal/GridJournalEntryCard';
 import PageHeader from '../UI/PageHeader';
 
 
-const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId }) => {
+const CigarJournalScreen = ({ navigate, journalEntries, db, appId, userId }) => {
     const [entryToDelete, setEntryToDelete] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -79,7 +79,6 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 icon={BookText}
                 title="Cigar Journal"
                 subtitle="Track your smoking experiences and tasting notes"
-                theme={theme}
             />
 
 
@@ -113,16 +112,16 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                     <button
                         id="btnGrid"
                         onClick={() => handleViewModeChange('grid')}
-                        className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
-                            ? 'bg-amber-500 text-white border-amber-400'
-                            : `${theme.primary} hover:bg-gray-700`
+                        className={`btn btn-ghost btn-circle transition-colors ${viewMode === 'grid'
+                            ? 'btn-active'
+                            : ''
                             }`}
                     >
                         <LayoutGrid className="w-5 h-5" />
                     </button>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                         Grid View
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                     </div>{/* End pnlLayoutGrid */}
 
 
@@ -133,16 +132,16 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                         className="relative group">
                         <button
                             onClick={() => handleViewModeChange('list')}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
-                                ? 'bg-amber-500 text-white border-amber-400'
-                                : `${theme.primary} hover:bg-gray-700`
+                            className={`btn btn-ghost btn-circle transition-colors ${viewMode === 'list'
+                                ? 'btn-active'
+                                : ''
                                 }`}
                         >
                             <List className="w-5 h-5" />
                         </button>
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                             List View
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                         </div>
                     </div>
 
@@ -156,14 +155,14 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                     className="relative group">
                     <button
                         onClick={handleAddJournalEntry}
-                        className="p-3 bg-amber-500 border border-amber-400 rounded-full text-white hover:bg-amber-600 transition-colors"
+                        className="btn btn-primary btn-circle"
                         aria-label="Add Journal Entry"
                     >
                         <Plus className="w-5 h-5" />
                     </button>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                         Add Entry
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                     </div>
                 </div>
             </div>
@@ -186,7 +185,6 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                                         setEntryToDelete(entry);
                                         setIsDeleteModalOpen(true);
                                     }}
-                                    theme={theme}
                                 />
                             ) : (
                                 <JournalEntryCard
@@ -197,7 +195,6 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                                         setEntryToDelete(entry);
                                         setIsDeleteModalOpen(true);
                                     }}
-                                    theme={theme}
                                 />
                             )
                         ))}
@@ -205,14 +202,14 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 ) : (
                     // Roxy's Corner Message: No entries message
                     <div id="pnlRoxysCorner_NoEntries"
-                        className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
+                        className="bg-secondary/20 border border-secondary rounded-md p-6 text-left">
 
-                        <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                        <h3 className="font-bold text-secondary-content text-lg flex items-center justify-left mb-3">
                             <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </h3>
 
                         <p id="roxyMessage"
-                            className="text-amber-200 text-sm mb-4">
+                            className="text-secondary-content/80 text-sm mb-4">
                             Your Journal is Empty. You haven't logged any cigar experiences yet.
                             Roxy suggests you start by adding a humidor and cigars to your collection.
                         </p>
@@ -222,31 +219,24 @@ const CigarJournalScreen = ({ navigate, journalEntries, theme, db, appId, userId
                 {/* Delete Confirmation Modal */}
                 {isDeleteModalOpen && (
                     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[100]" onClick={() => setIsDeleteModalOpen(false)}>
-                        <div className="bg-gray-800 rounded-2xl p-6 w-full max-w-sm flex flex-col" onClick={e => e.stopPropagation()}>
-                            <div className="flex justify-between items-center mb-2">
-                                <h3 className="text-xl font-bold text-red-400 flex items-center">
-                                    <Trash2 className="w-5 h-5 mr-2" /> Delete Journal Entry
-                                </h3>
-                                <button onClick={() => setIsDeleteModalOpen(false)} className="text-gray-400 hover:text-white">&times;</button>
-                            </div>
-                            <p className="text-gray-300 mb-4">
+                        <div className="modal-box" onClick={e => e.stopPropagation()}>
+                            <h3 className="font-bold text-lg text-error flex items-center"><Trash2 className="w-5 h-5 mr-2" />Delete Journal Entry</h3>
+                            <p className="py-4">
                                 Are you sure you want to delete this journal entry? This action cannot be undone.
                             </p>
-                            <div className="flex justify-end gap-3 pt-4 mt-4 border-t border-gray-700">
+                            <div className="modal-action">
                                 <button
-                                    type="button"
                                     onClick={() => setIsDeleteModalOpen(false)}
-                                    className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors"
+                                    className="btn"
                                 >
                                     Cancel
                                 </button>
                                 <button
-                                    type="button"
                                     onClick={async () => {
                                         await handleDelete();
                                         setIsDeleteModalOpen(false);
                                     }}
-                                    className="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+                                    className="btn btn-error"
                                 >
                                     Confirm Delete
                                 </button>

@@ -39,12 +39,11 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
  * @param {Object} props - Component props
  * @param {Array} props.cigars - Array of cigar objects with country and quantity properties
  * @param {Function} props.navigate - Navigation function to route to other screens
- * @param {Object} props.theme - Theme object containing CSS classes for styling
  * @param {boolean} props.isCollapsed - Whether the drawer is collapsed
  * @param {Function} props.onToggle - Function to toggle drawer collapse state
  * @returns {JSX.Element} Interactive world map component
  */
-const InteractiveWorldMap = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
+const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
     /** 
      * Memoized calculation of cigar quantities by country.
      * Creates a map of country names to total cigar counts for visualization.
@@ -134,182 +133,172 @@ const InteractiveWorldMap = ({ cigars, navigate, theme, isCollapsed, onToggle })
         }
     };
 
-    /** 
-     * Color scheme for map visualization with theme support and fallbacks.
-     * - highlighted: Countries with cigars in inventory
-     * - cigarCountry: Known cigar-producing countries without inventory
-     * - other: All other countries
-     * - hover: Hover state color
-     * - border: Country border color
-     */
-    const mapColors = {
-        highlighted: theme.mapHighlightedCountry || "#fbbf24",
-        cigarCountry: theme.mapCigarCountry || "#fde68a",
-        other: theme.mapOtherCountry || "#f3f4f6",
-        hover: theme.mapHover || "#f59e0b",
-        border: theme.mapBorder || "#d1d5db"
-    };
-
     return (
         <div id="pnlBrowseWorldMap" tabIndex={0} className="collapse collapse-plus bg-base-100 border-base-300 border">
 
-           
+
             <div className="collapse-title font-semibold">
-                    World Map
-                </div>
-         
+                World Map
+            </div>
 
-         
+
+
             <div className="collapse-content text-sm">
-                    <div className="w-full" style={{ minHeight: 300, position: "relative" }}>
-                        {/* Dismissible instructions overlay for first-time users */}
-                        {showInstructions && (
-                            <div className="absolute top-1 left-1 right-1 z-20">
-                                <div className={`${theme.card} border ${theme.borderColor} rounded-lg px-4 py-3 shadow-lg flex items-start justify-between gap-3`}>
-                                    <p className={`text-sm ${theme.text} flex-1`}>
-                                        Tap on a highlighted country to filter your collection by its origin.
-                                    </p>
-                                    <button
-                                        onClick={() => setShowInstructions(false)}
-                                        className={`${theme.subtleText} hover:${theme.text} transition-colors flex-shrink-0`}
-                                        title="Close instructions"
-                                    >
-                                        <X className="w-4 h-4" />
-                                    </button>
-                                </div>
+                <div className="w-full" style={{ minHeight: 300, position: "relative" }}>
+                    {/* Dismissible instructions overlay for first-time users */}
+                    {showInstructions && (
+                        <div className="absolute top-1 left-1 right-1 z-20">
+                            <div className="alert shadow-lg">
+                                <p className="text-sm flex-1">
+                                    Tap on a highlighted country to filter your collection by its origin.
+                                </p>
+                                <button
+                                    onClick={() => setShowInstructions(false)}
+                                    className="btn btn-ghost btn-sm btn-circle"
+                                    title="Close instructions"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
                             </div>
-                        )}
-                        {/* Country information tooltip - appears on hover */}
-                        {tooltip.show && (
-                            <div
-                                className={`absolute z-20 ${theme.card} border ${theme.borderColor} rounded-lg px-3 py-2 text-sm ${theme.text} shadow-lg pointer-events-none`}
-                                style={{
-                                    left: tooltip.x,
-                                    top: tooltip.y,
-                                    transform: 'translate(-50%, -100%)', // Center horizontally, position above cursor
-                                    marginTop: '-8px'
-                                }}
-                            >
-                                {tooltip.content}
-                            </div>
-                        )}
-                        {/* Map control panel - positioned in bottom right corner */}
-                        <div
-                            className="absolute bottom-2 right-2 flex items-center gap-2 z-10"
-                            style={{ pointerEvents: "auto" }} // Ensure controls are clickable over map
-                        >
-                            {/* Current zoom level display */}
-                            <div className={`px-3 py-2 ${theme.card} border ${theme.borderColor} rounded-lg ${theme.subtleText} text-sm font-medium shadow-lg`}>
-                                {zoom.toFixed(1)}x
-                            </div>
-                            {/* Zoom out button */}
-                            <button
-                                onClick={handleZoomOut}
-                                className={`p-3 ${theme.card} border ${theme.borderColor} rounded-full ${theme.primary} hover:bg-gray-700 transition-colors flex items-center justify-center shadow-lg`}
-                                title="Zoom Out"
-                            >
-                                <Minus className="w-5 h-5" />
-                            </button>
-                            {/* Zoom in button */}
-                            <button
-                                onClick={handleZoomIn}
-                                className={`p-3 ${theme.card} border ${theme.borderColor} rounded-full ${theme.primary} hover:bg-gray-700 transition-colors flex items-center justify-center shadow-lg`}
-                                title="Zoom In"
-                            >
-                                <Plus className="w-5 h-5" />
-                            </button>
-                            {/* Reset to initial view button */}
-                            <button
-                                onClick={handleReset}
-                                className={`p-3 ${theme.card} border ${theme.borderColor} rounded-full ${theme.primary} hover:bg-gray-700 transition-colors flex items-center justify-center shadow-lg`}
-                                title="Reset Map"
-                            >
-                                <RotateCcw className="w-5 h-5" />
-                            </button>
                         </div>
-                        {/* Main map component with responsive sizing */}
-                        <ComposableMap
-                            width={1000}
-                            height={350}
-                            style={{ width: "100%", height: "350px" }}
+                    )}
+                    {/* Country information tooltip - appears on hover */}
+                    {tooltip.show && (
+                        <div
+                            className="absolute z-20 card bg-base-200 rounded-lg px-3 py-2 text-sm shadow-lg pointer-events-none"
+                            style={{
+                                left: tooltip.x,
+                                top: tooltip.y,
+                                transform: 'translate(-50%, -100%)', // Center horizontally, position above cursor
+                                marginTop: '-8px'
+                            }}
                         >
-                            {/* Zoomable and pannable map container */}
-                            <ZoomableGroup
-                                center={center}
-                                zoom={zoom}
-                                onMoveEnd={handleMoveEnd}
-                                minZoom={5} // Minimum zoom to keep map readable
-                                maxZoom={8} // Maximum zoom for country detail
-                            >
-                                {/* Country geography data and rendering */}
-                                <Geographies geography={geoUrl}>
-                                    {({ geographies }) =>
-                                        geographies.map(geo => {
-                                            const countryName = geo.properties.name;
-                                            const isCigarCountry = cigarCountries.includes(countryName);
-                                            const hasCigars = countryCounts[countryName] > 0;
-
-                                            return (
-                                                <Geography
-                                                    key={geo.rsmKey}
-                                                    geography={geo}
-                                                    // Navigate to filtered view only for countries with cigars
-                                                    onClick={() => hasCigars && navigate('HumidorsScreen', { preFilterCountry: countryName })}
-                                                    // Show tooltip on hover for relevant countries
-                                                    onMouseEnter={(evt) => {
-                                                        const cigarCount = countryCounts[countryName] || 0;
-                                                        if (cigarCount > 0 || isCigarCountry) {
-                                                            // Calculate tooltip position relative to map container
-                                                            const containerRect = evt.target.closest('.w-full').getBoundingClientRect();
-                                                            setTooltip({
-                                                                show: true,
-                                                                content: cigarCount > 0
-                                                                    ? `${countryName}: ${cigarCount} cigar${cigarCount !== 1 ? 's' : ''}`
-                                                                    : `${countryName}: Cigar producing country`,
-                                                                x: evt.clientX - containerRect.left,
-                                                                y: evt.clientY - containerRect.top
-                                                            });
-                                                        }
-                                                    }}
-                                                    onMouseLeave={() => setTooltip({ show: false, content: '', x: 0, y: 0 })}
-                                                    style={{
-                                                        default: {
-                                                            // Color coding: highlighted > cigar country > other
-                                                            fill: hasCigars
-                                                                ? mapColors.highlighted
-                                                                : isCigarCountry
-                                                                    ? mapColors.cigarCountry
-                                                                    : mapColors.other,
-                                                            outline: "none",
-                                                            cursor: hasCigars ? "pointer" : "default",
-                                                            stroke: mapColors.border,
-                                                            strokeWidth: 0.5
-                                                        },
-                                                        hover: {
-                                                            // Only highlight countries with cigars on hover
-                                                            fill: hasCigars
-                                                                ? mapColors.hover
-                                                                : isCigarCountry
-                                                                    ? mapColors.cigarCountry
-                                                                    : mapColors.other,
-                                                            outline: "none",
-                                                            cursor: hasCigars ? "pointer" : "default"
-                                                        },
-                                                        pressed: {
-                                                            fill: mapColors.hover,
-                                                            outline: "none"
-                                                        }
-                                                    }}
-                                                />
-                                            );
-                                        })
-                                    }
-                                </Geographies>
-                            </ZoomableGroup>
-                        </ComposableMap>
+                            {tooltip.content}
+                        </div>
+                    )}
+                    {/* Map control panel - positioned in bottom right corner */}
+                    <div
+                        className="absolute bottom-2 right-2 flex items-center gap-2 z-10"
+                        style={{ pointerEvents: "auto" }} // Ensure controls are clickable over map
+                    >
+                        {/* Current zoom level display */}
+                        <div className="badge badge-lg badge-neutral text-sm font-medium shadow-lg">
+                            {zoom.toFixed(1)}x
+                        </div>
+                        {/* Zoom out button */}
+                        <button
+                            onClick={handleZoomOut}
+                            className="btn btn-primary btn-circle shadow-lg"
+                            title="Zoom Out"
+                        >
+                            <Minus className="w-5 h-5" />
+                        </button>
+                        {/* Zoom in button */}
+                        <button
+                            onClick={handleZoomIn}
+                            className="btn btn-primary btn-circle shadow-lg"
+                            title="Zoom In"
+                        >
+                            <Plus className="w-5 h-5" />
+                        </button>
+                        {/* Reset to initial view button */}
+                        <button
+                            onClick={handleReset}
+                            className="btn btn-primary btn-circle shadow-lg"
+                            title="Reset Map"
+                        >
+                            <RotateCcw className="w-5 h-5" />
+                        </button>
                     </div>
+                    {/* Main map component with responsive sizing */}
+                    <ComposableMap
+                        width={1000}
+                        height={350}
+                        style={{ width: "100%", height: "350px" }}
+                    >
+                        {/* Zoomable and pannable map container */}
+                        <ZoomableGroup
+                            center={center}
+                            zoom={zoom}
+                            onMoveEnd={handleMoveEnd}
+                            minZoom={5} // Minimum zoom to keep map readable
+                            maxZoom={8} // Maximum zoom for country detail
+                        >
+                            {/* Country geography data and rendering */}
+                            <Geographies geography={geoUrl}>
+                                {({ geographies }) =>
+                                    geographies.map(geo => {
+                                        const countryName = geo.properties.name;
+                                        const isCigarCountry = cigarCountries.includes(countryName);
+                                        const hasCigars = countryCounts[countryName] > 0;
+
+                                        // Define fill colors using DaisyUI CSS variables
+                                        const highlightedFill = 'hsl(var(--wa))'; // warning color
+                                        const cigarCountryFill = 'hsl(var(--wa) / 0.4)'; // warning color with alpha
+                                        const otherFill = 'hsl(var(--b2))'; // base-200
+                                        const hoverFill = 'hsl(var(--p))'; // primary
+                                        const borderStroke = 'hsl(var(--b3))'; // base-300
+
+                                        return (
+                                            <Geography
+                                                key={geo.rsmKey}
+                                                geography={geo}
+                                                // Navigate to filtered view only for countries with cigars
+                                                onClick={() => hasCigars && navigate('HumidorsScreen', { preFilterCountry: countryName })}
+                                                // Show tooltip on hover for relevant countries
+                                                onMouseEnter={(evt) => {
+                                                    const cigarCount = countryCounts[countryName] || 0;
+                                                    if (cigarCount > 0 || isCigarCountry) {
+                                                        // Calculate tooltip position relative to map container
+                                                        const containerRect = evt.target.closest('.w-full').getBoundingClientRect();
+                                                        setTooltip({
+                                                            show: true,
+                                                            content: cigarCount > 0
+                                                                ? `${countryName}: ${cigarCount} cigar${cigarCount !== 1 ? 's' : ''}`
+                                                                : `${countryName}: Cigar producing country`,
+                                                            x: evt.clientX - containerRect.left,
+                                                            y: evt.clientY - containerRect.top
+                                                        });
+                                                    }
+                                                }}
+                                                onMouseLeave={() => setTooltip({ show: false, content: '', x: 0, y: 0 })}
+                                                style={{
+                                                    default: {
+                                                        // Color coding: highlighted > cigar country > other
+                                                        fill: hasCigars
+                                                            ? highlightedFill
+                                                            : isCigarCountry
+                                                                ? cigarCountryFill
+                                                                : otherFill,
+                                                        outline: "none",
+                                                        cursor: hasCigars ? "pointer" : "default",
+                                                        stroke: borderStroke,
+                                                        strokeWidth: 0.5
+                                                    },
+                                                    hover: {
+                                                        // Only highlight countries with cigars on hover
+                                                        fill: hasCigars
+                                                            ? hoverFill
+                                                            : isCigarCountry
+                                                                ? cigarCountryFill
+                                                                : otherFill,
+                                                        outline: "none",
+                                                        cursor: hasCigars ? "pointer" : "default"
+                                                    },
+                                                    pressed: {
+                                                        fill: hoverFill,
+                                                        outline: "none"
+                                                    }
+                                                }}
+                                            />
+                                        );
+                                    })
+                                }
+                            </Geographies>
+                        </ZoomableGroup>
+                    </ComposableMap>
                 </div>
-           
+            </div>
         </div>
     );
 };

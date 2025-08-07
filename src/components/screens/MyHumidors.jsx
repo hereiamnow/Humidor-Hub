@@ -21,8 +21,8 @@ import { BrowseByPanel } from '../Panels';
 
 import { parseHumidorSize } from '../../utils/formatUtils';
 
-const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, preFilterWrapper, preFilterStrength, preFilterCountry }) => { // July 5, 2025 - 2:00:00 AM CDT: Added preFilterCountry prop
-    console.log('HumidorsScreen: Component initialized', { cigars: cigars?.length, humidors: humidors?.length, theme });
+const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, preFilterWrapper, preFilterStrength, preFilterCountry }) => { // July 5, 2025 - 2:00:00 AM CDT: Added preFilterCountry prop
+    console.log('HumidorsScreen: Component initialized', { cigars: cigars?.length, humidors: humidors?.length });
 
     // ===== STATE MANAGEMENT =====
     // Search functionality state
@@ -417,7 +417,6 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 icon={Box}
                 title="My Humidors"
                 subtitle="Your Humidor collection"
-                theme={theme}
             />
 
             {/* ===== SEARCH INPUT PANEL ===== */}
@@ -456,16 +455,16 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                 console.log('HumidorsScreen: Grid view button clicked');
                                 setViewMode('grid');
                             }}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'grid'
-                                ? 'bg-amber-500 text-white border-amber-400'
-                                : `${theme.primary} hover:bg-gray-700`
+                            className={`p-3 btn btn-ghost btn-circle transition-colors ${viewMode === 'grid'
+                                ? 'btn-active'
+                                : ''
                                 }`}
                         >
                             <LayoutGrid className="w-5 h-5" />
                         </button>
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                             Grid View
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                         </div>
                     </div>
 
@@ -476,16 +475,16 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                 console.log('HumidorsScreen: List view button clicked');
                                 setViewMode('list');
                             }}
-                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full transition-colors ${viewMode === 'list'
-                                ? 'bg-amber-500 text-white border-amber-400'
-                                : `${theme.primary} hover:bg-gray-700`
+                            className={`p-3 btn btn-ghost btn-circle transition-colors ${viewMode === 'list'
+                                ? 'btn-active'
+                                : ''
                                 }`}
                         >
                             <List className="w-5 h-5" />
                         </button>
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                             List View
-                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                         </div>
                     </div>
                 </div>
@@ -495,12 +494,12 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {/* Displays current wrapper filter with clear button - only visible when wrapper filter is active */}
             {/* Shows filter name and result count, allows user to clear the filter */}
             {activeWrapperFilter && (
-                <div id="pnlWrapperFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
+                <div id="pnlWrapperFilter" className="flex justify-between items-center mb-4 bg-secondary/20 border border-secondary rounded-lg p-3">
                     <div>
-                        <span className="text-amber-200 text-sm">Filtering by: <span className="font-bold text-amber-100">{activeWrapperFilter} Wrapper</span></span>
-                        <p className="text-xs text-amber-300">Found {filteredCigars.length} matching cigars.</p>
+                        <span className="text-secondary-content text-sm">Filtering by: <span className="font-bold">{activeWrapperFilter} Wrapper</span></span>
+                        <p className="text-xs text-secondary-content/80">Found {filteredCigars.length} matching cigars.</p>
                     </div>
-                    <button onClick={handleClearFilter} className="p-1 rounded-full hover:bg-amber-800 transition-colors text-amber-300"><X className="w-4 h-4" /></button>
+                    <button onClick={handleClearFilter} className="p-1 rounded-full hover:bg-secondary/30 transition-colors text-secondary-content"><X className="w-4 h-4" /></button>
                 </div>
             )}
 
@@ -508,12 +507,12 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {/* Displays current strength filter with clear button - only visible when strength filter is active */}
             {/* Shows filter name and result count, handles special "Flavored" category */}
             {activeStrengthFilter && (
-                <div id="pnlStrengthFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
+                <div id="pnlStrengthFilter" className="flex justify-between items-center mb-4 bg-secondary/20 border border-secondary rounded-lg p-3">
                     <div>
-                        <span className="text-amber-200 text-sm">Filtering by: <span className="font-bold text-amber-100">{activeStrengthFilter === 'Flavored' ? 'Flavored Cigars' : `${activeStrengthFilter} Strength`}</span></span>
-                        <p className="text-xs text-amber-300">Found {filteredCigars.length} matching cigars.</p>
+                        <span className="text-secondary-content text-sm">Filtering by: <span className="font-bold">{activeStrengthFilter === 'Flavored' ? 'Flavored Cigars' : `${activeStrengthFilter} Strength`}</span></span>
+                        <p className="text-xs text-secondary-content/80">Found {filteredCigars.length} matching cigars.</p>
                     </div>
-                    <button onClick={handleClearFilter} className="p-1 rounded-full hover:bg-amber-800 transition-colors text-amber-300"><X className="w-4 h-4" /></button>
+                    <button onClick={handleClearFilter} className="p-1 rounded-full hover:bg-secondary/30 transition-colors text-secondary-content"><X className="w-4 h-4" /></button>
                 </div>
             )}
 
@@ -521,12 +520,12 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {/* Displays current country filter with clear button - only visible when country filter is active */}
             {/* Shows filter name and result count, handles special "Other Countries" category */}
             {activeCountryFilter && (
-                <div id="pnlCountryFilter" className={`flex justify-between items-center mb-4 ${theme.roxyBg} border ${theme.roxyBorder} rounded-lg p-3`}>
+                <div id="pnlCountryFilter" className="flex justify-between items-center mb-4 bg-secondary/20 border border-secondary rounded-lg p-3">
                     <div>
-                        <span className="text-amber-200 text-sm">Filtering by: <span className="font-bold text-amber-100">{activeCountryFilter === 'Other' ? 'Other Countries' : `${activeCountryFilter}`}</span></span>
-                        <p className="text-xs text-amber-300">Found {filteredCigars.length} matching cigars.</p>
+                        <span className="text-secondary-content text-sm">Filtering by: <span className="font-bold">{activeCountryFilter === 'Other' ? 'Other Countries' : `${activeCountryFilter}`}</span></span>
+                        <p className="text-xs text-secondary-content/80">Found {filteredCigars.length} matching cigars.</p>
                     </div>
-                    <button onClick={handleClearFilter} className="p-1 rounded-full hover:bg-amber-800 transition-colors text-amber-300"><X className="w-4 h-4" /></button>
+                    <button onClick={handleClearFilter} className="p-1 rounded-full hover:bg-secondary/30 transition-colors text-secondary-content"><X className="w-4 h-4" /></button>
                 </div>
             )}
 
@@ -537,17 +536,17 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
 
                         {/* Humidor overview stats */}
                         <div id="pnlHumidorStatsNum" className="relative group">
-                            <div className="bg-gray-800/60 border border-gray-700/50 rounded-lg px-3 py-2 backdrop-blur-sm">
+                            <div className="bg-base-200/60 border border-base-300/50 rounded-lg px-3 py-2 backdrop-blur-sm">
                                 <div className="flex items-center justify-center gap-1">
                                     <span
-                                        className="font-bold text-amber-400 text-lg hover:text-amber-300 transition-colors cursor-help"
+                                        className="font-bold text-accent text-lg hover:text-accent-focus transition-colors cursor-help"
                                         title="Unique cigars"
                                     >
                                         {totalUniqueCigars}
                                     </span>
-                                    <span className="text-gray-500 font-medium">/</span>
+                                    <span className="text-base-content/50 font-medium">/</span>
                                     <span
-                                        className="font-bold text-blue-400 text-lg hover:text-blue-300 transition-colors cursor-help"
+                                        className="font-bold text-info text-lg hover:text-info-focus transition-colors cursor-help"
                                         title="Total cigars"
                                     >
                                         {totalQuantity}
@@ -557,12 +556,12 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             </div>
 
                             {/* Tooltip for cigar statistics */}
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-base-300 text-base-content text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                 <div className="text-center">
-                                    <div className="text-amber-300">{totalUniqueCigars} unique cigars</div>
-                                    <div className="text-blue-300">{totalQuantity} total cigars</div>
+                                    <div className="text-accent">{totalUniqueCigars} unique cigars</div>
+                                    <div className="text-info">{totalQuantity} total cigars</div>
                                 </div>
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-base-300"></div>
                             </div>
                         </div>
 
@@ -578,13 +577,13 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                         <button
                                             id="btnBrowseByWrapper"
                                             onClick={() => handleBrowseByClick('wrapper')}
-                                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                            className="btn btn-ghost btn-circle"
                                         >
                                             <Leaf className="w-5 h-5" />
                                         </button>
-                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                             Browse by Wrapper
-                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                                         </div>
                                     </div>
 
@@ -593,13 +592,13 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                         <button
                                             id="btnBrowseByStrength"
                                             onClick={() => handleBrowseByClick('strength')}
-                                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                            className="btn btn-ghost btn-circle"
                                         >
                                             <ShieldPlus className="w-5 h-5" />
                                         </button>
-                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                             Browse by Strength
-                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                                         </div>
                                     </div>
 
@@ -608,13 +607,13 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                         <button
                                             id="btnBrowseByCountry"
                                             onClick={() => handleBrowseByClick('country')}
-                                            className={`p-3 bg-gray-800/50 border border-gray-700 rounded-full ${theme.primary} hover:bg-gray-700 transition-colors`}
+                                            className="btn btn-ghost btn-circle"
                                         >
                                             <MapPin className="w-5 h-5" />
                                         </button>
-                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                             Browse by Country
-                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -628,12 +627,12 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                         console.log('HumidorsScreen: Add Humidor button clicked');
                                         navigate('AddHumidor');
                                     }}
-                                    className="p-3 bg-amber-500 border border-amber-400 rounded-full text-white hover:bg-amber-600 transition-colors">
+                                    className="btn btn-primary btn-circle">
                                     <Plus className="w-5 h-5" />
                                 </button>
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-base-300 text-base-content text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-30">
                                     Add Humidor
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-800"></div>
+                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-base-300"></div>
                                 </div>
                             </div>
                         </div>
@@ -650,7 +649,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                             const humidorValue = cigarsInHumidor.reduce((sum, c) => sum + (c.quantity * (c.price || 0)), 0);
                             const humidorCapacity = parseHumidorSize(humidor.size);
                             const percentageFull = humidorCapacity > 0 ? Math.min(Math.round((cigarCount / humidorCapacity) * 100), 100) : 0;
-                            const capacityColor = percentageFull > 90 ? 'bg-red-500' : theme.primaryBg;
+                            const capacityColor = percentageFull > 90 ? 'bg-error' : 'bg-primary';
 
                             console.log('HumidorsScreen: Rendering humidor card', {
                                 humidorId: humidor.id,
@@ -667,7 +666,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                 <div
                                     key={humidor.id}
                                     id={`pnlHumidorCard_${humidor.id}`}
-                                    className="card card-sm shadow-sm bg-base-100 card-border"
+                                    className="card card-compact shadow-md bg-base-100 border border-base-300 cursor-pointer"
                                     onClick={() => {
                                         console.log('HumidorsScreen: Humidor card clicked', { humidorId: humidor.id, name: humidor.name });
                                         navigate('MyHumidor', { humidorId: humidor.id });
@@ -679,7 +678,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                                         <img src={humidor.image} alt={humidor.name} className="w-full h-32 object-cover" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                         <div className="absolute bottom-0 left-0 p-4">
-                                            <h2 className="text-2xl font-bold text-white">{humidor.name}</h2>
+                                            <h2 className="card-title text-white">{humidor.name}</h2>
                                             <p className="text-sm text-gray-300">{humidor.location}</p>
                                         </div>
                                     </figure>
@@ -687,32 +686,29 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
 
 
                                     <div className="card-body">
-                                        <div className="flex gap-1">
-                                            <div className="flex flex-col justify-center items-center space-y-2 pr-2 border-r border-gray-700">
+                                        <div className="flex gap-2">
+                                            <div className="flex flex-col justify-center items-center space-y-2 pr-2 border-r border-base-300">
                                                 <div className="flex items-center gap-2">
-                                                    <Thermometer className="w-4 h-4 text-red-400" />
-                                                    <span className="text-lg font-bold text-white">{humidor.temp}°F</span>
+                                                    <Thermometer className="w-4 h-4 text-error" />
+                                                    <span className="text-lg font-bold text-base-content">{humidor.temp}°F</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <Droplets className="w-4 h-4 text-blue-400" />
-                                                    <span className="text-lg font-bold text-white">{humidor.humidity}%</span>
+                                                    <Droplets className="w-4 h-4 text-info" />
+                                                    <span className="text-lg font-bold text-base-content">{humidor.humidity}%</span>
                                                 </div>
                                             </div>
 
                                             <div className="flex-grow flex flex-col justify-center pl-2">
                                                 <div>
-                                                    <label className="text-xs text-gray-400">Capacity</label>
-                                                    <div className="relative w-full bg-gray-700 rounded-md h-6 mt-1">
-                                                        <div style={{ width: `${percentageFull}%` }} className={`h-full rounded-md ${capacityColor} transition-all duration-500`}></div>
-                                                        <span className="absolute inset-0 flex items-center justify-center text-sm text-white">{percentageFull}% Full</span>
-                                                    </div>
+                                                    <label className="text-xs text-base-content/70">Capacity</label>
+                                                    <progress className={`progress ${percentageFull > 90 ? 'progress-error' : 'progress-primary'} w-full`} value={percentageFull} max="100"></progress>
                                                 </div>
-                                                <div className="flex justify-between mt-2">
-                                                    <div className="text-xs text-gray-400">
-                                                        Value: <span className="font-bold text-white">${humidorValue.toFixed(2)}</span>
+                                                <div className="flex justify-between mt-1">
+                                                    <div className="text-xs text-base-content/70">
+                                                        Value: <span className="font-bold text-base-content">${humidorValue.toFixed(2)}</span>
                                                     </div>
-                                                    <div className="text-xs text-gray-400">
-                                                        Cigars: <span className="font-bold text-white">{cigarCount}</span>
+                                                    <div className="text-xs text-base-content/70">
+                                                        Cigars: <span className="font-bold text-base-content">{cigarCount}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -755,7 +751,7 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                     {filteredCigars.length === 0 && (
                         // No results panel
                         <div id="pnlNoResults" className="text-center py-10">
-                            <p className="text-gray-400">No cigars match your search.</p>
+                            <p className="text-base-content/70">No cigars match your search.</p>
                         </div>
                     )}
                 </div>
@@ -765,20 +761,20 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
             {humidors.length === 0 && (
                 <div
                     id="pnlRoxysCorner_NoHumidors"
-                    className="bg-amber-900/20 border border-amber-600/50 rounded-md p-6 text-left">
+                    className="bg-secondary/20 border border-secondary rounded-md p-6 text-left">
 
-                    <h3 className="font-bold text-amber-300 text-lg flex items-center justify-left mb-3">
+                    <h3 className="font-bold text-secondary-content text-lg flex items-center justify-left mb-3">
                         <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                     </h3>
 
                     <p id="roxyMessage"
-                        className="text-amber-200 text-sm mb-4">
+                        className="text-secondary-content/80 text-sm mb-4">
                         Ruff! You need to add a humidor before you can add any cigars. Let's get your first one set up!
                     </p>
 
                     <button
                         onClick={() => navigate('AddHumidor')}
-                        className="flex items-center justify-center gap-2 bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors w-full"
+                        className="btn btn-secondary w-full"
                     >
                         <Plus className="w-4 h-4" /> Add a Humidor
                     </button>
@@ -793,7 +789,6 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, theme, 
                 icon={BrowseIcon}
                 data={getCurrentBrowseData()}
                 onItemClick={handleBrowsePanelItemClick}
-                theme={theme}
                 itemLabelKey="label"
                 itemQuantityKey="quantity"
             />
