@@ -26,6 +26,16 @@ const ThemeModal = ({ onClose }) => {
     const [selectedThemeName, setSelectedThemeName] = useState(getCurrentDaisyUITheme());
     const [isDarkMode, setIsDarkMode] = useState(true);
 
+    const colorMapping = [
+        { name: 'Primary', class: 'bg-primary' },
+        { name: 'Secondary', class: 'bg-secondary' },
+        { name: 'Accent', class: 'bg-accent' },
+        { name: 'Neutral', class: 'bg-neutral' },
+      ];
+
+
+
+
     // DaisyUI themes with enhanced metadata
     const daisyUIThemes = {
         light: { name: 'Light', isDark: false, daisyUI: 'light', primary: '#570df8', secondary: '#f000b8', accent: '#37cdbe', neutral: '#3d4451', base: '#ffffff' },
@@ -128,9 +138,9 @@ const ThemeModal = ({ onClose }) => {
                     id="theme-modal-content"
                     className="flex-1 overflow-y-auto p-8"
                 >
-                    {/* DaisyUI Themes Section */}
+                    {/* Themes Section */}
                     <div id="daisy-themes">
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <div className="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                             {Object.values(daisyUIThemes)
                                 .filter((theme) => isDarkMode ? theme.isDark : !theme.isDark)
                                 .map((theme) => {
@@ -138,10 +148,11 @@ const ThemeModal = ({ onClose }) => {
                                     return (
                                         <button
                                             key={theme.daisyUI}
+                                            data-theme={theme.daisyUI}
                                             onClick={() => handleThemeSelection(theme.daisyUI)}
-                                            className={`group relative p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 ${isSelected
+                                            className={`group relative p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 bg-base-100 text-base-content ${isSelected
                                                 ? `border-primary bg-primary/10 shadow-lg`
-                                                : `border-base-300 hover:border-primary/50 hover:bg-base-300/30`
+                                                : `border-base-300 hover:border-primary/50 hover:bg-base-200/60`
                                                 }`}
                                         >
                                             {isSelected && (
@@ -174,11 +185,26 @@ const ThemeModal = ({ onClose }) => {
                                                     </span>
                                                 </div>
 
-                                                <div className="flex space-x-1">
+                                                <div className="flex justify-around gap-2 mt-4">
+                                                    {colorMapping.map((color) => (
+                                                        <div key={color.name} className="tooltip" data-tip={color.name}>
+                                                            <div className={`w-8 h-8 rounded-full ${color.class} border-2 border-base-300 shadow-sm`}></div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="text-xs font-medium text-base-content/70 mt-4">Typography Preview</div>
+                                                <p className="text-base-content/50 text-xs">
+                                                    The quick brown fox jumps over the lazy dog.
+                                                </p>
+                                                <p className="text-base-content/70 text-sm">
+                                                    The quick brown fox jumps over the lazy dog.
+                                                </p>
+
+                                                {/* <div className="flex space-x-1">
                                                     <div className="w-3 h-3 rounded-full border border-white/30 shadow-sm" style={{ backgroundColor: theme.primary }}></div>
                                                     <div className="w-3 h-3 rounded-full border border-white/30 shadow-sm" style={{ backgroundColor: theme.secondary }}></div>
                                                     <div className="w-3 h-3 rounded-full border border-white/30 shadow-sm" style={{ backgroundColor: theme.accent }}></div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </button>
                                     );
@@ -188,13 +214,13 @@ const ThemeModal = ({ onClose }) => {
                 </div>
 
                 {/* Action Buttons */}
-                <div
+                {/* <div
                     id="pnlActionButtons"
                     className="flex justify-end space-x-4 p-4 border-t border-base-300 bg-base-100/90 backdrop-blur-md rounded-b-md"
                 >
                     <button
                         onClick={handleCancel}
-                        className="btn btn-ghost"
+                        className="btn btn-secondary"
                     >
                         Cancel
                     </button>
@@ -204,7 +230,7 @@ const ThemeModal = ({ onClose }) => {
                     >
                         Done
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

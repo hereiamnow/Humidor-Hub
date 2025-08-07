@@ -36,7 +36,7 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
 
 
 
-            <div className={`card bg-primary card-sm shadow-sm overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
+            <div className={`card bg-neutral card-xs shadow-xs overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
                 <div className="card-body">
 
                     <div id="card-header" className="flex flex-row justify-between items-start gap-2">
