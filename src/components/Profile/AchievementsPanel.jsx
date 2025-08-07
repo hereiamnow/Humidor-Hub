@@ -7,21 +7,14 @@
  * Achievements panel component for displaying user achievements based on their cigar and humidor collection.
  */
 
-import React, { useMemo, useState } from 'react';
-import { ChevronDown, Box, MapPin, Database, Star, DollarSign } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { Box, MapPin, Database, Star, DollarSign } from 'lucide-react';
+import CollapsiblePanel from '../UI/CollapsiblePanel';
 
 const AchievementsPanel = ({ cigars, humidors, showTitleIcon = true }) => {
-    // Debug: log incoming props
-    console.log('AchievementsPanel props:', { cigars, humidors });
-
-    const [isAchievementsCollapsed, setIsAchievementsCollapsed] = useState(true);
-
     const totalCigars = cigars.reduce((sum, c) => sum + c.quantity, 0);
     const totalValue = cigars.reduce((acc, cigar) => acc + ((cigar.price || 0) * cigar.quantity), 0);
     const uniqueCountries = useMemo(() => [...new Set(cigars.map(c => c.country).filter(Boolean))], [cigars]);
-
-    // Debug: log computed stats
-    console.log('AchievementsPanel stats:', { totalCigars, totalValue, uniqueCountriesCount: uniqueCountries.length });
 
     const achievementsList = useMemo(() => [
         { id: 'collector_bronze', name: 'Bronze Collector', description: 'Collect 10+ cigars', icon: Box, check: (stats) => stats.totalCigars >= 10 },
@@ -36,16 +29,11 @@ const AchievementsPanel = ({ cigars, humidors, showTitleIcon = true }) => {
 
     const earnedAchievements = useMemo(() => {
         const stats = { totalCigars, totalValue, uniqueCountries, humidors, cigars };
-        const result = achievementsList.map(ach => ({ ...ach, earned: ach.check(stats) }));
-        // Debug: log earned achievements
-        console.log('AchievementsPanel earnedAchievements:', result);
-        return result;
+        return achievementsList.map(ach => ({ ...ach, earned: ach.check(stats) }));
     }, [cigars, humidors, totalCigars, totalValue, uniqueCountries, achievementsList]);
 
     const BadgeIcon = ({ achievement }) => (
         <div className="flex flex-col items-center group relative">
-            {/* Debug: log each achievement rendered */}
-            {console.log('Rendering BadgeIcon for:', achievement)}
             <div className={`w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${achievement.earned ? 'bg-amber-500/20 border-amber-400' : 'bg-gray-700/50 border-gray-600 opacity-60'}`}>
                 <achievement.icon className={`w-8 h-8 ${achievement.earned ? 'text-amber-400' : 'text-gray-400'}`} />
             </div>
@@ -58,21 +46,13 @@ const AchievementsPanel = ({ cigars, humidors, showTitleIcon = true }) => {
     );
 
     return (
-        <div id="pnlAchievements" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-            <input type="checkbox" className="peer" checked={!isAchievementsCollapsed} onChange={() => setIsAchievementsCollapsed(!isAchievementsCollapsed)} />
-            <div className="collapse-title font-semibold">
-                {showTitleIcon && <Star className="w-5 h-5 mr-2" />}
-                Achievements
+        <CollapsiblePanel title="Achievements" icon={showTitleIcon ? Star : null}>
+            <div className="grid grid-cols-4 gap-4 mt-4">
+                {earnedAchievements.map(ach => (
+                    <BadgeIcon key={ach.id} achievement={ach} />
+                ))}
             </div>
-            <div className="collapse-content text-sm">
-                <div className="grid grid-cols-4 gap-4">
-                    {earnedAchievements.map(ach => (
-                        <BadgeIcon key={ach.id} achievement={ach} />
-                    ))}
-                </div>
-            </div>
-
-        </div>
+        </CollapsiblePanel>
     );
 };
 

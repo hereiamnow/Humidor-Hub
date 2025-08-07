@@ -24,11 +24,11 @@
  */
 
 import React, { useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { countryCategories } from '../../constants/countryCategories';
+import CollapsiblePanel from '../UI/CollapsiblePanel';
 
-const BrowseByCountry = ({ cigars, navigate, isCollapsed, onToggle }) => {
-
+const BrowseByCountry = ({ cigars, navigate }) => {
     const countryData = useMemo(() => {
         const counts = cigars.reduce((acc, cigar) => {
             const country = cigar.country || 'Unknown';
@@ -55,29 +55,24 @@ const BrowseByCountry = ({ cigars, navigate, isCollapsed, onToggle }) => {
     }, [cigars, countryCategories]);
 
     return (
-        <div id="pnlBrowseByCountry" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-          
-            <div className="collapse-title font-semibold">
-                Browse by Country of Origin
-            </div>
-            <div className="collapse-content text-sm">
+        <CollapsiblePanel title="Browse by Country of Origin" icon={MapPin}>
+            <div className="mt-4">
                 {countryData.length > 0 ? (
                     countryData.map(({ label, quantity, filterValue }) => (
                         <button
                             key={label}
                             onClick={() => navigate('HumidorsScreen', { preFilterCountry: filterValue })}
-                            className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
+                            className="w-full text-left py-2 px-4 rounded-lg hover:bg-base-200 transition-colors flex justify-between items-center"
                         >
-                            <span className="text-gray-300">{label}</span>
-                            <span className="text-gray-400">({quantity})</span>
+                            <span className="text-base-content">{label}</span>
+                            <span className="text-base-content/70">({quantity})</span>
                         </button>
                     ))
                 ) : (
-                    <p className="text-gray-500 text-sm text-center py-4">No country of origin data available.</p>
+                    <p className="text-base-content/70 text-sm text-center py-4">No country of origin data available.</p>
                 )}
             </div>
-
-        </div>
+        </CollapsiblePanel>
     );
 };
 

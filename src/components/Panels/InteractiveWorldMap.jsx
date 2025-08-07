@@ -44,6 +44,9 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
  * @returns {JSX.Element} Interactive world map component
  */
 const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
+
+    const [isInteractiveWorldMapCollapsed, setIsInteractiveWorldMapCollapsed] = useState(true);
+
     /** 
      * Memoized calculation of cigar quantities by country.
      * Creates a map of country names to total cigar counts for visualization.
@@ -135,7 +138,7 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
 
     return (
         <div id="pnlBrowseWorldMap" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-
+            <input type="checkbox" className="peer" checked={!isInteractiveWorldMapCollapsed} onChange={() => setIsInteractiveWorldMapCollapsed(!isInteractiveWorldMapCollapsed)} />
 
             <div className="collapse-title font-semibold">
                 World Map

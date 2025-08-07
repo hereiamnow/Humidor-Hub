@@ -17,11 +17,12 @@
  *
  */
 import React, { useState, useMemo } from 'react';
-import { BarChart2, ChevronDown, PieChart as PieChartIcon } from 'lucide-react';
+import { BarChart2, PieChart as PieChartIcon } from 'lucide-react';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ChartCard from '../UI/ChartCard';
+import CollapsiblePanel from '../UI/CollapsiblePanel';
 
-const InventoryAnalysisPanel = ({ cigars, isCollapsed, onToggle }) => {
+const InventoryAnalysisPanel = ({ cigars }) => {
     const [chartViews, setChartViews] = useState({ brands: 'bar', countries: 'bar', strength: 'bar' });
 
     const {
@@ -93,14 +94,8 @@ const InventoryAnalysisPanel = ({ cigars, isCollapsed, onToggle }) => {
     };
 
     return (
-
-        <div id="pnlInventoryAnalysisPanel" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-
-            <div className="collapse-title font-semibold">
-                Inventory Analysis
-            </div>
-
-            <div className="collapse-content text-sm">
+        <CollapsiblePanel title="Inventory Analysis" icon={BarChart2}>
+            <div className="mt-4">
                 <ChartCard
                     title="Top 5 Brands"
                     action={
@@ -233,8 +228,7 @@ const InventoryAnalysisPanel = ({ cigars, isCollapsed, onToggle }) => {
                     )}
                 </ChartCard>
             </div>
-
-        </div>
+        </CollapsiblePanel>
     );
 };
 

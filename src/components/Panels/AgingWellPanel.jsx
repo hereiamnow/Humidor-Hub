@@ -20,11 +20,13 @@
  *
  */
 import React, { useMemo } from 'react';
-import { Calendar as CalendarIcon, ChevronDown, Clock } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { calculateAge } from '../utils/calculateAge';
-import { formatDate } from '../../utils/formatUtils';
+import { formatDate } from '../utils/formatUtils';
+import CollapsiblePanel from '../UI/CollapsiblePanel';
 
-const AgingWellPanel = ({ cigars, navigate, isCollapsed, onToggle }) => {
+const AgingWellPanel = ({ cigars, navigate }) => {
+
     // Get the three oldest cigars with valid dates
     const oldestCigars = useMemo(() => {
         return cigars
@@ -41,64 +43,58 @@ const AgingWellPanel = ({ cigars, navigate, isCollapsed, onToggle }) => {
         return { text: 'Young', color: `badge badge-ghost` };
     };
 
+
     return (
-        <div id="pnlAgingWell" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+        <CollapsiblePanel title="Aging Well / From the Cellar" icon={Clock}>
+            <div className="space-y-2 mt-4">
+                {oldestCigars.length > 0 ? (
+                    oldestCigars.map((cigar, index) => {
+                        const ageInDays = calculateAge(cigar.dateAdded, true);
+                        const agingStatus = getAgingStatus(ageInDays);
 
-            <div className="collapse-title font-semibold">
-                Aging Well / From the Cellar
-            </div>
-            <div className="collapse-content text-sm">
-                <div className="space-y-2">
-                    {oldestCigars.length > 0 ? (
-                        oldestCigars.map((cigar, index) => {
-                            const ageInDays = calculateAge(cigar.dateAdded, true);
-                            const agingStatus = getAgingStatus(ageInDays);
-
-                            return (
-                                <button
-                                    key={cigar.id}
-                                    onClick={() => navigate('CigarDetail', { cigarId: cigar.id })}
-                                    className="w-full text-left p-3 rounded-lg bg-base-200 hover:bg-base-300 transition-all duration-200 border border-base-300"
-                                >
-                                    <div className="flex items-start justify-between gap-3">
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <span className={`badge badge-warning`}>
-                                                    #{index + 1} Oldest
-                                                </span>
-                                                <span className={`badge ${agingStatus.color}`}>
-                                                    {agingStatus.text}
-                                                </span>
+                        return (
+                            <button
+                                key={cigar.id}
+                                onClick={() => navigate('CigarDetail', { cigarId: cigar.id })}
+                                className="w-full text-left p-3 rounded-lg bg-base-200 hover:bg-base-300 transition-all duration-200 border border-base-300"
+                            >
+                                <div className="flex items-start justify-between gap-3">
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className={`badge badge-warning`}>
+                                                #{index + 1} Oldest
+                                            </span>
+                                            <span className={`badge ${agingStatus.color}`}>
+                                                {agingStatus.text}
+                                            </span>
+                                        </div>
+                                        <h4 className="font-semibold text-sm mb-1 truncate">
+                                            {cigar.brand} {cigar.name}
+                                        </h4>
+                                        <div className="flex items-center gap-4 text-xs text-base-content/70">
+                                            <div className="flex items-center gap-1">
+                                                <Clock className="w-3 h-3" />
+                                                <span>{calculateAge(cigar.dateAdded)}</span>
                                             </div>
-                                            <h4 className="font-semibold text-sm mb-1 truncate">
-                                                {cigar.brand} {cigar.name}
-                                            </h4>
-                                            <div className="flex items-center gap-4 text-xs text-base-content/70">
-                                                <div className="flex items-center gap-1">
-                                                    <Clock className="w-3 h-3" />
-                                                    <span>{calculateAge(cigar.dateAdded)}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <CalendarIcon className="w-3 h-3" />
-                                                    <span>Since {formatDate(cigar.dateAdded)}</span>
-                                                </div>
+                                            <div className="flex items-center gap-1">
+                                                <CalendarIcon className="w-3 h-3" />
+                                                <span>Since {formatDate(cigar.dateAdded)}</span>
                                             </div>
                                         </div>
                                     </div>
-                                </button>
-                            );
-                        })
-                    ) : (
-                        <div className="text-center py-6">
-                            <Clock className="w-8 h-8 text-base-content/50 mx-auto mb-2" />
-                            <p className="text-base-content/70 text-sm">No cigars with aging dates found.</p>
-                            <p className="text-base-content/70 text-xs mt-1">Add some cigars to start tracking aging!</p>
-                        </div>
-                    )}
-                </div>
+                                </div>
+                            </button>
+                        );
+                    })
+                ) : (
+                    <div className="text-center py-6">
+                        <Clock className="w-8 h-8 text-base-content/50 mx-auto mb-2" />
+                        <p className="text-base-content/70 text-sm">No cigars with aging dates found.</p>
+                        <p className="text-base-content/70 text-xs mt-1">Add some cigars to start tracking aging!</p>
+                    </div>
+                )}
             </div>
-
-        </div>
+        </CollapsiblePanel>
     );
 };
 

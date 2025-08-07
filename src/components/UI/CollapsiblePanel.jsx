@@ -14,21 +14,23 @@ import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const CollapsiblePanel = ({ title, description, children, icon: Icon }) => {
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isPanelCollapsed, setIsPanelCollapsed] = useState(true);
+
     return (
         <div tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-            <button onClick={() => setIsCollapsed(!isCollapsed)} className="w-full p-4 flex justify-between items-center">
-                <div className="collapse-title font-semibold">
-                    {Icon && <Icon className="w-5 h-5 mr-2" />} {title}
-                </div>
-                <ChevronDown className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${isCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            {!isCollapsed && (
-                <div className="collapse-content text-sm">
-                    <p className="text-gray-400 text-sm">{description}</p>
-                    {children}
-                </div>
-            )}
+            <input type="checkbox" className="peer" checked={!isPanelCollapsed} onChange={() => setIsPanelCollapsed(!isPanelCollapsed)} />
+
+            <div className="collapse-title font-semibold flex justify-start items-center">
+                {Icon && <Icon className="w-5 h-5 mr-2" />} {title}
+            </div>
+
+
+
+            <div className="collapse-content text-sm">
+                <p className="text-gray-400 text-sm">{description}</p>
+                {children}
+            </div>
+
         </div>
     );
 };

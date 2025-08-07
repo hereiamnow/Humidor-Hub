@@ -48,12 +48,12 @@ const BrowseByPanel = ({
     return (
         <div
             id="pnlBrowseByDrawer"
-            className="fixed bottom-20 left-0 right-0 bg-base-200/90 backdrop-blur-sm p-4 z-40 border-t border-base-300 shadow-lg rounded-t-lg"
+            className="fixed bottom-20 left-0 right-0 bg-accent/10 backdrop-blur-sm p-4 z-40 border-t border-base-300 shadow-lg"
         >
             <div className="max-w-md mx-auto">
                 {/* Panel Header */}
                 <div id="pnlBrowseByTitle" className="flex justify-between items-center mb-4">
-                    <h3 id="browseByMode" className="text-xl font-bold text-primary flex items-center">
+                    <h3 id="browseByMode" className="text-xl font-bold bg-base-content flex items-center">
                         {IconComponent && <IconComponent className="w-5 h-5 mr-2" />}
                         {title}
                     </h3>

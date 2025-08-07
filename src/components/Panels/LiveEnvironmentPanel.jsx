@@ -14,11 +14,12 @@
  * @param {Array} props.humidors - Array of humidor objects
  *
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { Thermometer, Droplets } from 'lucide-react';
 import Gauge from '../UI/Gauge';
 
 const LiveEnvironmentPanel = ({ humidors }) => {
+    const [isLiveEnvironmentPanelCollapsed, setIsLiveEnvironmentPanelCollapsed] = useState(true);
     const firstHumidor = humidors && humidors.length > 0 ? humidors[0] : null;
 
     if (!firstHumidor) {
@@ -36,8 +37,8 @@ const LiveEnvironmentPanel = ({ humidors }) => {
     }
 
     return (
-        <div tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-            <input type="checkbox" />
+        <div id="pnlLiveEnvironment" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+            <input type="checkbox" className="peer" checked={!isLiveEnvironmentPanelCollapsed} onChange={() => setIsLiveEnvironmentPanelCollapsed(!isLiveEnvironmentPanelCollapsed)} />
             <div className="collapse-title font-semibold flex items-center">
                 <Thermometer className="w-5 h-5 mr-2 text-primary" /> Live Environment
             </div>

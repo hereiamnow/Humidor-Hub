@@ -21,20 +21,11 @@
  */
 
 import React, { useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { strengthCategories } from '../../constants/strengthCategories';
+import CollapsiblePanel from '../UI/CollapsiblePanel';
 
-const BrowseByStrength = ({ cigars, navigate, theme, isCollapsed, onToggle }) => {
-
-
-    // const strengthCategories = useMemo(() => [
-    //     { label: 'Mild Cigars', filterValue: 'Mild' },
-    //     { label: 'Mild to Medium Cigars', filterValue: 'Mild-Medium' },
-    //     { label: 'Medium Cigars', filterValue: 'Medium' },
-    //     { label: 'Medium to Full Cigars', filterValue: 'Medium-Full' },
-    //     { label: 'Full Bodied Cigars', filterValue: 'Full' }
-    // ], []);
-
+const BrowseByStrength = ({ cigars, navigate }) => {
     const strengthData = useMemo(() => {
         const counts = strengthCategories.map(category => {
             let quantity = 0;
@@ -48,29 +39,24 @@ const BrowseByStrength = ({ cigars, navigate, theme, isCollapsed, onToggle }) =>
     }, [cigars, strengthCategories]);
 
     return (
-        <div id="pnlBrowseByStrength" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-          
-            <div className="collapse-title font-semibold">
-                Browse by Profile
-            </div>
-            <div className="collapse-content text-sm">
+        <CollapsiblePanel title="Browse by Profile" icon={Zap}>
+            <div className="mt-4">
                 {strengthData.length > 0 ? (
                     strengthData.map(({ label, quantity, filterValue }) => (
                         <button
                             key={label}
                             onClick={() => navigate('HumidorsScreen', { preFilterStrength: filterValue })}
-                            className="w-full text-left py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex justify-between items-center"
+                            className="w-full text-left py-2 px-4 rounded-lg hover:bg-base-200 transition-colors flex justify-between items-center"
                         >
-                            <span className="text-gray-300">{label}</span>
-                            <span className="text-gray-400">({quantity})</span>
+                            <span className="text-base-content">{label}</span>
+                            <span className="text-base-content/70">({quantity})</span>
                         </button>
                     ))
                 ) : (
-                    <p className="text-gray-500 text-sm text-center py-4">No strength data available.</p>
+                    <p className="text-base-content/70 text-sm text-center py-4">No strength data available.</p>
                 )}
             </div>
-
-        </div>
+        </CollapsiblePanel>
     );
 };
 
