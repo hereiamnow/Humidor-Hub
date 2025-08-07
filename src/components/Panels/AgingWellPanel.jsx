@@ -56,22 +56,22 @@ const AgingWellPanel = ({ cigars, navigate }) => {
                             <button
                                 key={cigar.id}
                                 onClick={() => navigate('CigarDetail', { cigarId: cigar.id })}
-                                className="w-full text-left p-3 rounded-lg bg-base-200 hover:bg-base-300 transition-all duration-200 border border-base-300"
+                                className="w-full text-left p-3 rounded-md bg-base-100 border border-base-300 hover:bg-neutral hover:text-neutral-content transition-all duration-200"
                             >
                                 <div className="flex items-start justify-between gap-3">
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <span className={`badge badge-warning`}>
+                                            <span className={`badge badge-warning rounded-sm p-2`}>
                                                 #{index + 1} Oldest
                                             </span>
-                                            <span className={`badge ${agingStatus.color}`}>
+                                            <span className={`badge ${agingStatus.color} rounded-sm p-2`}>
                                                 {agingStatus.text}
                                             </span>
                                         </div>
                                         <h4 className="font-semibold text-sm mb-1 truncate">
                                             {cigar.brand} {cigar.name}
                                         </h4>
-                                        <div className="flex items-center gap-4 text-xs text-base-content/70">
+                                        <div className="flex items-center gap-4 text-xs">
                                             <div className="flex items-center gap-1">
                                                 <Clock className="w-3 h-3" />
                                                 <span>{calculateAge(cigar.dateAdded)}</span>

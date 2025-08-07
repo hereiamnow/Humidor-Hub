@@ -11,13 +11,12 @@
 // panels and data management sections while reducing visual clutter.
 
 import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
 
 const CollapsiblePanel = ({ title, description, children, icon: Icon }) => {
     const [isPanelCollapsed, setIsPanelCollapsed] = useState(true);
 
     return (
-        <div tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+        <div tabIndex={0} className="collapse collapse-plus bg-base-200 border border-base-300 rounded-md shadow-lg mb-4">
             <input type="checkbox" className="peer" checked={!isPanelCollapsed} onChange={() => setIsPanelCollapsed(!isPanelCollapsed)} />
 
             <div className="collapse-title font-semibold flex justify-start items-center">
