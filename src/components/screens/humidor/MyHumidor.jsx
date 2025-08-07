@@ -85,6 +85,10 @@ import DeleteCigarsModal from '../../Modals/Actions/DeleteCigarsModal.jsx';
 import ExportModal from '../../Modals/Data/ExportModal.jsx';
 import HumidorStatsCards from "../../UI/HumidorStatsCards.jsx";
 const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, setCigars, setHumidors }) => {
+
+    const [isRoxyPanel1Collapsed, setIsRoxyPanel1Collapsed] = useState(true);
+    const [isRoxyPanel2Collapsed, setIsRoxyPanel2Collapsed] = useState(true);
+
     // Debug: Log component props on render
     console.log('MyHumidor: Component rendered with props:', {
         humidorId: humidor?.id,
@@ -705,56 +709,51 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div
-                        id="pnlRoxysCorner"
-                        className="bg-secondary/20 border border-secondary rounded-md overflow-hidden mb-4">
-                        <button
-                            onClick={() => setIsRoxyPanelCollapsed(!isRoxyPanelCollapsed)}
-                            className="w-full p-4 flex justify-between items-center"
-                        >
-                            <h3 className="font-bold text-secondary-content text-lg flex items-center">
-                                <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                            </h3>
+                        id="pnlRoxysCorner1"
+                        tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+                        <input type="checkbox" className="peer" checked={!isRoxyPanel1Collapsed} onChange={() => setIsRoxyPanel1Collapsed(!isRoxyPanel1Collapsed)} />
 
-                            <ChevronDown className={`w-5 h-5 text-secondary-content/80 transition-transform duration-300 ${isRoxyPanelCollapsed ? 'rotate-180' : ''}`} />
-                        </button>
-                        {!isRoxyPanelCollapsed && (
-                            <div className="px-4 pb-4">
-                                <span className="text-secondary-content/80 text-sm mb-3 block">
-                                    Some imported cigars are missing many details. Let Roxy auto-fill them for you!
-                                </span>
-                                <button
-                                    id="btnAutofillMissingDetails"
-                                    onClick={handleAutofillMissingDetails}
-                                    disabled={isAutofilling}
-                                    className="btn btn-secondary w-full"
-                                >
-                                    {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
-                                </button>
-                                {autofillStatus && (
-                                    <div className="mt-2 text-secondary-content/80 text-xs">{autofillStatus}</div>
-                                )}
-                            </div>
-                        )}
+                        <div className="collapse-title font-semibold flex justify-start items-center">
+                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
+                        </div>
+
+                        <div className="collapse-content text-sm">
+                            <span className="text-sm mb-3 block">
+                                Some imported cigars are missing many details. Let Roxy auto-fill them for you!
+                            </span>
+                            <button
+                                id="btnAutofillMissingDetails"
+                                onClick={handleAutofillMissingDetails}
+                                disabled={isAutofilling}
+                                className="btn btn-secondary w-full"
+                            >
+                                {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
+                            </button>
+                            {autofillStatus && (
+                                <div className="mt-2 text-xs">{autofillStatus}</div>
+                            )}
+                        </div>
                     </div>
                 )}
 
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div
-                        id="pnlRoxysCorner"
-                        className="bg-secondary/20 border border-secondary rounded-md overflow-hidden mb-4">
+                        id="pnlRoxysCorner2"
+                        tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+                        <input type="checkbox" className="peer" checked={!isRoxyPanel2Collapsed} onChange={() => setIsRoxyPanel2Collapsed(!isRoxyPanel2Collapsed)} />
 
-                        <h3 className="font-bold text-secondary-content text-lg flex items-center mx-4 my-2">
+                        <div className="collapse-title font-semibold flex justify-start items-center">
                             <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </h3>
+                        </div>
 
-                        <div className="px-4 pb-4">
-                            <span className="text-secondary-content/80 text-sm mb-3 block">
+                        <div className="collapse-content text-sm ">
+                            <span className="text-sm mb-3 block">
                                 Some cigars are missing details and can be auto-filled,
                                 but you need a Gemini API key to use auto-fill!
                             </span>
                             <div className="w-full p-3 bg-primary/10 border border-primary/20 rounded-md">
-                                <p className="text-primary text-sm text-center">
+                                <p className="text-sm text-center">
                                     💡 Add your Gemini API key in Settings to
                                     enable AI-powered auto-fill for missing cigar details!
                                 </p>
@@ -806,23 +805,27 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
 
                 {/* Panel for Filter Mode */}
                 {isFilterPanelOpen && (
+                    // This panel will slide up from the bottom when opened
                     <div id="pnlFilterMode" className="fixed bottom-20 left-0 right-0 bg-base-100/80 backdrop-blur-sm p-4 z-20 border-t border-base-content/10">
                         <div className="max-w-md mx-auto">
+
+                            {/* Panel Header */}
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold text-primary flex items-center">
-                                    Filter & Sort</h3>
+                                <h3 className="text-xl font-bold text-primary flex items-center">Filter & Sort</h3>
                                 <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-ghost">Done</button>
                             </div>
+
+                            {/* Panel Content */}
                             <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
                                 {/* Sorting Section */}
                                 <div>
                                     <h4 className="font-bold text-base-content text-base mb-2">Sort By</h4>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2 justify-start">
                                         {['name', 'brand', 'rating', 'quantity', 'price', 'dateAdded'].map(criteria => (
                                             <button
                                                 key={criteria}
                                                 onClick={() => handleSortChange(criteria)}
-                                                className={`btn btn-sm ${sortBy === criteria ? 'btn-primary' : 'btn-outline'}`}
+                                                className={`btn btn-xs rounded-xs ${sortBy === criteria ? 'btn-primary' : 'btn-outline'}`}
                                             >
                                                 {criteria === 'dateAdded' ? 'Date' : criteria.charAt(0).toUpperCase() + criteria.slice(1)}
                                                 {sortBy === criteria && (sortOrder === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
@@ -835,13 +838,15 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 <div className="border-t border-base-content/10 pt-4 mt-4">
                                     <h4 className="font-bold text-base-content text-base mb-2">Filter By</h4>
                                     <div className="grid grid-cols-2 gap-4">
+                                        {/* Brand Filter */}
                                         <div>
                                             <label className="label-text text-sm mb-1 block">Brand</label>
-                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="select select-bordered w-full">
+                                            <select value={filters.brand} onChange={(e) => handleFilterChange('brand', e.target.value)} className="select select-accent text-sm w-full">
                                                 <option value="">All Brands</option>
                                                 {uniqueBrands.map(brand => <option key={brand} value={brand}>{brand}</option>)}
                                             </select>
                                         </div>
+                                        {/* Country Filter */}
                                         <div>
                                             <label className="label-text text-sm mb-1 block">Country</label>
                                             <select value={filters.country} onChange={(e) => handleFilterChange('country', e.target.value)} className="select select-bordered w-full">
@@ -849,19 +854,21 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                                 {uniqueCountries.map(country => <option key={country} value={country}>{country}</option>)}
                                             </select>
                                         </div>
+                                        {/* Strength Filter */}
                                         <div className="col-span-2">
                                             <label className="label-text text-sm mb-1 block">Strength</label>
-                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="select select-bordered w-full">
+                                            <select value={filters.strength} onChange={(e) => handleFilterChange('strength', e.target.value)} className="select select-accent text-sm w-full">
                                                 <option value="">All Strengths</option>
                                                 {strengthOptions.map(strength => <option key={strength} value={strength}>{strength}</option>)}
                                             </select>
                                         </div>
                                     </div>
+                                    {/* Flavor Notes Filter */}
                                     <div className="mt-4">
                                         <label className="label-text text-sm mb-1 block">Flavor Notes</label>
                                         <div className="flex flex-wrap gap-2">
                                             {availableFlavorNotes.map(note => (
-                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`btn btn-sm ${filters.flavorNotes.includes(note) ? 'btn-primary' : 'btn-outline'}`}>
+                                                <button key={note} onClick={() => handleFlavorNoteToggle(note)} className={`btn btn-xs ${filters.flavorNotes.includes(note) ? 'btn-accent' : 'btn-outline'}`}>
                                                     {note}
                                                 </button>
                                             ))}
@@ -869,10 +876,11 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                     </div>
                                 </div>
                             </div>
+
                             {/* Panel Actions */}
                             <div className="flex gap-3 pt-4 mt-4 border-t border-base-content/10">
-                                <button onClick={handleClearFilters} className="btn flex-grow">Clear Filters</button>
-                                <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-primary flex-grow">Done</button>
+                                <button onClick={handleClearFilters} className="btn btn-md btn-secondary flex-grow">Clear Filters</button>
+                                <button onClick={() => setIsFilterPanelOpen(false)} className="btn btn-md btn-primary flex-grow">View Filter</button>
                             </div>
                         </div>
                     </div>

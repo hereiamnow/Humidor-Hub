@@ -32,25 +32,17 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
         <div className="relative" onClick={clickHandler}>
 
 
+            <div className={`card bg-neutral card-xs shadow-sm rounded-md overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
+                <div className="card-body" style={{ padding: '12px' }}>
 
+                    <div id="card-title" className="flex flex-row justify-between items-start gap-2">
 
-
-
-            <div className={`card bg-neutral card-xs shadow-xs overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
-                <div className="card-body">
-
-                    <div id="card-header" className="flex flex-row justify-between items-start gap-2">
-
-
-                        <div className="flex flex-col flex-grow min-w-0">
+                        <div className="flex flex-col flex-grow">
                             <div className="flex items-center gap-1">
                                 <p id="cigar-brand" className="text-gray-400 font-semibold uppercase">{cigar.brand}</p>
                             </div>
                             <h3 id="cigar-name" className="card-title">{cigar.name}</h3>
                         </div>
-
-
-
 
                         {cigar.isPuro && (
                             <div
@@ -74,7 +66,7 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
 
                     <div className="mt-2 space-y-1">
 
-                        <div id="cigar-details" className="flex w-full gap-x-4 gap-y-1">
+                        <div id="cigar-details" className="flex w-full gap-x-1 gap-y-1">
 
                             <div id="cigar-shape" className="flex-1 min-w-0 flex flex-col">
                                 <span className="text-gray-400">shape</span>
