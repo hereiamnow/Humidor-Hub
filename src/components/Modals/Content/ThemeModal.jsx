@@ -4,7 +4,8 @@
  * @path src/components/Modals/Content/ThemeModal.jsx
  * @project Humidor Hub
  * @author Shawn Miller (hereiamnow@gmail.com)
- * @date July 29, 2025
+ * @date October 27, 2023
+ * @time 9:40:00 PM (CT)
  *
  * Enhanced Theme Modal Component
  *
@@ -23,20 +24,31 @@ import { X, Box, Sun, Moon } from 'lucide-react';
 import { applyDaisyUITheme, getCurrentDaisyUITheme } from '../../../utils/themeUtils';
 
 const ThemeModal = ({ onClose }) => {
+    // State to track the currently selected theme name.
     const [selectedThemeName, setSelectedThemeName] = useState(getCurrentDaisyUITheme());
+    // State to filter themes by dark or light mode.
     const [isDarkMode, setIsDarkMode] = useState(true);
 
+    // Defines the color swatches to display in the theme preview card.
     const colorMapping = [
         { name: 'Primary', class: 'bg-primary' },
         { name: 'Secondary', class: 'bg-secondary' },
         { name: 'Accent', class: 'bg-accent' },
         { name: 'Neutral', class: 'bg-neutral' },
-      ];
+        { name: 'Info', class: 'bg-info' },
+        { name: 'Success', class: 'bg-success' },
+        { name: 'Warning', class: 'bg-warning' },
+        { name: 'Error', class: 'bg-error' },
+        { name: 'Base 100', class: 'bg-base-100' },
+        { name: 'Base 200', class: 'bg-base-200' },
+        { name: 'Base 300', class: 'bg-base-300' },
+        { name: 'Base Content', class: 'bg-base-content' },
+    ];
 
 
 
-
-    // DaisyUI themes with enhanced metadata
+    // A comprehensive list of DaisyUI themes with additional metadata for filtering and display.
+    // Each theme object includes its name, mode (isDark), DaisyUI key, and key color values.
     const daisyUIThemes = {
         light: { name: 'Light', isDark: false, daisyUI: 'light', primary: '#570df8', secondary: '#f000b8', accent: '#37cdbe', neutral: '#3d4451', base: '#ffffff' },
         dark: { name: 'Dark', isDark: true, daisyUI: 'dark', primary: '#661ae6', secondary: '#d926aa', accent: '#1fb2a5', neutral: '#191d24', base: '#2a303c' },
@@ -72,29 +84,39 @@ const ThemeModal = ({ onClose }) => {
         sunset: { name: 'Sunset', isDark: false, daisyUI: 'sunset', primary: '#ff6b35', secondary: '#f7931e', accent: '#ffe66d', neutral: '#4a5568', base: '#ffffff' }
     };
 
+    // Handles the selection of a new theme.
     const handleThemeSelection = (themeName) => {
+        console.log(`Applying theme: ${themeName}`);
         setSelectedThemeName(themeName);
         applyDaisyUITheme(themeName);
         localStorage.setItem('humidor-hub-theme', themeName);
     };
 
+    // Saves the selected theme and closes the modal.
     const handleSave = () => {
+        console.log('Theme saved.');
         onClose();
     };
 
+    // Cancels the theme selection and reverts to the originally set theme.
     const handleCancel = () => {
         // Revert to the original theme if the user cancels
         const originalTheme = localStorage.getItem('humidor-hub-theme') || 'dark';
+        console.log(`Reverting to original theme: ${originalTheme}`);
         applyDaisyUITheme(originalTheme);
         onClose();
     };
 
+    // Toggles the filter between dark and light themes.
     const toggleDarkMode = () => {
+        console.log(`Toggling dark mode. New mode: ${!isDarkMode ? 'Dark' : 'Light'}`);
         setIsDarkMode(!isDarkMode);
     };
 
     return (
+        // Modal backdrop and container
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-[100]" onClick={handleCancel}>
+            {/* Modal panel */}
             <div
                 className="bg-base-200 rounded-md p-0 w-full max-w-4xl max-h-[90vh] shadow-2xl border border-base-300 relative flex flex-col"
                 style={{ minHeight: 0 }}
@@ -114,6 +136,7 @@ const ThemeModal = ({ onClose }) => {
                         </div>
                     </div>
                     <div className="flex items-center space-x-3">
+                        {/* Dark/Light mode toggle */}
                         <button
                             onClick={toggleDarkMode}
                             className="btn btn-ghost p-2 rounded-sm transition-all flex items-center space-x-2"
@@ -124,6 +147,7 @@ const ThemeModal = ({ onClose }) => {
                                 {isDarkMode ? 'Dark' : 'Light'}
                             </span>
                         </button>
+                        {/* Close button */}
                         <button
                             onClick={handleCancel}
                             className="btn btn-ghost btn-circle"
@@ -134,18 +158,23 @@ const ThemeModal = ({ onClose }) => {
                 </div>
                 {/* End Panel Header */}
 
+                {/* Scrollable content area for theme cards */}
                 <div
                     id="theme-modal-content"
                     className="flex-1 overflow-y-auto p-8"
                 >
                     {/* Themes Section */}
                     <div id="daisy-themes">
-                        <div className="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {/* Grid layout for theme cards */}
+                        <div className="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
                             {Object.values(daisyUIThemes)
+                                // Filter themes based on the dark/light mode toggle
                                 .filter((theme) => isDarkMode ? theme.isDark : !theme.isDark)
+                                // Map over the filtered themes to create a preview card for each
                                 .map((theme) => {
                                     const isSelected = selectedThemeName === theme.daisyUI;
                                     return (
+                                        // Each theme card is a button that applies the theme on click
                                         <button
                                             key={theme.daisyUI}
                                             data-theme={theme.daisyUI}
@@ -155,13 +184,16 @@ const ThemeModal = ({ onClose }) => {
                                                 : `border-base-300 hover:border-primary/50 hover:bg-base-200/60`
                                                 }`}
                                         >
+                                            {/* Checkmark for selected theme */}
                                             {isSelected && (
                                                 <div className="absolute -top-2 -right-2 bg-primary text-primary-content rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
                                                     ✓
                                                 </div>
                                             )}
 
+                                            {/* Theme preview */}
                                             <div className="flex flex-col items-center space-y-2">
+                                                {/* Color swatch */}
                                                 <div className="relative">
                                                     <div
                                                         className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg border-2 border-white/20"
@@ -178,33 +210,34 @@ const ThemeModal = ({ onClose }) => {
                                                     ></div>
                                                 </div>
 
+                                                {/* Theme name and type */}
                                                 <div className="text-center">
-                                                    <span className="text-base-content font-semibold text-xs block">{theme.name}</span>
+                                                    <h3 className="text-base-content font-semibold text-xs block">{theme.name}</h3>
                                                     <span className="text-base-content/70 text-xs">
                                                         {theme.isDark ? 'Dark' : 'Light'}
                                                     </span>
                                                 </div>
 
-                                                <div className="flex justify-around gap-2 mt-4">
+                                                {/* Color palette */}
+                                                <div id="pnl-color-palette" className="grid grid-cols-4 gap-2 mt-4">
                                                     {colorMapping.map((color) => (
-                                                        <div key={color.name} className="tooltip" data-tip={color.name}>
-                                                            <div className={`w-8 h-8 rounded-full ${color.class} border-2 border-base-300 shadow-sm`}></div>
+                                                        <div key={color.name} data-tip={color.name}>
+                                                            <div className={`w-5 h-5 rounded-full ${color.class} border-2 border-base-300 shadow-sm`}></div>
                                                         </div>
                                                     ))}
                                                 </div>
-                                                <div className="text-xs font-medium text-base-content/70 mt-4">Typography Preview</div>
-                                                <p className="text-base-content/50 text-xs">
-                                                    The quick brown fox jumps over the lazy dog.
-                                                </p>
-                                                <p className="text-base-content/70 text-sm">
-                                                    The quick brown fox jumps over the lazy dog.
-                                                </p>
 
-                                                {/* <div className="flex space-x-1">
-                                                    <div className="w-3 h-3 rounded-full border border-white/30 shadow-sm" style={{ backgroundColor: theme.primary }}></div>
-                                                    <div className="w-3 h-3 rounded-full border border-white/30 shadow-sm" style={{ backgroundColor: theme.secondary }}></div>
-                                                    <div className="w-3 h-3 rounded-full border border-white/30 shadow-sm" style={{ backgroundColor: theme.accent }}></div>
-                                                </div> */}
+                                                {/* Typography preview */}
+                                                <div className='text-left mt-4'>
+                                                    <div className="text-xs font-medium text-base-content/70">Typography Preview</div>
+                                                    <p className="text-base-content/50 text-xs">
+                                                        The quick brown fox jumps over the lazy dog.
+                                                    </p>
+                                                    <p className="text-base-content/70 text-sm">
+                                                        The quick brown fox jumps over the lazy dog.
+                                                    </p>
+                                                </div>
+
                                             </div>
                                         </button>
                                     );
@@ -213,7 +246,7 @@ const ThemeModal = ({ onClose }) => {
                     </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Modal Footer with Action Buttons */}
                 {/* <div
                     id="pnlActionButtons"
                     className="flex justify-end space-x-4 p-4 border-t border-base-300 bg-base-100/90 backdrop-blur-md rounded-b-md"
