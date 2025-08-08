@@ -37,6 +37,7 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
     const [fileName, setFileName] = useState('');
     const [csvHeaders, setCsvHeaders] = useState([]);
     const [csvRows, setCsvRows] = useState([]);
+    const [rowCount, setRowCount] = useState(0);
     const [fieldMapping, setFieldMapping] = useState({});
     const [isProcessing, setIsProcessing] = useState(false);
     const [importedCount, setImportedCount] = useState(0);
@@ -67,6 +68,7 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
 
                 setCsvHeaders(headers);
                 setCsvRows(rows);
+                setRowCount(results.data.length);
 
                 const initialMapping = {};
                 currentAppFields.forEach(appField => {
@@ -172,6 +174,7 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
         setStep('selectFile');
         setCsvHeaders([]);
         setCsvRows([]);
+        setRowCount(0);
         setFileName('');
         setFieldMapping({});
         if (fileInputRef.current) fileInputRef.current.value = "";
@@ -212,6 +215,13 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                                     {isProcessing ? <LoaderCircle className="w-5 h-5 animate-spin" /> : <Upload className="w-5 h-5" />}
                                     {fileName || 'Choose CSV File'}
                                 </button>
+                                {fileName && rowCount > 0 && (
+                                    <div className="mt-3 p-3 bg-green-900/20 border border-green-800 rounded-lg">
+                                        <p className="text-green-300 text-sm">
+                                            ✓ Your selected file <span className="font-semibold">{fileName}</span> contains <span className="font-semibold">{rowCount}</span> row{rowCount !== 1 ? 's' : ''}.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </>
@@ -223,7 +233,15 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                             <h3 className="text-xl font-bold text-amber-400">Map CSV Fields</h3>
                             <button onClick={onClose} className="text-gray-400 hover:text-white"><X /></button>
                         </div>
-                        <p className="text-sm text-gray-400 mb-4">Match your CSV columns to the app's fields. Required fields are marked with *.</p>
+                        <div className="mb-4">
+                            <p className="text-sm text-gray-400 mb-2">Match your CSV columns to the Humidor Hubs fields. Required fields are marked with *.</p>
+                            <div className="p-2 bg-blue-900/20 border border-blue-800 rounded-lg">
+                                <p className="text-blue-300 text-sm">
+                                    📄 <span className="font-semibold">{fileName}</span> - Ready to import <span className="font-semibold">{rowCount}</span> {dataType}{rowCount !== 1 ? 's' : ''}
+                                </p>
+                            </div>
+                        </div>
+
                         <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
                             {currentAppFields.map(appField => (
                                 <div key={appField.key} className="grid grid-cols-2 gap-4 items-center">

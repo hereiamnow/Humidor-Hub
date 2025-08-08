@@ -38,7 +38,7 @@ const AchievementsPanel = ({ cigars, humidors, showTitleIcon = true }) => {
                 <achievement.icon className={`w-8 h-8 ${achievement.earned ? 'text-amber-400' : 'text-gray-400'}`} />
             </div>
             <p className={`mt-2 text-xs text-center font-semibold ${achievement.earned ? 'text-white' : 'text-gray-500'}`}>{achievement.name}</p>
-            <div className="absolute bottom-full mb-2 w-48 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+            <div className="absolute bottom-full mb-2 w-48 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-100">
                 {achievement.description}
                 {!achievement.earned && <span className="block text-gray-400">(Not earned yet)</span>}
             </div>
