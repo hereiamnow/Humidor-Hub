@@ -55,6 +55,7 @@ import {
     BrowseByPanel,
     InteractiveWorldMap
 } from '../Panels';
+import RoxysCorner from '../Panels/RoxysCorner';
 
 import PageHeader from '../UI/PageHeader';
 import DashboardStatsCards from '../UI/HumidorStatsCards';
@@ -431,53 +432,45 @@ const Dashboard = ({
                 {/* Roxy's Corner panel */}
                 {/* Show when NO humidors OR cigars are present */}
                 {(humidors?.length === 0 || cigars?.length === 0) && (
-                    <div
-                        id="pnlRoxysCorner"
-                        className="card bg-accent/10 border border-accent/20 accent-content p-6 text-left">
-
-                        <h3 className="card-title flex items-center justify-left mb-3">
-                            <Wind id="pnlIcon" className="w-5 h-5 mr-2" /> Let's get Started!
-                        </h3>
-
-                        <p id="roxyMessage"
-                            className="text-sm mb-4">
-                            Looks like your humidor collection is empty! Add your first humidor and some cigars to get insightful analytics on your dashboard.
-                        </p>
-
-                        <div className="card-actions">
-                            <button
-                                id="btnAddHumidor"
-                                onClick={() => navigate('AddHumidor')}
-                                className="btn btn-primary flex-1"
-                            >
-                                Add Humidor
-                            </button>
-                            <button
-                                id="btnAddCigar"
-                                onClick={handleAddCigarClick}
-                                disabled={humidors?.length === 0} // Enable button if humidors exist
-                                title="Add a humidor first to add cigars"
-                                className="btn flex-1"
-                            >
-                                Add Cigar
-                            </button>
+                    <RoxysCorner panalTitle={"Let's get Started!"}>
+                        <div className="text-left">
+                            <p className="text-sm mb-4">
+                                Looks like your humidor collection is empty! Add your first humidor and some cigars to get insightful analytics on your dashboard.
+                            </p>
+                            <div className="flex gap-3">
+                                <button
+                                    id="btnAddHumidor"
+                                    onClick={() => navigate('AddHumidor')}
+                                    className="btn btn-primary flex-1"
+                                >
+                                    Add Humidor
+                                </button>
+                                <button
+                                    id="btnAddCigar"
+                                    onClick={handleAddCigarClick}
+                                    disabled={humidors?.length === 0}
+                                    title="Add a humidor first to add cigars"
+                                    className="btn flex-1"
+                                >
+                                    Add Cigar
+                                </button>
+                            </div>
                         </div>
-
-                    </div>
+                    </RoxysCorner>
                 )}
 
                 {/* Roxy's Corner panel */}
                 {hasHumidors && hasCigars && (
-                    <div 
-                    id="pnlRoxysCorner_EmptyHumidors"
-                    tabIndex={0} 
-                    className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
+                    <div
+                        id="pnlRoxysCorner_EmptyHumidors"
+                        tabIndex={0}
+                        className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
                         <input type="checkbox" checked={!panelStates.roxy} onChange={() => handlePanelToggle('roxy')} />
 
                         <div className="collapse-title font-bold text-lg flex items-center">
                             <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
                         </div>
-                        
+
                         <div className="collapse-content">
                             {hasHumidors && !hasCigars ? (
                                 <div className="text-sm mb-4">

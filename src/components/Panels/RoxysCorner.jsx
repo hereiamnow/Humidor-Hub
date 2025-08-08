@@ -13,6 +13,7 @@
  *
  * @param {Object} props - Component props
  * @param {Object} props.subscription - Optional subscription object (falls back to context)
+ * @param {string} props.panalTitle - Optional custom title (defaults to "Roxy's Corner")
  * @param {React.ReactNode} props.children - Optional custom content to display
  *
  */
@@ -22,7 +23,7 @@ import { Wind, Lock } from 'lucide-react';
 import { useSubscription } from '../../contexts/SubscriptionContext';
 
 
-const RoxysCorner = ({ subscription: propSubscription, children }) => {
+const RoxysCorner = ({ subscription: propSubscription, isCollapsible, panalTitle, children }) => {
     // Get subscription context values
     const { subscription: contextSubscription, isPremium, isFree } = useSubscription();
     console.log('RoxysCorner: context values', { contextSubscription, isPremium, isFree });
@@ -40,15 +41,25 @@ const RoxysCorner = ({ subscription: propSubscription, children }) => {
     const icon = isPremium ? Wind : Lock;
 
     return (
-        <div id="pnlRoxysCorner" className={`bg-gradient-to-r ${tierColor} p-4 rounded-md border ${borderColor} shadow-lg`}>
+        // isCollapsible= True: Add collapse-arrow or collapse-plus class if component is collapsable
+        <div id="pnlRoxysCorner"
+            tabIndex={0}
+            className={`bg-gradient-to-r ${tierColor} p-4 rounded-md border ${borderColor} shadow-lg`}>
+
+            {/* isCollapsible= True: This chebox is on here when  if component is collapsable */}
+            <input type="checkbox" checked={!panelStates.roxy} onChange={() => handlePanelToggle('roxy')} />
+
+
             {/* Header with subscription-aware icon and title */}
+            {/* isCollapsible= True: Add collapse-title class if component is collapsable */}
             <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-amber-200 text-lg flex items-center">
-                    {React.createElement(icon, { className: "w-5 h-5 mr-2" })} Roxy's Corner
+                <h3 id="pnlIconTitle" className="font-bold text-amber-200 text-lg flex items-center">
+                    {React.createElement(icon, { className: "w-5 h-5 mr-2" })} {panalTitle || "Roxy's Corner"}
                 </h3>
             </div>
 
             {/* Content area - displays children or default subscription messaging */}
+            {/*  isCollapsible= True: Add collapse-content class if component is collapsable*/}
             <div id="pnlRoxysMessage" className="text-gray-300">
                 {children ? (
                     children
