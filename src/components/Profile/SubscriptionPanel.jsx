@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Crown, Lock } from 'lucide-react';
+import { Crown, Lock } from 'lucide-react';
 import { useSubscription } from '../../contexts/SubscriptionContext';
 import { SUBSCRIPTION_LIMITS, SUBSCRIPTION_TIERS } from '../../services/subscriptionService';
 
