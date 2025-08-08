@@ -32,7 +32,7 @@ const ListCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
         <div className="relative" onClick={clickHandler}>
 
 
-            <div className={`card bg-neutral card-xs shadow-sm rounded-md overflow-hidden group cursor-pointer flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
+            <div className={`card glass card-bordered card-compact rounded-sm shadow-lg bg-base-100 border-base-300 cursor-pointer overflow-hidden group flex transition-all duration-200 ${isSelected ? 'ring-2 ring-amber-400' : ''}`}>
                 <div className="card-body" style={{ padding: '12px' }}>
 
                     <div id="card-title" className="flex flex-row justify-between items-start gap-2">

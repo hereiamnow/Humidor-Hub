@@ -710,8 +710,8 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
                     <div
-                        id="pnlRoxysCorner1"
-                        tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+                        id="pnlRoxysCorner_MissingCigarDetails"
+                        tabIndex={0} className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
                         <input type="checkbox" className="peer" checked={!isRoxyPanel1Collapsed} onChange={() => setIsRoxyPanel1Collapsed(!isRoxyPanel1Collapsed)} />
 
                         <div className="collapse-title font-semibold flex justify-start items-center">
@@ -740,8 +740,9 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
                     <div
-                        id="pnlRoxysCorner2"
-                        tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
+                        id="pnlRoxysCorner_RequestKey"
+                        tabIndex={0} 
+                        className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
                         <input type="checkbox" className="peer" checked={!isRoxyPanel2Collapsed} onChange={() => setIsRoxyPanel2Collapsed(!isRoxyPanel2Collapsed)} />
 
                         <div className="collapse-title font-semibold flex justify-start items-center">
@@ -753,7 +754,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 Some cigars are missing details and can be auto-filled,
                                 but you need a Gemini API key to use auto-fill!
                             </span>
-                            <div className="w-full p-3 bg-primary/10 border border-primary/20 rounded-md">
+                            <div className="mt-4 p-3 bg-info/10 border border-info/20 rounded-md">
                                 <p className="text-sm text-center">
                                     💡 Add your Gemini API key in Settings to
                                     enable AI-powered auto-fill for missing cigar details!

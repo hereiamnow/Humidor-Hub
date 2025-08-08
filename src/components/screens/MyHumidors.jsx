@@ -666,7 +666,9 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, preFilt
                                 <div
                                     key={humidor.id}
                                     id={`pnlHumidorCard_${humidor.id}`}
-                                    className="card card-compact shadow-md bg-base-100 border border-base-300 cursor-pointer"
+                                    className="card glass card-bordered card-compact rounded-sm shadow-lg bg-base-100 border-base-300 cursor-pointer"
+
+                                    // Debugging Message
                                     onClick={() => {
                                         console.log('HumidorsScreen: Humidor card clicked', { humidorId: humidor.id, name: humidor.name });
                                         navigate('MyHumidor', { humidorId: humidor.id });
@@ -674,18 +676,16 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, preFilt
 
 
 
-                                    <figure className="relative">
-                                        <img src={humidor.image} alt={humidor.name} className="w-full h-32 object-cover" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                                        <div className="absolute bottom-0 left-0 p-4">
-                                            <h2 className="card-title text-white">{humidor.name}</h2>
-                                            <p className="text-sm text-gray-300">{humidor.location}</p>
-                                        </div>
-                                    </figure>
 
-
-
+                                    {/* The Body */}
                                     <div className="card-body">
+                                        {/* The Card Title */}
+                                        <div className="card-title flex items-start">
+                                            <h2 className="text-lg font-bold">{humidor.name}</h2>
+                                            <span className="text-xs font-medium">{humidor.type}</span>
+                                        </div>
+
+
                                         <div className="flex gap-2">
                                             <div className="flex flex-col justify-center items-center space-y-2 pr-2 border-r border-base-300">
                                                 <div className="flex items-center gap-2">
