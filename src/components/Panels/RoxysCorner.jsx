@@ -47,7 +47,7 @@ const RoxysCorner = ({ subscription: propSubscription, isCollapsible = false, is
         <div
             id="pnlRoxysCorner"
             tabIndex={isCollapsible ? 0 : undefined}
-            className={`bg-gradient-to-r ${tierColor} rounded-md border ${borderColor} shadow-lg p-0 ${isCollapsible
+            className={`bg-gradient-to-r ${tierColor} rounded-md border ${borderColor} shadow-lg mb-4 p-0 ${isCollapsible
                     ? 'collapse collapse-plus'
                     : ''
                 }`}>

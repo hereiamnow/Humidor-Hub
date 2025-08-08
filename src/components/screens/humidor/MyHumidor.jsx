@@ -207,8 +207,6 @@ const MyHumidor = ({ humidor, navigate, cigars, humidors, db, appId, userId, set
         }
     }, [viewMode]);
 
-    // === MEMOIZED CALCULATIONS ===
-
     /**
      * Filters and sorts cigars based on current search query, filters, and sort settings
      * This is memoized to prevent unnecessary recalculations on every render
@@ -756,6 +754,8 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                     </RoxysCorner>
                 )}
 
+
+                {/* Show this Alert when user has Filtered and sorted cigars*/}
                 {isFilterActive && (
                     <div role="alert" className="alert alert-vertical sm:alert-horizontal">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info h-6 w-6 shrink-0">

@@ -45,8 +45,10 @@ const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
     return (
         <div className="relative" onClick={clickHandler}>
 
-            <div className={`card bg-base-200 shadow-sm overflow-hidden group cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-primary' : ''}`}>
+            <div className={`card card-compact shadow-lg bg-base-200 rounded-md  overflow-hidden group cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-primary' : ''}`}>
                 <div className="relative">
+
+
                     <figure>
                         <img
                             src={cigar.image || `https://placehold.co/400x600/5a3825/ffffff?text=${cigar.brand.replace(/\s/g, '+')}`}
@@ -54,13 +56,14 @@ const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
                             className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                     </figure>
+
+
                     <div className="absolute top-2 left-2 bg-black/60 rounded-lg px-2 py-1 max-w-[70%]">
                         <p className="text-base-content/80 text-xs font-semibold uppercase truncate flex items-center gap-1">
-                            {cigar.brand}
-
-                        </p>
+                            {cigar.brand}</p>
                         <h3 className="text-base-content font-bold text-sm truncate">{cigar.name}</h3>
                     </div>
+
 
                     {/* Position IsPuroBadge and RatingBadge on the same row at the bottom right */}
                     <div id="pnlIsPuroRating" className="absolute bottom-2 right-2 flex flex-row items-end gap-1 z-10">
@@ -73,10 +76,12 @@ const GridCigarCard = ({ cigar, navigate, isSelectMode, isSelected, onSelect }) 
                             size="md"
                         />
                     </div>
-                </div>
 
+                </div>
+                {/* End relative class */}
 
                 <div className="card-body p-4">
+
                     {/* Details */}
                     <div className="text-xs space-y-2">
                         <div id="pnlShapeSizeStrength" className="grid grid-cols-3 gap-x-2 mb-2 text-left">
