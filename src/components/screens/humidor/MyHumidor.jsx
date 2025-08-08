@@ -74,6 +74,7 @@ import FilterSortModal from '../../UI/FilterSortModal.jsx';
 import GridCigarCard from '../../Cigar/GridCigarCard.jsx';
 import ListCigarCard from '../../Cigar/ListCigarCard.jsx';
 import BottomDrawer from '../../UI/BottomDrawer.jsx';
+import RoxysCorner from '../../Panels/RoxysCorner.jsx';
 
 // Menu Component imports
 import HumidorActionMenu from '../../Menus/HumidorActionMenu.jsx';
@@ -709,16 +710,12 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                 {/* Roxy's Corner: Show the autofill banner if enabled, there are cigars with missing 
                 details, AND user has valid Gemini API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && hasGeminiKey && !keyCheckLoading && (
-                    <div
-                        id="pnlRoxysCorner_MissingCigarDetails"
-                        tabIndex={0} className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
-                        <input type="checkbox" className="peer" checked={!isRoxyPanel1Collapsed} onChange={() => setIsRoxyPanel1Collapsed(!isRoxyPanel1Collapsed)} />
-
-                        <div className="collapse-title font-semibold flex justify-start items-center">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </div>
-
-                        <div className="collapse-content text-sm">
+                    <RoxysCorner
+                        isCollapsible={true}
+                        isCollapsed={isRoxyPanel1Collapsed}
+                        onToggle={() => setIsRoxyPanel1Collapsed(!isRoxyPanel1Collapsed)}
+                    >
+                        <div className="text-sm">
                             <span className="text-sm mb-3 block">
                                 Some imported cigars are missing many details. Let Roxy auto-fill them for you!
                             </span>
@@ -726,7 +723,7 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 id="btnAutofillMissingDetails"
                                 onClick={handleAutofillMissingDetails}
                                 disabled={isAutofilling}
-                                className="btn btn-secondary w-full"
+                                className="btn btn-primary w-full"
                             >
                                 {isAutofilling ? "Auto-filling..." : "Auto-fill Details"}
                             </button>
@@ -734,22 +731,17 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 <div className="mt-2 text-xs">{autofillStatus}</div>
                             )}
                         </div>
-                    </div>
+                    </RoxysCorner>
                 )}
 
                 {/* Show message when user has cigars with missing details but no API key */}
                 {showAutofillBanner && cigarsWithMissingDetails.length > 0 && !hasGeminiKey && !keyCheckLoading && user && (
-                    <div
-                        id="pnlRoxysCorner_RequestKey"
-                        tabIndex={0} 
-                        className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
-                        <input type="checkbox" className="peer" checked={!isRoxyPanel2Collapsed} onChange={() => setIsRoxyPanel2Collapsed(!isRoxyPanel2Collapsed)} />
-
-                        <div className="collapse-title font-semibold flex justify-start items-center">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </div>
-
-                        <div className="collapse-content text-sm ">
+                    <RoxysCorner
+                        isCollapsible={true}
+                        isCollapsed={isRoxyPanel2Collapsed}
+                        onToggle={() => setIsRoxyPanel2Collapsed(!isRoxyPanel2Collapsed)}
+                    >
+                        <div className="text-sm">
                             <span className="text-sm mb-3 block">
                                 Some cigars are missing details and can be auto-filled,
                                 but you need a Gemini API key to use auto-fill!
@@ -761,27 +753,27 @@ If you cannot determine a value, use "" or [] or 0. Only return the JSON object.
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </RoxysCorner>
                 )}
 
                 {isFilterActive && (
-                        <div role="alert" className="alert alert-vertical sm:alert-horizontal">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info h-6 w-6 shrink-0">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <div>
-                                <h3 className="font-bold">Filtering by:</h3>
-                                <div className="flex items-center gap-2 flex-wrap text-xs">
+                    <div role="alert" className="alert alert-vertical sm:alert-horizontal">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info h-6 w-6 shrink-0">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h3 className="font-bold">Filtering by:</h3>
+                            <div className="flex items-center gap-2 flex-wrap text-xs">
                                 {filters.brand && <span className="badge badge-sm rounded-sm badge-primary">{filters.brand}</span>}
                                 {filters.country && <span className="badge badge-sm rounded-sm badge-primary">{filters.country}</span>}
                                 {filters.strength && <span className="badge badge-sm rounded-sm badge-primary">{filters.strength}</span>}
                                 {filters.flavorNotes.map(note => <span key={note} className="badge badge-sm rounded-sm badge-accent">{note}</span>)}
-                                </div>
                             </div>
-                            <button onClick={handleClearFilters} className="btn btn-accent btn-xs">
-                                Clear
-                            </button>
                         </div>
+                        <button onClick={handleClearFilters} className="btn btn-accent btn-xs">
+                            Clear
+                        </button>
+                    </div>
                 )}
 
                 {/* Change the grid layout columns via toggle */}

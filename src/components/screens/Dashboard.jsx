@@ -430,7 +430,7 @@ const Dashboard = ({
             <div className="space-y-6">
 
                 {/* Roxy's Corner panel */}
-                {/* Show when NO humidors OR cigars are present */}
+                {/* Show when NO humidors -OR- NO cigars are present */}
                 {(humidors?.length === 0 || cigars?.length === 0) && (
                     <RoxysCorner panalTitle={"Let's get Started!"}>
                         <div className="text-left">
@@ -461,57 +461,53 @@ const Dashboard = ({
 
                 {/* Roxy's Corner panel */}
                 {hasHumidors && hasCigars && (
-                    <div
-                        id="pnlRoxysCorner_EmptyHumidors"
-                        tabIndex={0}
-                        className="collapse collapse-plus border bg-accent border-accent rounded-md shadow-sm mb-4">
-                        <input type="checkbox" checked={!panelStates.roxy} onChange={() => handlePanelToggle('roxy')} />
-
-                        <div className="collapse-title font-bold text-lg flex items-center">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </div>
-
-                        <div className="collapse-content">
-                            {hasHumidors && !hasCigars ? (
-                                <div className="text-sm mb-4">
-                                    <p className="mb-3">Woof! Your humidors are looking a bit empty. Add some cigars or move them here to get personalized insights and organize your collection!</p>
-                                    <div className="flex flex-col sm:flex-row gap-3">
-                                        <button
-                                            onClick={() => navigate('AddCigar', { humidorId: humidors.length > 0 ? humidors[0].id : null })}
-                                            className="btn btn-primary btn-outline flex-1"
-                                        >
-                                            <Plus className="w-4 h-4" /> Add Cigar
-                                        </button>
-                                        <button
-                                            onClick={() => navigate('HumidorsScreen')}
-                                            className="btn btn-info btn-outline flex-1"
-                                        >
-                                            <Move className="w-4 h-4" /> Manage & Move
-                                        </button>
-                                    </div>
+                    <RoxysCorner
+                        isCollapsible={true}
+                        isCollapsed={panelStates.roxy}
+                        onToggle={() => handlePanelToggle('roxy')}
+                    >
+                        {hasHumidors && !hasCigars ? (
+                            <div className="text-sm mb-4">
+                                <p className="mb-3">Woof! Your humidors are looking a bit empty. Add some cigars or move them here to get personalized insights and organize your collection!</p>
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <button
+                                        onClick={() => navigate('AddCigar', { humidorId: humidors.length > 0 ? humidors[0].id : null })}
+                                        className="btn btn-primary btn-outline flex-1"
+                                    >
+                                        <Plus className="w-4 h-4" /> Add Cigar
+                                    </button>
+                                    <button
+                                        onClick={() => navigate('HumidorsScreen')}
+                                        className="btn btn-info btn-outline flex-1"
+                                    >
+                                        <Move className="w-4 h-4" /> Manage & Move
+                                    </button>
                                 </div>
-                            ) : (
-                                <>
-                                    <p className="text-sm">{roxyTip}</p>
-                                    {hasCigars && hasGeminiKey && !keyCheckLoading && (
-                                        <button
-                                            onClick={handleSummarizeCollection}
-                                            className="btn btn-accent btn-outline mt-4 w-full"
-                                        >
-                                            <Sparkles className="w-5 h-5 mr-2" /> Ask Roxy for a Summary
-                                        </button>
-                                    )}
-                                    {hasCigars && !hasGeminiKey && !keyCheckLoading && (
-                                        <div className="mt-4 p-3 bg-info/10 border border-info/20 rounded-md">
-                                            <p className="info-content text-sm text-center">
-                                                💡 Add your Gemini API key in Settings to get AI-powered collection summaries from Roxy!
-                                            </p>
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </div>
+                            </div>
+                        ) : (
+                            <>
+                                {/* Roxy's random tip of the day! */}
+                                <p className="text-sm">{roxyTip}</p>
+
+
+                                {hasCigars && hasGeminiKey && !keyCheckLoading && (
+                                    <button
+                                        onClick={handleSummarizeCollection}
+                                        className="btn btn-accent btn-outline mt-4 w-full"
+                                    >
+                                        <Sparkles className="w-5 h-5 mr-2" /> Ask Roxy for a Summary
+                                    </button>
+                                )}
+                                {hasCigars && !hasGeminiKey && !keyCheckLoading && (
+                                    <div className="mt-4 p-3 bg-info/10 border border-info/20 rounded-md">
+                                        <p className="info-content text-sm text-center">
+                                            💡 Add your Gemini API key in Settings to get AI-powered collection summaries from Roxy!
+                                        </p>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </RoxysCorner>
                 )}
 
                 {/* --- Achievements Panel --- */}

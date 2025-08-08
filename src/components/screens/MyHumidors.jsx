@@ -18,6 +18,7 @@ import ListCigarCard from '../Cigar/ListCigarCard';
 import GridCigarCard from '../Cigar/GridCigarCard';
 import PageHeader from '../UI/PageHeader';
 import { BrowseByPanel } from '../Panels';
+import RoxysCorner from '../Panels/RoxysCorner';
 
 import { parseHumidorSize } from '../../utils/formatUtils';
 
@@ -759,26 +760,19 @@ const HumidorsScreen = ({ navigate, cigars, humidors, db, appId, userId, preFilt
             {/* ===== ROXYS CORNER - NO HUMIDORS MESSAGE ===== */}
             {/* Displayed when user has no humidors - encourages adding a humidor */}
             {humidors.length === 0 && (
-                <div
-                    id="pnlRoxysCorner_NoHumidors"
-                    className="bg-secondary/20 border border-secondary rounded-md p-6 text-left">
-
-                    <h3 className="font-bold text-secondary-content text-lg flex items-center justify-left mb-3">
-                        <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                    </h3>
-
-                    <p id="roxyMessage"
-                        className="text-secondary-content/80 text-sm mb-4">
-                        Ruff! You need to add a humidor before you can add any cigars. Let's get your first one set up!
-                    </p>
-
-                    <button
-                        onClick={() => navigate('AddHumidor')}
-                        className="btn btn-secondary w-full"
-                    >
-                        <Plus className="w-4 h-4" /> Add a Humidor
-                    </button>
-                </div>
+                <RoxysCorner>
+                    <div className="text-left">
+                        <p className="text-sm mb-4">
+                            Ruff! You need to add a humidor before you can add any cigars. Let's get your first one set up!
+                        </p>
+                        <button
+                            onClick={() => navigate('AddHumidor')}
+                            className="btn btn-primary w-full"
+                        >
+                            <Plus className="w-4 h-4" /> Add Humidor
+                        </button>
+                    </div>
+                </RoxysCorner>
             )}
 
             {/* Browse By Panel Component */}

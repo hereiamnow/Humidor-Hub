@@ -13,6 +13,9 @@
  *
  * @param {Object} props - Component props
  * @param {Object} props.subscription - Optional subscription object (falls back to context)
+ * @param {boolean} props.isCollapsible - Whether the panel should be collapsible
+ * @param {boolean} props.isCollapsed - Current collapsed state (only used if isCollapsible is true)
+ * @param {Function} props.onToggle - Toggle function for collapsible state
  * @param {string} props.panalTitle - Optional custom title (defaults to "Roxy's Corner")
  * @param {React.ReactNode} props.children - Optional custom content to display
  *
@@ -23,7 +26,7 @@ import { Wind, Lock } from 'lucide-react';
 import { useSubscription } from '../../contexts/SubscriptionContext';
 
 
-const RoxysCorner = ({ subscription: propSubscription, isCollapsible, panalTitle, children }) => {
+const RoxysCorner = ({ subscription: propSubscription, isCollapsible = false, isCollapsed = false, onToggle, panalTitle, children }) => {
     // Get subscription context values
     const { subscription: contextSubscription, isPremium, isFree } = useSubscription();
     console.log('RoxysCorner: context values', { contextSubscription, isPremium, isFree });
@@ -41,26 +44,40 @@ const RoxysCorner = ({ subscription: propSubscription, isCollapsible, panalTitle
     const icon = isPremium ? Wind : Lock;
 
     return (
-        // isCollapsible= True: Add collapse-arrow or collapse-plus class if component is collapsable
-        <div id="pnlRoxysCorner"
-            tabIndex={0}
-            className={`bg-gradient-to-r ${tierColor} p-4 rounded-md border ${borderColor} shadow-lg`}>
+        <div
+            id="pnlRoxysCorner"
+            tabIndex={isCollapsible ? 0 : undefined}
+            className={`bg-gradient-to-r ${tierColor} rounded-md border ${borderColor} shadow-lg p-0 ${isCollapsible
+                    ? 'collapse collapse-plus'
+                    : ''
+                }`}>
 
-            {/* isCollapsible= True: This chebox is on here when  if component is collapsable */}
-            <input type="checkbox" checked={!panelStates.roxy} onChange={() => handlePanelToggle('roxy')} />
-
+            {/* Checkbox for collapsible functionality */}
+            {isCollapsible && (
+                <input
+                    type="checkbox"
+                    checked={!isCollapsed}
+                    onChange={onToggle}
+                />
+            )}
 
             {/* Header with subscription-aware icon and title */}
-            {/* isCollapsible= True: Add collapse-title class if component is collapsable */}
-            <div className="flex justify-between items-center mb-4">
+            <div className={`flex justify-between items-center mb-0 font-bold text-lg ${isCollapsible
+                    ? 'collapse-title'
+                    : ''
+                }`}>
                 <h3 id="pnlIconTitle" className="font-bold text-amber-200 text-lg flex items-center">
                     {React.createElement(icon, { className: "w-5 h-5 mr-2" })} {panalTitle || "Roxy's Corner"}
                 </h3>
             </div>
 
             {/* Content area - displays children or default subscription messaging */}
-            {/*  isCollapsible= True: Add collapse-content class if component is collapsable*/}
-            <div id="pnlRoxysMessage" className="text-gray-300">
+            <div
+                id="pnlRoxysMessage"
+                className={`text-gray-300 ${isCollapsible
+                        ? 'collapse-content'
+                        : ''
+                    }`}>
                 {children ? (
                     children
                 ) : (

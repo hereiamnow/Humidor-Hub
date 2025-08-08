@@ -26,6 +26,7 @@ import { doc, deleteDoc } from 'firebase/firestore';
 import JournalEntryCard from '../Journal/JournalEntryCard';
 import GridJournalEntryCard from '../Journal/GridJournalEntryCard';
 import PageHeader from '../UI/PageHeader';
+import RoxysCorner from '../Panels/RoxysCorner';
 
 
 const CigarJournalScreen = ({ navigate, journalEntries, db, appId, userId }) => {
@@ -201,19 +202,14 @@ const CigarJournalScreen = ({ navigate, journalEntries, db, appId, userId }) => 
                     </div>
                 ) : (
                     // Roxy's Corner Message: No entries message
-                    <div id="pnlRoxysCorner_NoEntries"
-                        className="bg-secondary/20 border border-secondary rounded-md p-6 text-left">
-
-                        <h3 className="font-bold text-secondary-content text-lg flex items-center justify-left mb-3">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </h3>
-
-                        <p id="roxyMessage"
-                            className="text-secondary-content/80 text-sm mb-4">
-                            Your Journal is Empty. You haven't logged any cigar experiences yet.
-                            Roxy suggests you start by adding a humidor and cigars to your collection.
-                        </p>
-                    </div>
+                    <RoxysCorner>
+                        <div className="text-left">
+                            <p className="text-sm mb-4">
+                                Your Journal is Empty. You haven't logged any cigar experiences yet.
+                                Roxy suggests you start by adding a humidor and cigars to your collection.
+                            </p>
+                        </div>
+                    </RoxysCorner>
                 )}
 
                 {/* Delete Confirmation Modal */}

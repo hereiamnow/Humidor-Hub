@@ -18,6 +18,7 @@
 import React, { useState } from 'react';
 import { Wind, Plus, Bell } from 'lucide-react';
 import PageHeader from '../UI/PageHeader';
+import RoxysCorner from '../Panels/RoxysCorner';
 const AlertsScreen = ({ navigate, humidors }) => {
     // Debug: Log component props on render
     console.log('AlertsScreen: Component rendered with props:', {
@@ -83,25 +84,19 @@ const AlertsScreen = ({ navigate, humidors }) => {
                         </div>
                     ))
                 ) : (
-                    <div
-                        id="pnlRoxysCorner_NoHumidors"
-                        className="card bg-primary/10 border border-primary/20 text-primary-content p-6 text-left">
-                        <h3 className="card-title flex items-center justify-left mb-3">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
-                        </h3>
-                        <p id="roxyMessage"
-                            className="text-sm mb-4">
-                            Ruff! You need to add a humidor before you can set up any alerts. Let's get your first one set up!
-                        </p>
-                        <div className="card-actions">
+                    <RoxysCorner>
+                        <div className="text-left">
+                            <p className="text-sm mb-4">
+                                Ruff! You need to add a humidor before you can set up any alerts. Let's get your first one set up!
+                            </p>
                             <button
                                 onClick={() => navigate('AddHumidor')}
                                 className="btn btn-primary w-full"
                             >
-                                <Plus className="w-4 h-4" /> Add a Humidor
+                                <Plus className="w-4 h-4" /> Add Humidor
                             </button>
                         </div>
-                    </div>
+                    </RoxysCorner>
                 )}
             </div>
         </div>
