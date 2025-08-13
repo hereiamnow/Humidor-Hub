@@ -14,7 +14,10 @@ import React, { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import FontPicker from './FontPicker';
 
-const FontsScreen = ({ navigate, selectedFont, setSelectedFont }) => {
+import { useAppContext } from '../../../contexts/AppContext';
+
+const FontsScreen = ({ navigate }) => {
+    const { selectedFont, setSelectedFont } = useAppContext();
     // Local state for the font preview. Initialized with the currently active app font.
     const [previewFont, setPreviewFont] = useState(selectedFont);
 

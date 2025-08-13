@@ -12,7 +12,7 @@
  * the main application structure with proper separation of concerns.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 
 // Custom Hooks
 import { useFirebaseAuth } from './hooks/useFirebaseAuth';
@@ -26,23 +26,15 @@ import FirebaseAuthUI from './components/Screens/FirebaseAuthUI';
 
 // Contexts
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
+import { AppProvider, useAppContext } from './contexts/AppContext';
 
 // Constants
-import { fontOptions } from './constants/fontOptions';
 import { firebaseConfigExport } from './firebase';
 
-export default function App() {
-// Check Mobile
-    const isMobile = !!window.Capacitor;
-
-
-    // Firebase authentication and database
+function AppContent() {
+    const { selectedFont } = useAppContext();
     const { db, auth, userId, isLoading: authLoading, error: authError } = useFirebaseAuth();
-    
-    // Navigation state
     const { navigation, navigate } = useNavigation('Dashboard');
-    
-    // Firestore data
     const { 
         cigars, 
         humidors, 
@@ -51,35 +43,6 @@ export default function App() {
         dataError 
     } = useFirestoreData(db, userId, firebaseConfigExport.appId);
 
-    // Application state
-    const [selectedFont, setSelectedFont] = useState(fontOptions[0]);
-    const [goveeApiKey, setGoveeApiKey] = useState('');
-    const [goveeDevices, setGoveeDevices] = useState([]);
-
-    // Dashboard panel visibility state
-    const [dashboardPanelVisibility, setDashboardPanelVisibility] = useState({
-        showAchievements: true,
-        showAgingWellPanel: true,
-        showWrapperPanel: false,
-        showStrengthPanel: false,
-        showCountryPanel: false,
-        showInventoryAnalysis: true,
-        showWorldMap: false
-    });
-
-    // Dashboard panel states (open/closed)
-    const [dashboardPanelStates, setDashboardPanelStates] = useState({
-        roxy: true,
-        liveEnvironment: true,
-        inventoryAnalysis: true,
-        wrapper: true,
-        strength: true,
-        country: true,
-        worldMap: true,
-        agingWell: true
-    });
-
-    // Handle authentication errors
     if (authError) {
         return (
             <div className="w-full h-screen flex flex-col items-center justify-center bg-base-100">
@@ -88,7 +51,6 @@ export default function App() {
         );
     }
 
-    // Handle data errors
     if (dataError) {
         return (
             <div className="w-full h-screen flex flex-col items-center justify-center bg-base-100">
@@ -97,7 +59,6 @@ export default function App() {
         );
     }
 
-    // Show Firebase Auth UI if user is not signed in
     if (!userId && auth) {
         return <FirebaseAuthUI auth={auth} onSignIn={() => {}} />;
     }
@@ -105,39 +66,40 @@ export default function App() {
     const isLoading = authLoading || isDataLoading;
 
     return (
-        <SubscriptionProvider db={db} appId={firebaseConfigExport.appId} userId={userId}>
-            <div
-                className="min-h-screen bg-base-100 text-base-content"
-                style={{
-                    fontFamily: selectedFont.body,
-                }}
-            >
-                <div className="max-w-md mx-auto">
-                    <AppRouter
-                        navigation={navigation}
-                        navigate={navigate}
-                        cigars={cigars}
-                        humidors={humidors}
-                        journalEntries={journalEntries}
-                        db={db}
-                        appId={firebaseConfigExport.appId}
-                        userId={userId}
-                        auth={auth}
-                        isLoading={isLoading}
-                        dashboardPanelVisibility={dashboardPanelVisibility}
-                        setDashboardPanelVisibility={setDashboardPanelVisibility}
-                        dashboardPanelStates={dashboardPanelStates}
-                        setDashboardPanelStates={setDashboardPanelStates}
-                        selectedFont={selectedFont}
-                        setSelectedFont={setSelectedFont}
-                        goveeApiKey={goveeApiKey}
-                        setGoveeApiKey={setGoveeApiKey}
-                        goveeDevices={goveeDevices}
-                        setGoveeDevices={setGoveeDevices}
-                    />
-                </div>
-                <BottomNav activeScreen={navigation.screen} navigate={navigate} />
+        <div
+            className="min-h-screen bg-base-100 text-base-content"
+            style={{
+                fontFamily: selectedFont.body,
+            }}
+        >
+            <div className="max-w-md mx-auto">
+                <AppRouter
+                    navigation={navigation}
+                    navigate={navigate}
+                    cigars={cigars}
+                    humidors={humidors}
+                    journalEntries={journalEntries}
+                    db={db}
+                    appId={firebaseConfigExport.appId}
+                    userId={userId}
+                    auth={auth}
+                    isLoading={isLoading}
+                />
             </div>
+            <BottomNav activeScreen={navigation.screen} navigate={navigate} />
+        </div>
+    );
+}
+
+
+export default function App() {
+    const { db, auth, userId } = useFirebaseAuth();
+
+    return (
+        <SubscriptionProvider db={db} appId={firebaseConfigExport.appId} userId={userId}>
+            <AppProvider>
+                <AppContent />
+            </AppProvider>
         </SubscriptionProvider>
     );
 }

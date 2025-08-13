@@ -17,7 +17,10 @@
 import React from 'react';
 import { ChevronLeft } from 'lucide-react';
 
-const DashboardSettingsScreen = ({ navigate, dashboardPanelVisibility, setDashboardPanelVisibility }) => {
+import { useAppContext } from '../../../contexts/AppContext';
+
+const DashboardSettingsScreen = ({ navigate }) => {
+    const { dashboardPanelVisibility, setDashboardPanelVisibility } = useAppContext();
     const ToggleSwitch = ({ id, label, isChecked, onToggle }) => (
         <div className="form-control">
             <label htmlFor={id} className="label cursor-pointer">

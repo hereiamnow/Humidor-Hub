@@ -65,29 +65,25 @@ import AchievementsPanel from '../Profile/AchievementsPanel';
 import { countryCategories } from '../../constants/countryCategories';
 import { strengthCategories } from '../../constants/strengthCategories';
 
+import { useAppContext } from '../../contexts/AppContext';
+
 const Dashboard = ({
     navigate,
     cigars,
-    humidors,
-    showWrapperPanel,
-    showStrengthPanel,
-    showCountryPanel,
-    showInventoryAnalysis,
-    panelStates,
-    setPanelStates,
-    dashboardPanelVisibility
+    humidors
 }) => {
-    // Debug: Log props on component render
-    console.log('Dashboard props:', {
-        cigarsCount: cigars?.length || 0,
-        humidorsCount: humidors?.length || 0,
+    const {
+        dashboardPanelVisibility,
+        dashboardPanelStates: panelStates,
+        setDashboardPanelStates: setPanelStates,
+    } = useAppContext();
+
+    const {
         showWrapperPanel,
         showStrengthPanel,
         showCountryPanel,
         showInventoryAnalysis,
-        panelStates,
-        dashboardPanelVisibility
-    });
+    } = dashboardPanelVisibility;
 
     // Firebase auth state
     const [user, authLoading, authError] = useAuthState(auth);

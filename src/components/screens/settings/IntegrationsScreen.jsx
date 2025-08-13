@@ -19,7 +19,10 @@ import { ChevronLeft, LoaderCircle, Zap } from 'lucide-react';
 // Import services
 import { fetchGoveeDevices } from '../../../services/goveeService';
 
-const IntegrationsScreen = ({ navigate, goveeApiKey, setGoveeApiKey, goveeDevices, setGoveeDevices }) => {
+import { useAppContext } from '../../../contexts/AppContext';
+
+const IntegrationsScreen = ({ navigate }) => {
+    const { goveeApiKey, setGoveeApiKey, goveeDevices, setGoveeDevices } = useAppContext();
     const [key, setKey] = useState(goveeApiKey || '');
     const [status, setStatus] = useState(goveeApiKey ? 'Connected' : 'Not Connected');
     const [isLoading, setIsLoading] = useState(false);

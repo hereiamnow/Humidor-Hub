@@ -34,7 +34,10 @@ import InputField from '../../UI/InputField';
 import TextAreaField from '../../UI/TextAreaField';
 import SmartImageModal from '../../Modals/Composite/SmartImageModal';
 
-const EditHumidor = ({ navigate, db, appId, userId, humidor, goveeApiKey, goveeDevices }) => {
+import { useAppContext } from '../../../contexts/AppContext';
+
+const EditHumidor = ({ navigate, db, appId, userId, humidor }) => {
+    const { goveeApiKey, goveeDevices } = useAppContext();
     const humidorTypes = ["Desktop Humidor", "Cabinet Humidor", "Glass Top Humidor", "Travel Humidor", "Cigar Cooler", "Walk-In Humidor", "Personalized Humidor"];
     const [formData, setFormData] = useState({
         ...humidor,

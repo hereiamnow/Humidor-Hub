@@ -30,15 +30,15 @@ import {
 import ThemeModal from '../Modals/Content/ThemeModal';
 import PageHeader from '../UI/PageHeader';
 
-const SettingsScreen = ({ navigate, dashboardPanelVisibility, setDashboardPanelVisibility, selectedFont, setSelectedFont }) => {
-    // Debug: Log component props on render
-    console.log('SettingsScreen: Component rendered with props:', {
-        dashboardPanelVisibility,
-        selectedFont,
-        hasNavigate: typeof navigate === 'function',
-    });
+import { useAppContext } from '../../contexts/AppContext';
 
-    console.log('SettingsScreen: Dashboard panel visibility settings:', dashboardPanelVisibility);
+const SettingsScreen = ({ navigate }) => {
+    const {
+        dashboardPanelVisibility,
+        setDashboardPanelVisibility,
+        selectedFont,
+        setSelectedFont
+    } = useAppContext();
 
     const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
     const appVersion = process.env.REACT_APP_VERSION || '1.1.0-dev';

@@ -50,17 +50,7 @@ const AppRouter = ({
     appId,
     userId,
     auth,
-    isLoading,
-    dashboardPanelVisibility,
-    setDashboardPanelVisibility,
-    dashboardPanelStates,
-    setDashboardPanelStates,
-    selectedFont,
-    setSelectedFont,
-    goveeApiKey,
-    setGoveeApiKey,
-    goveeDevices,
-    setGoveeDevices
+    isLoading
 }) => {
     const { screen, params } = navigation;
 
@@ -91,13 +81,6 @@ const AppRouter = ({
                     navigate={navigate}
                     cigars={cigars}
                     humidors={humidors}
-                    showWrapperPanel={dashboardPanelVisibility.showWrapperPanel}
-                    showStrengthPanel={dashboardPanelVisibility.showStrengthPanel}
-                    showCountryPanel={dashboardPanelVisibility.showCountryPanel}
-                    showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis}
-                    panelStates={dashboardPanelStates}
-                    setPanelStates={setDashboardPanelStates}
-                    dashboardPanelVisibility={dashboardPanelVisibility}
                 />
             );
 
@@ -188,8 +171,6 @@ const AppRouter = ({
             return (
                 <FontsScreen
                     navigate={navigate}
-                    selectedFont={selectedFont}
-                    setSelectedFont={setSelectedFont}
                 />
             );
 
@@ -197,10 +178,6 @@ const AppRouter = ({
             return (
                 <SettingsScreen
                     navigate={navigate}
-                    dashboardPanelVisibility={dashboardPanelVisibility}
-                    setDashboardPanelVisibility={setDashboardPanelVisibility}
-                    selectedFont={selectedFont}
-                    setSelectedFont={setSelectedFont}
                 />
             );
 
@@ -223,8 +200,6 @@ const AppRouter = ({
                     appId={appId}
                     userId={userId}
                     humidor={humidorToEdit}
-                    goveeApiKey={goveeApiKey}
-                    goveeDevices={goveeDevices}
                 />
             ) : (
                 <div>Humidor not found</div>
@@ -261,8 +236,6 @@ const AppRouter = ({
             return (
                 <DashboardSettingsScreen
                     navigate={navigate}
-                    dashboardPanelVisibility={dashboardPanelVisibility}
-                    setDashboardPanelVisibility={setDashboardPanelVisibility}
                 />
             );
 
@@ -273,10 +246,6 @@ const AppRouter = ({
             return (
                 <IntegrationsScreen
                     navigate={navigate}
-                    goveeApiKey={goveeApiKey}
-                    setGoveeApiKey={setGoveeApiKey}
-                    goveeDevices={goveeDevices}
-                    setGoveeDevices={setGoveeDevices}
                 />
             );
 
@@ -318,12 +287,6 @@ const AppRouter = ({
                     navigate={navigate}
                     cigars={cigars}
                     humidors={humidors}
-                    showWrapperPanel={dashboardPanelVisibility.showWrapperPanel}
-                    showStrengthPanel={dashboardPanelVisibility.showStrengthPanel}
-                    showCountryPanel={dashboardPanelVisibility.showCountryPanel}
-                    showInventoryAnalysis={dashboardPanelVisibility.showInventoryAnalysis}
-                    panelStates={dashboardPanelStates}
-                    setPanelStates={setDashboardPanelStates}
                 />
             );
     }
