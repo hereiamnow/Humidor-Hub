@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "humidor-hub-app",
     "public": "build",
     "ignore": [
       "firebase.json",
