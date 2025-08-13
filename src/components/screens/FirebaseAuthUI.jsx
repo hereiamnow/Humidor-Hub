@@ -209,12 +209,12 @@ export default function CustomAuth({ onSignIn, navigate }) {
                 <h2 className="text-xl font-bold text-white mb-4">{isRegister ? 'Create Account' : 'Sign In'}</h2>
 
                 {verificationSent && !isRegister && (
-                    <div className="bg-amber-100 text-amber-800 rounded-lg p-3 mb-4 text-center text-sm w-full">
+                    <div className="bg-amber-100 text-amber-800 rounded-md p-3 mb-4 text-center text-sm w-full">
                         A verification link was sent to <b>{pendingEmail}</b>. Please check your inbox.
                     </div>
                 )}
                 {verificationSent && isRegister && (
-                    <div className="bg-green-100 text-green-800 rounded-lg p-3 mb-4 text-center text-sm w-full">
+                    <div className="bg-green-100 text-green-800 rounded-md p-3 mb-4 text-center text-sm w-full">
                         Registration successful! A verification link has been sent to <b>{pendingEmail}</b>. Please verify your email before signing in.
                     </div>
                 )}
@@ -224,7 +224,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                     {isRegister && (
                         <>
                             <input
-                                className="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                className="p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
                                 type="text"
                                 placeholder="First Name"
                                 value={firstName}
@@ -235,7 +235,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                                 <div className="text-red-400 text-xs mb-1">{fieldErrors.firstName}</div>
                             )}
                             <input
-                                className="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                className="p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
                                 type="text"
                                 placeholder="Last Name"
                                 value={lastName}
@@ -246,7 +246,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                                 <div className="text-red-400 text-xs mb-1">{fieldErrors.lastName}</div>
                             )}
                             <input
-                                className="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                className="p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
                                 type="tel"
                                 placeholder="Phone"
                                 value={phone}
@@ -259,7 +259,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                         </>
                     )}
                     <input
-                        className="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                        className="p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
                         type="email"
                         placeholder="Email"
                         value={email}
@@ -269,7 +269,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                     />
                     <div className="relative">
                         <input
-                            className="p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 w-full pr-12"
+                            className="p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 w-full pr-12"
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             value={password}
@@ -297,7 +297,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                             )}
                         </button>
                     </div>
-                    <button className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-lg shadow transition-colors" type="submit">
+                    <button className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-md shadow transition-colors" type="submit">
                         {isRegister ? 'Register' : 'Sign In'}
                     </button>
                 </form>
@@ -307,7 +307,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
                     <div className="flex-grow border-t border-gray-700"></div>
                 </div>
                 <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full flex items-center justify-center gap-2 shadow transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md w-full flex items-center justify-center gap-2 shadow transition-colors"
                     onClick={handleGoogleSignIn}
                     type="button"
                 >
