@@ -95,3 +95,10 @@ Follow these steps to set up and run Humidor Hub locally:
 
 ---
 For more details, see the `SETUP.md` and in-app documentation.
+
+
+## License
+
+You may not use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software or any part of it without explicit written permission from the copyright holder.
+
+© 2025 hereiamnow. All rights reserved.

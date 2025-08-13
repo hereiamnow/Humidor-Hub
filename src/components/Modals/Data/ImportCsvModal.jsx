@@ -203,7 +203,9 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                             {dataType === 'cigar' && (
                                 <div>
                                     <label className="text-sm font-medium text-gray-300 mb-1 block">1. Select Destination Humidor</label>
-                                    <select value={selectedHumidor} onChange={(e) => setSelectedHumidor(e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-lg py-2 px-3 text-white">
+                                    <select 
+                                    value={selectedHumidor} onChange={(e) => setSelectedHumidor(e.target.value)} 
+                                    className="select select-primary select-bordered w-full rounded-md py-2 px-3">
                                         {humidors.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
                                     </select>
                                 </div>
@@ -211,7 +213,9 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                             <div>
                                 <label className="text-sm font-medium text-gray-300 mb-1 block">{dataType === 'cigar' ? '2' : '1'}. Choose CSV File</label>
                                 <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept=".csv" />
-                                <button onClick={() => fileInputRef.current.click()} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                                <button
+                                    onClick={() => fileInputRef.current.click()}
+                                    className="btn btn-primary w-full flex items-center justify-center gap-2 font-bold py-3 rounded-md hover:btn-primary/10 transition-colors">
                                     {isProcessing ? <LoaderCircle className="w-5 h-5 animate-spin" /> : <Upload className="w-5 h-5" />}
                                     {fileName || 'Choose CSV File'}
                                 </button>
@@ -246,7 +250,9 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                             {currentAppFields.map(appField => (
                                 <div key={appField.key} className="grid grid-cols-2 gap-4 items-center">
                                     <label className="text-sm font-medium text-gray-200 text-right">{appField.label}{appField.required && '*'}</label>
-                                    <select value={fieldMapping[appField.key] || 'none'} onChange={(e) => handleMappingChange(appField.key, e.target.value)} className="w-full bg-gray-700 border border-gray-600 rounded-lg py-2 px-3 text-white">
+                                    <select
+                                        value={fieldMapping[appField.key] || 'none'} onChange={(e) => handleMappingChange(appField.key, e.target.value)}
+                                        className="select select-primary select-md w-full rounded-md py-2 px-3">
                                         <option value="none">-- Do not import --</option>
                                         {csvHeaders.map(header => <option key={header} value={header}>{header}</option>)}
                                     </select>
@@ -254,10 +260,13 @@ const ImportCsvModal = ({ dataType, data, db, appId, userId, onClose, humidors, 
                             ))}
                         </div>
                         <div className="flex justify-between gap-3 pt-4 mt-4 border-t border-gray-700">
-                            <button onClick={handleReset} className="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors">Back</button>
-                            <button onClick={handleImport} disabled={!isMappingValid} className="bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed">
-                                Import
-                            </button>
+                            <button
+                                onClick={handleReset}
+                                className="btn btn-primary font-bold py-2 px-4 rounded-md  w-1/2 hover:bg-gray-500 transition-colors">Back</button>
+                            <button
+                                onClick={handleImport}
+                                disabled={!isMappingValid}
+                                className="btn btn-secondary font-bold py-2 px-4 rounded-md  w-1/2 hover:bg-amber-600 transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed">Import</button>
                         </div>
                     </>
                 );

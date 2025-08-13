@@ -79,14 +79,15 @@ export default function App() {
         agingWell: true
     });
 
+    // Commented out code due to auto login problem.
     // Handle authentication errors
-    if (authError) {
-        return (
-            <div className="w-full h-screen flex flex-col items-center justify-center bg-base-100">
-                <p className="text-error">Authentication Error: {authError}</p>
-            </div>
-        );
-    }
+    // if (authError) {
+    //     return (
+    //         <div className="w-full h-screen flex flex-col items-center justify-center bg-base-100">
+    //             <p className="text-error">Authentication Error: {authError}</p>
+    //         </div>
+    //     );
+    // }
 
     // Handle data errors
     if (dataError) {

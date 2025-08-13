@@ -68,20 +68,32 @@ const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
             </div>
 
             <p className="text-gray-400 mb-6 leading-relaxed">
-                Manage your Humidor Hub data with comprehensive import and export tools. Back up your collection, 
+                Manage your Humidor Hub data with comprehensive import and export tools. Back up your collection,
                 transfer data between devices, or migrate from other applications using CSV files.
             </p>
 
             <div className="space-y-6">
                 <CollapsiblePanel title="Cigar Collection" description="Import or export your individual cigar data." icon={Cigarette}>
                     <div className="grid grid-cols-1 gap-4">
+
                         <SubscriptionGuard
                             feature="csvImport"
                             customMessage="CSV import is available with Premium subscription. Free users can export their data."
                         >
-                            <button onClick={() => handleOpenImportModal('cigar')} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors"><UploadCloud className="w-5 h-5" />Import Cigars from CSV</button>
+                            <button
+                                onClick={() => handleOpenImportModal('cigar')}
+                                className="btn btn-primary w-full font-bold py-3 rounded-md flex items-center justify-center gap-2 hover:btn-primary/10 transition-colors">
+                                <UploadCloud className="w-5 h-5" />
+                                Import Cigars from CSV
+                            </button>
                         </SubscriptionGuard>
-                        <button onClick={() => handleOpenExportModal('cigar')} className="w-full flex items-center justify-center gap-2 bg-green-600/80 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors"><Download className="w-5 h-5" />Export Cigars</button>
+
+                        <button
+                            onClick={() => handleOpenExportModal('cigar')}
+                            className="btn btn-secondary w-full font-bold py-3 rounded-md flex items-center justify-center gap-2 hover:btn-secondary/10 transition-colors">
+                            <Download className="w-5 h-5" />
+                            Export Cigars
+                        </button>
                     </div>
                 </CollapsiblePanel>
 
@@ -91,15 +103,31 @@ const DataSyncScreen = ({ navigate, db, appId, userId, cigars, humidors }) => {
                             feature="csvImport"
                             customMessage="CSV import is available with Premium subscription. Free users can export their data."
                         >
-                            <button onClick={() => handleOpenImportModal('humidor')} className="w-full flex items-center justify-center gap-2 bg-blue-600/80 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors"><UploadCloud className="w-5 h-5" />Import Humidors from CSV</button>
+                            <button
+                                onClick={() => handleOpenImportModal('humidor')}
+                                className="btn btn-primary w-full font-bold py-3 rounded-md flex items-center justify-center gap-2 hover:btn-primary/10 transition-colors">
+                                <UploadCloud className="w-5 h-5" />
+                                Import Humidors from CSV
+                            </button>
                         </SubscriptionGuard>
-                        <button onClick={() => handleOpenExportModal('humidor')} className="w-full flex items-center justify-center gap-2 bg-green-600/80 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors"><Download className="w-5 h-5" />Export Humidors</button>
+
+                        <button
+                            onClick={() => handleOpenExportModal('humidor')}
+                            className="btn btn-secondary w-full font-bold py-3 rounded-md flex items-center justify-center gap-2 hover:btn-secondary/10 transition-colors">
+                            <Download className="w-5 h-5" />
+                            Export Humidors
+                        </button>
                     </div>
                 </CollapsiblePanel>
 
                 <CollapsiblePanel title="Environment Data" description="Download historical temperature and humidity data for all humidors." icon={Thermometer}>
                     <div className="grid grid-cols-1 gap-4">
-                        <button onClick={exportEnvironmentData} className="w-full flex items-center justify-center gap-2 bg-purple-600/80 text-white font-bold py-3 rounded-lg hover:bg-purple-700 transition-colors"><Download className="w-5 h-5" />Export Environment CSV</button>
+                        <button
+                            onClick={exportEnvironmentData}
+                            className="btn btn-accent w-full font-bold py-3 rounded-md flex items-center justify-center gap-2 hover:btn-accent/10 transition-colors">
+                            <Download className="w-5 h-5" />
+                            Export Environment CSV
+                        </button>
                     </div>
                 </CollapsiblePanel>
             </div>

@@ -87,34 +87,38 @@ const SubscriptionPanel = ({ subscription: propSubscription }) => {
 
             {/* Development Mode Toggle */}
             {(process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
-                <div className="mt-4 pt-4 border-t border-gray-600">
-                    <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-400">Dev Mode: Toggle Tier</span>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                className="sr-only peer"
-                                checked={isPremium}
-                                onChange={(e) => {
-                                    const newTier = e.target.checked ? SUBSCRIPTION_TIERS.PREMIUM : SUBSCRIPTION_TIERS.FREE;
-                                    console.log('SubscriptionPanel: Toggling dev tier to', newTier);
-                                    setDevelopmentTier(newTier);
-                                    if (saveDevelopmentTier) {
-                                        console.log('SubscriptionPanel: Calling saveDevelopmentTier...');
-                                        saveDevelopmentTier(newTier);
-                                    } else {
-                                        console.error('SubscriptionPanel: saveDevelopmentTier function is not available on the context.');
-                                    }
-                                }}
-                            />
-                            <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-                        </label>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                        Current: {isPremium ? 'Premium' : 'Free'}
-                    </div>
-                </div>
+                <hr />
             )}
+
+             {/* Development Mode Toggle */}
+            <div className="mt-4 pt-4 border-t border-gray-600">
+                <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">Dev Mode: Toggle Tier</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={isPremium}
+                            onChange={(e) => {
+                                const newTier = e.target.checked ? SUBSCRIPTION_TIERS.PREMIUM : SUBSCRIPTION_TIERS.FREE;
+                                console.log('SubscriptionPanel: Toggling dev tier to', newTier);
+                                setDevelopmentTier(newTier);
+                                if (saveDevelopmentTier) {
+                                    console.log('SubscriptionPanel: Calling saveDevelopmentTier...');
+                                    saveDevelopmentTier(newTier);
+                                } else {
+                                    console.error('SubscriptionPanel: saveDevelopmentTier function is not available on the context.');
+                                }
+                            }}
+                        />
+                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                    </label>
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                    Current: {isPremium ? 'Premium' : 'Free'}
+                </div>
+            </div>
+
         </div>
     );
 };

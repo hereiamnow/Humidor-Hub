@@ -15,6 +15,7 @@
  */
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
 import { SubscriptionService, SUBSCRIPTION_TIERS } from '../services/subscriptionService';
 
 const SubscriptionContext = createContext();
@@ -95,31 +96,74 @@ export const SubscriptionProvider = ({ children, db, appId, userId }) => {
   const isPremium = subscription?.tier === SUBSCRIPTION_TIERS.PREMIUM;
   const isFree = subscription?.tier === SUBSCRIPTION_TIERS.FREE;
 
-  const saveDevelopmentTier = async (tier) => {
-    const isDevelopment = process.env.NODE_ENV === 'development' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1';
+  // const saveDevelopmentTier = async (tier) => {
+  //   const isDevelopment = process.env.NODE_ENV === 'development' ||
+  //     window.location.hostname === 'localhost' ||
+  //     window.location.hostname === '127.0.0.1';
 
-    if (isDevelopment && subscriptionService) {
-      console.log('[SubscriptionProvider] Saving development tier to:', tier);
-      try {
-        const newSubData = {
-          ...subscription,
-          tier: tier,
-          status: 'active',
-          aiLookupsUsed: 0,
-          renewsOn: tier === SUBSCRIPTION_TIERS.PREMIUM ?
-            new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString() :
-            null
-        };
-        await subscriptionService.updateUserSubscription(newSubData);
-        setSubscription(newSubData);
-        console.log('[SubscriptionProvider] Development tier saved and local state updated.');
-      } catch (error) {
-        console.error('[SubscriptionProvider] Error saving development tier:', error);
-      }
+  //   if (isDevelopment && subscriptionService) {
+  //     console.log('[SubscriptionProvider] Saving development tier to:', tier);
+  //     try {
+  //       const newSubData = {
+  //         ...subscription,
+  //         tier: tier,
+  //         status: 'active',
+  //         aiLookupsUsed: 0,
+  //         renewsOn: tier === SUBSCRIPTION_TIERS.PREMIUM ?
+  //           new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString() :
+  //           null
+  //       };
+  //       await subscriptionService.updateUserSubscription(newSubData);
+  //       setSubscription(newSubData);
+  //       console.log('[SubscriptionProvider] Development tier saved and local state updated.');
+  //     } catch (error) {
+  //       console.error('[SubscriptionProvider] Error saving development tier:', error);
+  //     }
+  //   }
+  // };
+
+
+
+  /**
+   * Saves the development tier to Firestore.
+   * This function is intended for development/testing purposes only.
+   * @param {string} newTier - The new subscription tier to set.
+   */
+  const saveDevelopmentTier = async (newTier) => {
+    if (!userId || !db || !appId) {
+      console.error("Cannot save development tier: missing userId, db, or appId.");
+      return;
+    }
+
+    try {
+      // 1. Update the subscription document
+      const subscriptionRef = doc(db, 'users', userId, 'subscriptions', appId);
+      await updateDoc(subscriptionRef, {
+        tier: newTier,
+        aiLookupsUsed: 0, // Reset usage when tier changes
+        // You might want to clear or adjust other fields when toggling
+        // status: 'active', 
+        // updatedAt: serverTimestamp(),
+      });
+
+      // 2. Update the 'isPremium' field on the parent user document
+      const userRef = doc(db, 'users', userId);
+      const isPremium = newTier === SUBSCRIPTION_TIERS.PREMIUM;
+      await updateDoc(userRef, {
+        isPremium: isPremium,
+        aiLookupsUsed: 0 // Also reset usage on the user document
+      });
+
+      console.log(`Successfully set development tier to ${newTier} and updated user document.`);
+
+      // The local state will update automatically via the onSnapshot listener.
+
+    } catch (error) {
+      console.error("Error saving development tier:", error);
     }
   };
+
+
 
   const value = {
     subscription,

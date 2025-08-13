@@ -61,6 +61,9 @@ import IsPuroBadge from '../../UI/IsPuroBadge';
 // Import RatingBadge component
 import RatingBadge from '../../UI/RatingBadge';
 
+import RoxysCorner from '../../Panels/RoxysCorner';
+
+
 // Main CigarDetail component
 const CigarDetail = ({ cigar, navigate, db, appId, userId, journalEntries }) => {
     // Auth state
@@ -355,21 +358,28 @@ Provide a brief, encouraging, and slightly personalized note about this cigar's 
 
                 {/* Roxy's Corner Collapsible Panel */}
                 {hasGeminiKey && !keyCheckLoading && (
-                    <div tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-                        <input type="checkbox" checked={isRoxyOpen} onChange={() => setIsRoxyOpen(!isRoxyOpen)} />
-                        <div className="collapse-title font-bold text-lg flex items-center">
-                            <Wind className="w-5 h-5 mr-2" /> Roxy's Corner
+                    <RoxysCorner
+                        isRoxyOpen={isRoxyOpen}
+                        setIsRoxyOpen={setIsRoxyOpen}
+                        onSuggestPairings={handleSuggestPairings}
+                        onGenerateNote={handleGenerateNote}
+                        onFindSimilar={handleFindSimilar}
+                        onAgingPotential={handleAgingPotential}
+                        isCollapsible={true}
+                        isCollapsed={isRoxyOpen}
+                    >
+
+                        <p className="text-sm pt-2">Let Roxy help you get the most out of your smoke. What would you like to know?</p>
+                        <div className="pt-4 space-y-4">
+                            <button onClick={handleSuggestPairings} className="btn btn-info btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Suggest Pairings</button>
+                            <button onClick={handleGenerateNote} className="btn btn-info btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Generate Note Idea</button>
+                            <button onClick={handleFindSimilar} className="btn btn-info btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Find Similar Smokes</button>
+                            <button onClick={handleAgingPotential} className="btn btn-info btn-outline w-full"><CalendarIcon className="w-5 h-5 mr-2" /> Aging Potential</button>
                         </div>
-                        <div className="collapse-content">
-                            <p className="text-sm pt-2">Let Roxy help you get the most out of your smoke. What would you like to know?</p>
-                            <div className="pt-4 space-y-4">
-                                <button onClick={handleSuggestPairings} className="btn btn-primary btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Suggest Pairings</button>
-                                <button onClick={handleGenerateNote} className="btn btn-info btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Generate Note Idea</button>
-                                <button onClick={handleFindSimilar} className="btn btn-success btn-outline w-full"><Sparkles className="w-5 h-5 mr-2" /> Find Similar Smokes</button>
-                                <button onClick={handleAgingPotential} className="btn btn-accent btn-outline w-full"><CalendarIcon className="w-5 h-5 mr-2" /> Aging Potential</button>
-                            </div>
-                        </div>
-                    </div>
+
+
+
+                    </RoxysCorner>
                 )}
             </div>
         </div>

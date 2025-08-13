@@ -17,16 +17,17 @@ const CollapsiblePanel = ({ title, description, children, icon: Icon }) => {
 
     return (
         <div tabIndex={0} className="collapse collapse-plus bg-base-200 border border-base-300 rounded-md shadow-lg mb-4">
-            <input type="checkbox" className="peer" checked={!isPanelCollapsed} onChange={() => setIsPanelCollapsed(!isPanelCollapsed)} />
+            <input type="checkbox"
+                className="peer"
+                checked={!isPanelCollapsed}
+                onChange={() => setIsPanelCollapsed(!isPanelCollapsed)} />
 
             <div className="collapse-title font-semibold flex justify-start items-center">
                 {Icon && <Icon className="w-5 h-5 mr-2" />} {title}
             </div>
 
-
-
             <div className="collapse-content text-sm">
-                <p className="text-gray-400 text-sm">{description}</p>
+                <p className="text-gray-400 text-sm mb-4">{description}</p>
                 {children}
             </div>
 
