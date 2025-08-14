@@ -87,7 +87,7 @@ const SubscriptionPanel = ({ subscription: propSubscription }) => {
 
             {/* Development Mode Toggle */}
             {(process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
-                <hr />
+                console.log('SubscriptionPanel: Development mode detected, showing dev toggle')
             )}
 
              {/* Development Mode Toggle */}
