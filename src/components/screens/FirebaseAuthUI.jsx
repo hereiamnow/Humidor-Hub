@@ -24,8 +24,8 @@ import {
     getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup, sendEmailVerification
 } from 'firebase/auth';
-import { Box } from 'lucide-react'; // Optional: Replace with your logo/icon
-
+import { Box, DogIcon } from 'lucide-react'; // Optional: Replace with your logo/icon
+import RoxyLogo from '../UI/RoxyLogo';
 /**
  * CustomAuth Component
  * @param {Function} onSignIn - Callback function called after successful authentication with user ID
@@ -203,7 +203,9 @@ export default function CustomAuth({ onSignIn, navigate }) {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="bg-gray-800/90 rounded-2xl shadow-2xl p-8 w-full max-w-sm flex flex-col items-center">
-                <Box className="w-14 h-14 text-amber-400 mb-4" />
+                <DogIcon className="w-14 h-14 text-amber-400 mb-4" />
+                {/* <RoxyLogo height="56" width="56" text-amber-400 className="mb-4" /> */}
+
                 <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight">Humidor Hub</h1>
                 <p className="text-gray-400 mb-6 text-center">Your personal cigar collection companion</p>
                 <h2 className="text-xl font-bold text-white mb-4">{isRegister ? 'Create Account' : 'Sign In'}</h2>
