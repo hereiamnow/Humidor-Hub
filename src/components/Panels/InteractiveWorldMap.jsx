@@ -14,8 +14,9 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { ChevronDown, Minus, Plus, RotateCcw, X } from 'lucide-react';
+import { ChevronDown, MapPin, Minus, Plus, RotateCcw, X } from 'lucide-react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
+import CollapsiblePanel from '../UI/CollapsiblePanel'; // adjust path as needed
 
 /** 
  * Countries known for producing premium cigars.
@@ -44,8 +45,6 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
  * @returns {JSX.Element} Interactive world map component
  */
 const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
-
-    const [isInteractiveWorldMapCollapsed, setIsInteractiveWorldMapCollapsed] = useState(true);
 
     /** 
      * Memoized calculation of cigar quantities by country.
@@ -124,7 +123,7 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
      * @param {Array|Object} position - New center position from ZoomableGroup
      */
     const handleMoveEnd = (position) => {
-        // Validate position is a coordinate array [lng, lat]
+        // Validates position is a coordinate array [lng, lat]
         if (Array.isArray(position) && position.length === 2 && typeof position[0] === "number" && typeof position[1] === "number") {
             setCenter(position);
         } else if (position && typeof position === "object" && "coordinates" in position && Array.isArray(position.coordinates)) {
@@ -137,16 +136,11 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
     };
 
     return (
-        <div id="pnlBrowseWorldMap" tabIndex={0} className="collapse collapse-plus border bg-neutral border-base-300 rounded-md shadow-sm mb-4">
-            <input type="checkbox" className="peer" checked={!isInteractiveWorldMapCollapsed} onChange={() => setIsInteractiveWorldMapCollapsed(!isInteractiveWorldMapCollapsed)} />
-
-            <div className="collapse-title font-semibold">
-                World Map
-            </div>
-
-
-
-            <div className="collapse-content text-sm">
+        <CollapsiblePanel
+            title="World Map"
+            icon={MapPin}
+        >
+            <div className="text-sm">
                 <div className="w-full" style={{ minHeight: 300, position: "relative" }}>
                     {/* Dismissible instructions overlay for first-time users */}
                     {showInstructions && (
@@ -157,7 +151,7 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
                                 </p>
                                 <button
                                     onClick={() => setShowInstructions(false)}
-                                    className="btn btn-ghost btn-sm btn-circle"
+                                    className="btn btn-primary btn-sm btn-circle"
                                     title="Close instructions"
                                 >
                                     <X className="w-4 h-4" />
@@ -168,7 +162,7 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
                     {/* Country information tooltip - appears on hover */}
                     {tooltip.show && (
                         <div
-                            className="absolute z-20 card bg-base-200 rounded-lg px-3 py-2 text-sm shadow-lg pointer-events-none"
+                            className="absolute z-20 card bg-base-200 rounded-md px-3 py-2 text-sm shadow-lg pointer-events-none"
                             style={{
                                 left: tooltip.x,
                                 top: tooltip.y,
@@ -235,12 +229,20 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
                                         const isCigarCountry = cigarCountries.includes(countryName);
                                         const hasCigars = countryCounts[countryName] > 0;
 
-                                        // Define fill colors using DaisyUI CSS variables
-                                        const highlightedFill = 'hsl(var(--wa))'; // warning color
-                                        const cigarCountryFill = 'hsl(var(--wa) / 0.4)'; // warning color with alpha
-                                        const otherFill = 'hsl(var(--b2))'; // base-200
-                                        const hoverFill = 'hsl(var(--p))'; // primary
-                                        const borderStroke = 'hsl(var(--b3))'; // base-300
+                                        // Define color coding for different country states
+                                        const highlightedFill = '#facc15'; // yellow (warning)
+                                        const cigarCountryFill = 'rgba(34,197,94,0.4)'; // green with alpha (success)
+                                        const otherFill = '#f3f4f6'; // light gray (base-200)
+                                        const hoverFill = '#2563eb'; // blue (primary)
+                                        const borderStroke = '#d1d5db'; // gray (base-300)
+
+
+
+
+
+
+
+
 
                                         return (
                                             <Geography
@@ -302,7 +304,7 @@ const InteractiveWorldMap = ({ cigars, navigate, isCollapsed, onToggle }) => {
                     </ComposableMap>
                 </div>
             </div>
-        </div>
+        </CollapsiblePanel>
     );
 };
 
