@@ -54,6 +54,8 @@ export const useFirebaseAuth = () => {
                     connectFirestoreEmulator(firestoreDb, 'localhost', 8080);
                 } else {
                     log('☁️ Production environment - using live Firebase');
+                    // Ensure production Firebase services are connected
+
                 }
 
                 // Set the initialized instances to state

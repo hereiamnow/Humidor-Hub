@@ -20,12 +20,16 @@
  */
 
 import React, { useState, useEffect } from 'react';
+
 import {
     getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup, sendEmailVerification
 } from 'firebase/auth';
+
 import { Box, DogIcon } from 'lucide-react'; // Optional: Replace with your logo/icon
+
 import RoxyLogo from '../UI/RoxyLogo';
+
 /**
  * CustomAuth Component
  * @param {Function} onSignIn - Callback function called after successful authentication with user ID
@@ -44,6 +48,7 @@ export default function CustomAuth({ onSignIn, navigate }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
+
     // Add validation error state for each field
     const [fieldErrors, setFieldErrors] = useState({});
 
@@ -160,9 +165,11 @@ export default function CustomAuth({ onSignIn, navigate }) {
     const handleGoogleSignIn = async () => {
         console.log('🔵 Google sign-in button clicked');
         setError(''); // Clear any previous errors
+
         try {
             console.log('🔵 Creating Google auth provider...');
             const provider = new GoogleAuthProvider();
+            
             console.log('🔵 Opening Google sign-in popup...');
             const result = await signInWithPopup(auth, provider);
 
